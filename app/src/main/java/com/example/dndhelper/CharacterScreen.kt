@@ -85,7 +85,13 @@ fun CharacterSheetTab() {
 
     val dexValue = stats.find { it.name == "Ловкость" }?.baseScore ?: 10
     val initMod = (dexValue - 10) / 2
-    val initiativeText = if (initMod >= 0) "+$initMod" else "$initMod"
+    val dexMod = (dexValue - 10) / 2
+
+    // Инициатива (текст)
+    val initiativeText = if (dexMod >= 0) "+$dexMod" else "$dexMod"
+
+    // АВТОМАТИЧЕСКИЙ КД: 10 + Ловкость (позже добавим учет брони из вкладки снаряжения)
+    val armorClass = 10 + dexMod
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState())) {
 
@@ -149,8 +155,12 @@ fun CharacterSheetTab() {
         }
 
         // 3. Боевые параметры
-        Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            CombatStatSquare("КД", "15", Modifier.weight(1f))
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // КД теперь берется из переменной armorClass
+            CombatStatSquare("КД", "$armorClass", Modifier.weight(1f))
             CombatStatSquare("ИНИЦ.", initiativeText, Modifier.weight(1f))
             CombatStatSquare("СКОРОСТЬ", "30фт", Modifier.weight(1f))
         }
