@@ -84,7 +84,6 @@ fun CharacterSheetTab() {
     ))}
 
     val dexValue = stats.find { it.name == "Ловкость" }?.baseScore ?: 10
-    val initMod = (dexValue - 10) / 2
     val dexMod = (dexValue - 10) / 2
 
     // Инициатива (текст)
