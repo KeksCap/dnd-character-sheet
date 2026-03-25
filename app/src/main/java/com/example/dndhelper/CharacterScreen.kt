@@ -24,6 +24,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ListItem
+import androidx.compose.foundation.layout.Column
+import com.example.dndhelper.data.Spell
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import com.example.dndhelper.data.SpellInfo
 
 // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ (Видны во всем файле) ---
 var charName by mutableStateOf("Гендальф")
@@ -45,8 +56,13 @@ data class Weapon(val id: Int, val name: String, val damage: String)
 data class Armor(val id: Int, val name: String, val ac: Int)
 
 @Composable
-fun MainGameContent() {
-    var activeTab by remember { mutableIntStateOf(0) }
+// Добавили classSpells вот сюда (в заголовок функции)
+fun MainGameContent(
+    spells: List<Spell>,
+    classSpells: Map<String, List<String>>,
+    language: String
+) {
+    var activeTab by remember { mutableIntStateOf(2) }
 
     Scaffold(
         bottomBar = {
@@ -61,9 +77,106 @@ fun MainGameContent() {
             when (activeTab) {
                 0 -> CharacterSheetTab()
                 1 -> EquipmentTab()
-                2 -> SpellsDirectoryTab()
+                2 -> SpellsDirectoryTab(
+                    spells = spells,
+                    classSpells = classSpells, // Теперь этот параметр берется из заголовка функции выше
+                    language = language
+                )
             }
         }
+    }
+}
+
+@Composable
+fun SpellsDirectoryTab(
+    spells: List<Spell>,
+    classSpells: Map<String, List<String>>, // Должно быть именно так (Map)
+    language: String
+) {
+    var selectedSpell by remember { mutableStateOf<SpellInfo?>(null) }
+    var selectedClass by remember { mutableStateOf("Все") }
+
+    // Надежная проверка (сработает и на "ru", и на "Русский")
+    val isRussian = language.lowercase().let { it == "ru" || it == "русский" || it == "russian" }
+
+    // Умный фильтр по классам
+    val filteredSpells = if (selectedClass == "Все") {
+        spells
+    } else {
+        val allowedSpells = classSpells[selectedClass] ?: emptyList()
+        // Ищем совпадения по английскому имени (так как в ClassSpells названия лежат на англ.)
+        spells.filter { spell -> allowedSpells.contains(spell.en?.name) }
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = if (isRussian) "Справочник заклинаний" else "Spells Directory",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(16.dp)
+        )
+
+        // Лента выбора класса (Бард, Жрец и т.д.)
+        LazyRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+            val classList = listOf("Все") + classSpells.keys.toList()
+            items(classList) { className ->
+                val isSelected = selectedClass == className
+                Button(
+                    onClick = { selectedClass = className },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(end = 8.dp)
+                ) {
+                    Text(className)
+                }
+            }
+        }
+
+        // Вывод списка заклинаний
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(filteredSpells) { spell ->
+                // Берем строго один нужный язык
+                val finalInfo = if (isRussian) spell.ru else spell.en
+
+                if (finalInfo != null) {
+                    ListItem(
+                        headlineContent = { Text(finalInfo.name ?: "Без названия") },
+                        supportingContent = { Text("${finalInfo.level} lvl | ${finalInfo.school}") },
+                        overlineContent = { Text(finalInfo.range ?: "") },
+                        // Обработка клика!
+                        modifier = Modifier.clickable { selectedSpell = finalInfo }
+                    )
+                    HorizontalDivider()
+                }
+            }
+        }
+    }
+
+    // Всплывающее окно (Диалог) с подробным описанием заклинания
+    selectedSpell?.let { spell ->
+        AlertDialog(
+            onDismissRequest = { selectedSpell = null },
+            title = { Text(spell.name ?: "") },
+            text = {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    Text("Время: ${spell.castingTime}", style = MaterialTheme.typography.labelLarge)
+                    Text("Дистанция: ${spell.range}", style = MaterialTheme.typography.labelLarge)
+                    Text("Компоненты: ${spell.components}", style = MaterialTheme.typography.labelLarge)
+                    Text("Длительность: ${spell.duration}", style = MaterialTheme.typography.labelLarge)
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Убираем технические теги <br> и делаем абзацы
+                    val cleanText = spell.text?.replace("<br>", "\n\n") ?: "Описание отсутствует."
+                    Text(cleanText, style = MaterialTheme.typography.bodyMedium)
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { selectedSpell = null }) {
+                    Text(if (isRussian) "Закрыть" else "Close")
+                }
+            }
+        )
     }
 }
 
