@@ -34,7 +34,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import coil.compose.AsyncImage
 import com.example.dndhelper.data.SpellInfo
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.filled.Delete
 
 // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ (Видны во всем файле) ---
 var charName by mutableStateOf("Гендальф")
@@ -42,6 +52,8 @@ var charRace by mutableStateOf("Человек")
 var charClass by mutableStateOf("Маг")
 var charLevel by mutableStateOf("5")
 var isEditingHeader by mutableStateOf(false)
+var charImageUri by mutableStateOf<Uri?>(null)
+val knownSpells = mutableStateListOf<SpellInfo>()
 
 // --- МОДЕЛИ ДАННЫХ ---
 data class AbilityScore(
@@ -75,13 +87,9 @@ fun MainGameContent(
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             when (activeTab) {
-                0 -> CharacterSheetTab()
+                0 -> CharacterSheetTab(language = language)
                 1 -> EquipmentTab()
-                2 -> SpellsDirectoryTab(
-                    spells = spells,
-                    classSpells = classSpells, // Теперь этот параметр берется из заголовка функции выше
-                    language = language
-                )
+                2 -> SpellsDirectoryTab(spells = spells, classSpells = classSpells, language = language)
             }
         }
     }
@@ -90,22 +98,49 @@ fun MainGameContent(
 @Composable
 fun SpellsDirectoryTab(
     spells: List<Spell>,
-    classSpells: Map<String, List<String>>, // Должно быть именно так (Map)
+    classSpells: Map<String, List<String>>,
     language: String
 ) {
     var selectedSpell by remember { mutableStateOf<SpellInfo?>(null) }
     var selectedClass by remember { mutableStateOf("Все") }
+    var searchQuery by remember { mutableStateOf("") }
 
-    // Надежная проверка (сработает и на "ru", и на "Русский")
+    // ДОБАВИЛИ: Состояние сортировки (0 - нет, 1 - по возрастанию, 2 - по убыванию)
+    var sortOrder by remember { mutableIntStateOf(0) }
+
     val isRussian = language.lowercase().let { it == "ru" || it == "русский" || it == "russian" }
 
-    // Умный фильтр по классам
-    val filteredSpells = if (selectedClass == "Все") {
-        spells
-    } else {
-        val allowedSpells = classSpells[selectedClass] ?: emptyList()
-        // Ищем совпадения по английскому имени (так как в ClassSpells названия лежат на англ.)
-        spells.filter { spell -> allowedSpells.contains(spell.en?.name) }
+    // Умный фильтр по классу и тексту
+    val filteredSpells = spells.filter { spell ->
+        val matchesClass = if (selectedClass == "Все") {
+            true
+        } else {
+            val allowedSpells = classSpells[selectedClass] ?: emptyList()
+            val spellNameEn = spell.en?.name?.trim()?.lowercase() ?: ""
+            allowedSpells.any { it.trim().lowercase() == spellNameEn }
+        }
+
+        val matchesSearch = if (searchQuery.isBlank()) {
+            true
+        } else {
+            val spellName = (if (isRussian) spell.ru?.name else spell.en?.name) ?: ""
+            spellName.contains(searchQuery, ignoreCase = true)
+        }
+
+        matchesClass && matchesSearch
+    }
+
+    // ДОБАВИЛИ: Логика сортировки по уровню
+    val sortedSpells = when (sortOrder) {
+        1 -> filteredSpells.sortedBy { spell ->
+            val lvl = if (isRussian) spell.ru?.level else spell.en?.level
+            lvl.toString().toIntOrNull() ?: 0 // Заговоры (0) будут первыми
+        }
+        2 -> filteredSpells.sortedByDescending { spell ->
+            val lvl = if (isRussian) spell.ru?.level else spell.en?.level
+            lvl.toString().toIntOrNull() ?: 0 // Заклинания 9 уровня будут первыми
+        }
+        else -> filteredSpells // Как в оригинале
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -115,7 +150,39 @@ fun SpellsDirectoryTab(
             modifier = Modifier.padding(16.dp)
         )
 
-        // Лента выбора класса (Бард, Жрец и т.д.)
+        // ДОБАВИЛИ: Строка поиска и кнопка сортировки в одном ряду
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                label = { Text(if (isRussian) "Поиск заклинания..." else "Search spell...") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) { Icon(Icons.Default.Clear, null) }
+                    }
+                },
+                modifier = Modifier.weight(1f), // Поиск занимает всё свободное место
+                singleLine = true
+            )
+
+            // КНОПКА СОРТИРОВКИ
+            IconButton(
+                onClick = { sortOrder = (sortOrder + 1) % 3 },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                val sortIcon = when (sortOrder) {
+                    1 -> Icons.Default.ArrowUpward // По возрастанию
+                    2 -> Icons.Default.ArrowDownward // По убыванию
+                    else -> Icons.Default.Sort // По умолчанию
+                }
+                Icon(sortIcon, contentDescription = "Сортировка", tint = MaterialTheme.colorScheme.primary)
+            }
+        }
+
         LazyRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
             val classList = listOf("Все") + classSpells.keys.toList()
             items(classList) { className ->
@@ -133,10 +200,9 @@ fun SpellsDirectoryTab(
             }
         }
 
-        // Вывод списка заклинаний
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(filteredSpells) { spell ->
-                // Берем строго один нужный язык
+            // ИСПОЛЬЗУЕМ ОТСОРТИРОВАННЫЙ СПИСОК
+            items(sortedSpells) { spell ->
                 val finalInfo = if (isRussian) spell.ru else spell.en
 
                 if (finalInfo != null) {
@@ -144,7 +210,6 @@ fun SpellsDirectoryTab(
                         headlineContent = { Text(finalInfo.name ?: "Без названия") },
                         supportingContent = { Text("${finalInfo.level} lvl | ${finalInfo.school}") },
                         overlineContent = { Text(finalInfo.range ?: "") },
-                        // Обработка клика!
                         modifier = Modifier.clickable { selectedSpell = finalInfo }
                     )
                     HorizontalDivider()
@@ -153,11 +218,32 @@ fun SpellsDirectoryTab(
         }
     }
 
-    // Всплывающее окно (Диалог) с подробным описанием заклинания
     selectedSpell?.let { spell ->
         AlertDialog(
             onDismissRequest = { selectedSpell = null },
-            title = { Text(spell.name ?: "") },
+            // ДОБАВИЛИ: Заголовок теперь со звездочкой!
+            title = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(spell.name ?: "", modifier = Modifier.weight(1f))
+
+                    // КНОПКА ЗВЕЗДОЧКИ
+                    val isFavorite = knownSpells.contains(spell)
+                    IconButton(onClick = {
+                        if (isFavorite) knownSpells.remove(spell) else knownSpells.add(spell)
+                    }) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
+                            contentDescription = "В избранное",
+                            // Если добавлено - золотая, иначе серая
+                            tint = if (isFavorite) Color(0xFFFFD700) else Color.Gray
+                        )
+                    }
+                }
+            },
             text = {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Text("Время: ${spell.castingTime}", style = MaterialTheme.typography.labelLarge)
@@ -166,7 +252,6 @@ fun SpellsDirectoryTab(
                     Text("Длительность: ${spell.duration}", style = MaterialTheme.typography.labelLarge)
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Убираем технические теги <br> и делаем абзацы
                     val cleanText = spell.text?.replace("<br>", "\n\n") ?: "Описание отсутствует."
                     Text(cleanText, style = MaterialTheme.typography.bodyMedium)
                 }
@@ -181,8 +266,8 @@ fun SpellsDirectoryTab(
 }
 
 @Composable
-fun CharacterSheetTab() {
-    // Состояния здоровья и характеристик
+fun CharacterSheetTab(language: String) { // Добавили передачу языка
+    // Состояния здоровья и характеристик (ТВОИ ОРИГИНАЛЬНЫЕ)
     var maxHpInput by remember { mutableStateOf("45") }
     val maxHp = maxHpInput.toIntOrNull() ?: 1
     var currentHp by remember { mutableIntStateOf(39) }
@@ -202,8 +287,12 @@ fun CharacterSheetTab() {
     // Инициатива (текст)
     val initiativeText = if (dexMod >= 0) "+$dexMod" else "$dexMod"
 
-    // АВТОМАТИЧЕСКИЙ КД: 10 + Ловкость (позже добавим учет брони из вкладки снаряжения)
+    // АВТОМАТИЧЕСКИЙ КД: 10 + Ловкость
     val armorClass = 10 + dexMod
+
+    // Стейт для всплывающего окна заклинания
+    var selectedKnownSpellInfo by remember { mutableStateOf<SpellInfo?>(null) }
+    val isRussian = language.lowercase().let { it == "ru" || it == "русский" || it == "russian" }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState())) {
 
@@ -271,7 +360,6 @@ fun CharacterSheetTab() {
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // КД теперь берется из переменной armorClass
             CombatStatSquare("КД", "$armorClass", Modifier.weight(1f))
             CombatStatSquare("ИНИЦ.", initiativeText, Modifier.weight(1f))
             CombatStatSquare("СКОРОСТЬ", "30фт", Modifier.weight(1f))
@@ -294,22 +382,108 @@ fun CharacterSheetTab() {
                 }
             }
         }
+
+        // 5. ИЗВЕСТНЫЕ ЗАКЛИНАНИЯ (Добавлен Modifier.clickable)
+        if (knownSpells.isNotEmpty()) {
+            Spacer(Modifier.height(16.dp))
+            Text(
+                text = "ИЗВЕСТНЫЕ ЗАКЛИНАНИЯ",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            knownSpells.forEach { spell ->
+                ElevatedCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                        .clickable { selectedKnownSpellInfo = spell } // Клик для открытия информации!
+                ) {
+                    ListItem(
+                        headlineContent = { Text(spell.name ?: "") },
+                        supportingContent = { Text("Уровень: ${spell.level} | ${spell.castingTime}") },
+                        trailingContent = {
+                            IconButton(onClick = { knownSpells.remove(spell) }) {
+                                Icon(Icons.Default.Delete, contentDescription = "Удалить", tint = Color.Gray)
+                            }
+                        }
+                    )
+                }
+            }
+        }
+
+    } // Это закрывающая скобка Column
+
+    // 6. ВСПЛЫВАЮЩЕЕ ОКНО ИНФОРМАЦИИ (Точно такое же как в справочнике)
+    selectedKnownSpellInfo?.let { spell ->
+        AlertDialog(
+            onDismissRequest = { selectedKnownSpellInfo = null },
+            title = { Text(spell.name ?: "") },
+            text = {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    Text("Время: ${spell.castingTime}", style = MaterialTheme.typography.labelLarge)
+                    Text("Дистанция: ${spell.range}", style = MaterialTheme.typography.labelLarge)
+                    Text("Компоненты: ${spell.components}", style = MaterialTheme.typography.labelLarge)
+                    Text("Длительность: ${spell.duration}", style = MaterialTheme.typography.labelLarge)
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    val cleanText = spell.text?.replace("<br>", "\n\n") ?: "Описание отсутствует."
+                    Text(cleanText, style = MaterialTheme.typography.bodyMedium)
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { selectedKnownSpellInfo = null }) {
+                    Text(if (isRussian) "Закрыть" else "Close")
+                }
+            }
+        )
     }
 }
 
 @Composable
 fun HeaderInfoBlock() {
+    // Создаем лончер для выбора картинки из галереи
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            charImageUri = uri // Сохраняем выбранную картинку
+        }
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Аватарка
         Box(
-            modifier = Modifier.size(90.dp).clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
+            modifier = Modifier
+                .size(90.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .clickable { // ВЕШАЕМ КЛИК НА АВАТАРКУ
+                    galleryLauncher.launch("image/*") // Запускаем галерею
+                },
             contentAlignment = Alignment.Center
         ) {
-            Icon(Icons.Default.Person, null, modifier = Modifier.size(50.dp), tint = MaterialTheme.colorScheme.primary)
+            if (charImageUri != null) {
+                // Если фото выбрано — показываем его
+                AsyncImage(
+                    model = charImageUri,
+                    contentDescription = "Аватар персонажа",
+                    contentScale = ContentScale.Crop, // Обрезаем, чтобы красиво заполнить квадрат
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                // Если фото нет — показываем дефолтного человечка
+                Icon(
+                    Icons.Default.Person,
+                    contentDescription = null,
+                    modifier = Modifier.size(50.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
         Spacer(Modifier.width(12.dp))
@@ -318,7 +492,7 @@ fun HeaderInfoBlock() {
             if (isEditingHeader) {
                 OutlinedTextField(
                     value = charName,
-                    onValueChange = { charName = it.filter { !it.isDigit() } },
+                    onValueChange = { charName = it.filter { char -> !char.isDigit() } },
                     label = { Text("Имя") },
                     modifier = Modifier.fillMaxWidth()
                 )
