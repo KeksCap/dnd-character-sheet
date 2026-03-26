@@ -45,14 +45,22 @@ import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.filled.Delete
+import com.example.dndhelper.data.CharacterSaveData
+import com.example.dndhelper.data.CharacterStorage
+import com.example.dndhelper.data.StatSaveData
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AutoFixHigh
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ListItem
+import com.example.dndhelper.data.Monster
 
-// --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ (Видны во всем файле) ---
-var charName by mutableStateOf("Гендальф")
-var charRace by mutableStateOf("Человек")
-var charClass by mutableStateOf("Маг")
+
 var charLevel by mutableStateOf("5")
-var isEditingHeader by mutableStateOf(false)
-var charImageUri by mutableStateOf<Uri?>(null)
 val knownSpells = mutableStateListOf<SpellInfo>()
 
 // --- МОДЕЛИ ДАННЫХ ---
@@ -68,28 +76,49 @@ data class Weapon(val id: Int, val name: String, val damage: String)
 data class Armor(val id: Int, val name: String, val ac: Int)
 
 @Composable
-// Добавили classSpells вот сюда (в заголовок функции)
 fun MainGameContent(
     spells: List<Spell>,
     classSpells: Map<String, List<String>>,
-    language: String
+    language: String,
+    // НОВЫЕ ПАРАМЕТРЫ:
+    character: CharacterSaveData,
+    storage: CharacterStorage,
+    onCharacterChange: (CharacterSaveData) -> Unit,
+    onBackToTavern: () -> Unit,
+    bestiaryList: List<Monster>
 ) {
-    var activeTab by remember { mutableIntStateOf(2) }
+    var activeTab by remember { mutableIntStateOf(0) }
 
     Scaffold(
+        // ДОБАВИЛИ: Верхняя полоска с кнопкой "Назад"
+        topBar = {
+            Row(
+                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.primaryContainer).padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBackToTavern) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "В Таверну")
+                }
+                Text(text = "Имя: ${character.name}", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            }
+        },
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(selected = activeTab == 0, onClick = { activeTab = 0 }, icon = { Icon(Icons.Default.Person, null) }, label = { Text("Лист") })
                 NavigationBarItem(selected = activeTab == 1, onClick = { activeTab = 1 }, icon = { Icon(Icons.Default.Shield, null) }, label = { Text("Снаряжение") })
-                NavigationBarItem(selected = activeTab == 2, onClick = { activeTab = 2 }, icon = { Icon(Icons.Default.MenuBook, null) }, label = { Text("Справочник") })
+                // Переименовали в "Заклинания" и дали иконку палочки
+                NavigationBarItem(selected = activeTab == 2, onClick = { activeTab = 2 }, icon = { Icon(Icons.Default.AutoFixHigh, null) }, label = { Text("Заклинания") })
+                // Новая 4-я вкладка
+                NavigationBarItem(selected = activeTab == 3, onClick = { activeTab = 3 }, icon = { Icon(Icons.Default.MenuBook, null) }, label = { Text("Справочник") })
             }
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             when (activeTab) {
-                0 -> CharacterSheetTab(language = language)
+                0 -> CharacterSheetTab(language = language, character = character, onCharacterChange = onCharacterChange)
                 1 -> EquipmentTab()
-                2 -> SpellsDirectoryTab(spells = spells, classSpells = classSpells, language = language)
+                2 -> SpellsDirectoryTab(spells = spells, classSpells = classSpells, language = language, character = character, onCharacterChange = onCharacterChange)
+                3 -> ReferenceTab(monsters = bestiaryList) // Вызов новой вкладки!
             }
         }
     }
@@ -99,7 +128,9 @@ fun MainGameContent(
 fun SpellsDirectoryTab(
     spells: List<Spell>,
     classSpells: Map<String, List<String>>,
-    language: String
+    language: String,
+    character: CharacterSaveData, // <--- НОВОЕ
+    onCharacterChange: (CharacterSaveData) -> Unit // <--- НОВОЕ
 ) {
     var selectedSpell by remember { mutableStateOf<SpellInfo?>(null) }
     var selectedClass by remember { mutableStateOf("Все") }
@@ -208,7 +239,15 @@ fun SpellsDirectoryTab(
                 if (finalInfo != null) {
                     ListItem(
                         headlineContent = { Text(finalInfo.name ?: "Без названия") },
-                        supportingContent = { Text("${finalInfo.level} lvl | ${finalInfo.school}") },
+                        supportingContent = {
+                            // Учитываем язык для справочника (Русский/Английский)
+                            val levelText = if (finalInfo.level == "0") {
+                                if (isRussian) "Заговор" else "Cantrip"
+                            } else {
+                                if (isRussian) "${finalInfo.level} уровень" else "Level ${finalInfo.level}"
+                            }
+                            Text("$levelText | ${finalInfo.school}")
+                        },
                         overlineContent = { Text(finalInfo.range ?: "") },
                         modifier = Modifier.clickable { selectedSpell = finalInfo }
                     )
@@ -230,15 +269,19 @@ fun SpellsDirectoryTab(
                 ) {
                     Text(spell.name ?: "", modifier = Modifier.weight(1f))
 
-                    // КНОПКА ЗВЕЗДОЧКИ
-                    val isFavorite = knownSpells.contains(spell)
+                    // КНОПКА ЗВЕЗДОЧКИ (ТЕПЕРЬ РАБОТАЕТ С ЧЕМОДАНОМ)
+                    val isFavorite = character.knownSpells.contains(spell)
                     IconButton(onClick = {
-                        if (isFavorite) knownSpells.remove(spell) else knownSpells.add(spell)
+                        val updatedSpells = if (isFavorite) {
+                            character.knownSpells - spell // Удаляем
+                        } else {
+                            character.knownSpells + spell // Добавляем
+                        }
+                        onCharacterChange(character.copy(knownSpells = updatedSpells)) // Сохраняем в память
                     }) {
                         Icon(
                             imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
                             contentDescription = "В избранное",
-                            // Если добавлено - золотая, иначе серая
                             tint = if (isFavorite) Color(0xFFFFD700) else Color.Gray
                         )
                     }
@@ -266,8 +309,11 @@ fun SpellsDirectoryTab(
 }
 
 @Composable
-fun CharacterSheetTab(language: String) { // Добавили передачу языка
-    // Состояния здоровья и характеристик (ТВОИ ОРИГИНАЛЬНЫЕ)
+fun CharacterSheetTab(
+    language: String,
+    character: CharacterSaveData, // <--- НОВОЕ
+    onCharacterChange: (CharacterSaveData) -> Unit // <--- НОВОЕ
+) {
     var maxHpInput by remember { mutableStateOf("45") }
     val maxHp = maxHpInput.toIntOrNull() ?: 1
     var currentHp by remember { mutableIntStateOf(39) }
@@ -297,8 +343,10 @@ fun CharacterSheetTab(language: String) { // Добавили передачу �
     Column(modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState())) {
 
         // 1. Блок Информации (Header)
-        HeaderInfoBlock()
-
+        HeaderInfoBlock(
+            character = character,
+            onCharacterChange = onCharacterChange
+        )
         Spacer(Modifier.height(16.dp))
 
         // --- БЛОК ЗДОРОВЬЯ ---
@@ -383,28 +431,106 @@ fun CharacterSheetTab(language: String) { // Добавили передачу �
             }
         }
 
-        // 5. ИЗВЕСТНЫЕ ЗАКЛИНАНИЯ (Добавлен Modifier.clickable)
-        if (knownSpells.isNotEmpty()) {
-            Spacer(Modifier.height(16.dp))
+        // 5. ИЗВЕСТНЫЕ ЗАКЛИНАНИЯ
+        Spacer(Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = "ИЗВЕСТНЫЕ ЗАКЛИНАНИЯ",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 8.dp)
+                fontWeight = FontWeight.Bold
             )
+            // КНОПКА СОЗДАНИЯ КАСТОМНОГО ЗАКЛИНАНИЯ
+            var showCreateSpellDialog by remember { mutableStateOf(false) }
+            IconButton(onClick = { showCreateSpellDialog = true }) {
+                Icon(Icons.Default.Add, contentDescription = "Создать", tint = MaterialTheme.colorScheme.primary)
+            }
 
-            knownSpells.forEach { spell ->
+            // --- ВСПЛЫВАЮЩЕЕ ОКНО ФОРМЫ СОЗДАНИЯ ---
+            if (showCreateSpellDialog) {
+                var newName by remember { mutableStateOf("") }
+                var newLevel by remember { mutableStateOf("") }
+                var newTime by remember { mutableStateOf("") }
+                var newRange by remember { mutableStateOf("") }
+                var newComponents by remember { mutableStateOf("") }
+                var newDuration by remember { mutableStateOf("") }
+                var newDesc by remember { mutableStateOf("") }
+
+                AlertDialog(
+                    onDismissRequest = { showCreateSpellDialog = false },
+                    title = { Text("Создать заклинание") },
+                    text = {
+                        Column(modifier = Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedTextField(value = newName, onValueChange = { newName = it }, label = { Text("Название") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                OutlinedTextField(value = newLevel, onValueChange = { newLevel = it }, label = { Text("Уровень (0-9)") }, modifier = Modifier.weight(1f), singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                                OutlinedTextField(value = newTime, onValueChange = { newTime = it }, label = { Text("Время (напр. 1 действие)") }, modifier = Modifier.weight(1f), singleLine = true)
+                            }
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                OutlinedTextField(value = newRange, onValueChange = { newRange = it }, label = { Text("Дистанция") }, modifier = Modifier.weight(1f), singleLine = true)
+                                OutlinedTextField(value = newDuration, onValueChange = { newDuration = it }, label = { Text("Длительность") }, modifier = Modifier.weight(1f), singleLine = true)
+                            }
+                            OutlinedTextField(value = newComponents, onValueChange = { newComponents = it }, label = { Text("Компоненты (В, С, М)") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                            OutlinedTextField(value = newDesc, onValueChange = { newDesc = it }, label = { Text("Описание заклинания") }, modifier = Modifier.fillMaxWidth().height(120.dp), maxLines = 5)
+                        }
+                    },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                if (newName.isNotBlank()) {
+                                    // Собираем новое заклинание из текста
+                                    val customSpell = SpellInfo(
+                                        name = newName,
+                                        level = newLevel.ifBlank { "0" },
+                                        school = "Авторское",
+                                        castingTime = newTime.ifBlank { "-" },
+                                        range = newRange.ifBlank { "-" },
+                                        components = newComponents.ifBlank { "-" },
+                                        duration = newDuration.ifBlank { "-" },
+                                        text = newDesc.ifBlank { "Описание отсутствует." }
+                                    )
+                                    // Добавляем в чемодан и сохраняем
+                                    val updatedSpells = character.knownSpells + customSpell
+                                    onCharacterChange(character.copy(knownSpells = updatedSpells))
+                                    showCreateSpellDialog = false
+                                }
+                            }
+                        ) { Text("Сохранить") }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showCreateSpellDialog = false }) { Text("Отмена") }
+                    }
+                )
+            }
+        }
+
+        // ВЫВОД ЗАКЛИНАНИЙ
+        if (character.knownSpells.isEmpty()) {
+            Text("Пока нет известных заклинаний. Добавьте их из Справочника или создайте своё!", color = Color.Gray)
+        } else {
+            character.knownSpells.forEach { spell ->
                 ElevatedCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
-                        .clickable { selectedKnownSpellInfo = spell } // Клик для открытия информации!
+                        .clickable { selectedKnownSpellInfo = spell } // Клик для открытия информации
                 ) {
                     ListItem(
                         headlineContent = { Text(spell.name ?: "") },
-                        supportingContent = { Text("Уровень: ${spell.level} | ${spell.castingTime}") },
+                        supportingContent = {
+                            // Если уровень 0, пишем "Заговор", иначе "Уровень: X"
+                            val levelText = if (spell.level == "0") "Заговор" else "Уровень: ${spell.level}"
+                            Text("$levelText | ${spell.castingTime}")
+                        },
                         trailingContent = {
-                            IconButton(onClick = { knownSpells.remove(spell) }) {
+                            IconButton(onClick = {
+                                // Удаление заклинания из чемодана
+                                val updatedSpells = character.knownSpells.toMutableList().apply { remove(spell) }
+                                onCharacterChange(character.copy(knownSpells = updatedSpells))
+                            }) {
                                 Icon(Icons.Default.Delete, contentDescription = "Удалить", tint = Color.Gray)
                             }
                         }
@@ -412,10 +538,9 @@ fun CharacterSheetTab(language: String) { // Добавили передачу �
                 }
             }
         }
-
     } // Это закрывающая скобка Column
 
-    // 6. ВСПЛЫВАЮЩЕЕ ОКНО ИНФОРМАЦИИ (Точно такое же как в справочнике)
+    // 6. ВСПЛЫВАЮЩЕЕ ОКНО ИНФОРМАЦИИ
     selectedKnownSpellInfo?.let { spell ->
         AlertDialog(
             onDismissRequest = { selectedKnownSpellInfo = null },
@@ -440,49 +565,47 @@ fun CharacterSheetTab(language: String) { // Добавили передачу �
         )
     }
 }
-
 @Composable
-fun HeaderInfoBlock() {
-    // Создаем лончер для выбора картинки из галереи
+fun HeaderInfoBlock(
+    character: CharacterSaveData,
+    onCharacterChange: (CharacterSaveData) -> Unit
+) {
+    var isEditingHeader by remember { mutableStateOf(false) }
+
+    // Временные переменные для полей ввода (берут старт из чемодана)
+    var tempName by remember(character) { mutableStateOf(character.name) }
+    var tempRace by remember(character) { mutableStateOf(character.race) }
+    var tempClass by remember(character) { mutableStateOf(character.charClass) }
+    var tempLevel by remember(character) { mutableStateOf(character.level) }
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            charImageUri = uri // Сохраняем выбранную картинку
+            // Если выбрали фото, сразу перезаписываем чемодан
+            onCharacterChange(character.copy(imageUri = uri.toString()))
         }
     }
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         // Аватарка
         Box(
             modifier = Modifier
                 .size(90.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.primaryContainer)
-                .clickable { // ВЕШАЕМ КЛИК НА АВАТАРКУ
-                    galleryLauncher.launch("image/*") // Запускаем галерею
-                },
+                .clickable { galleryLauncher.launch("image/*") },
             contentAlignment = Alignment.Center
         ) {
-            if (charImageUri != null) {
-                // Если фото выбрано — показываем его
+            if (character.imageUri != null) {
                 AsyncImage(
-                    model = charImageUri,
+                    model = Uri.parse(character.imageUri), // Читаем URI из чемодана
                     contentDescription = "Аватар персонажа",
-                    contentScale = ContentScale.Crop, // Обрезаем, чтобы красиво заполнить квадрат
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
-                // Если фото нет — показываем дефолтного человечка
-                Icon(
-                    Icons.Default.Person,
-                    contentDescription = null,
-                    modifier = Modifier.size(50.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                Icon(Icons.Default.Person, null, modifier = Modifier.size(50.dp), tint = MaterialTheme.colorScheme.primary)
             }
         }
 
@@ -490,30 +613,34 @@ fun HeaderInfoBlock() {
 
         Column(modifier = Modifier.weight(1f)) {
             if (isEditingHeader) {
-                OutlinedTextField(
-                    value = charName,
-                    onValueChange = { charName = it.filter { char -> !char.isDigit() } },
-                    label = { Text("Имя") },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                OutlinedTextField(value = tempName, onValueChange = { tempName = it }, label = { Text("Имя") }, modifier = Modifier.fillMaxWidth())
                 Row(modifier = Modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    OutlinedTextField(value = charRace, onValueChange = { charRace = it }, label = { Text("Раса") }, modifier = Modifier.weight(1f))
-                    OutlinedTextField(value = charClass, onValueChange = { charClass = it }, label = { Text("Класс") }, modifier = Modifier.weight(1f))
+                    OutlinedTextField(value = tempRace, onValueChange = { tempRace = it }, label = { Text("Раса") }, modifier = Modifier.weight(1f))
+                    OutlinedTextField(value = tempClass, onValueChange = { tempClass = it }, label = { Text("Класс") }, modifier = Modifier.weight(1f))
                 }
-                OutlinedTextField(
-                    value = charLevel,
-                    onValueChange = { if (it.isEmpty() || (it.all { c -> c.isDigit() } && it.toInt() <= 20)) charLevel = it },
-                    label = { Text("Уровень (1-20)") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
-                )
+                OutlinedTextField(value = tempLevel, onValueChange = { tempLevel = it }, label = { Text("Уровень (1-20)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth().padding(top = 4.dp))
             } else {
-                Text(charName, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                Text("$charRace • $charClass • Ур. $charLevel", style = MaterialTheme.typography.titleMedium, color = Color.Gray)
+                Text(character.name, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                Text("${character.race} • ${character.charClass} • Ур. ${character.level}", style = MaterialTheme.typography.titleMedium, color = Color.Gray)
             }
         }
 
-        IconButton(onClick = { isEditingHeader = !isEditingHeader }, modifier = Modifier.align(Alignment.Top)) {
+        IconButton(
+            modifier = Modifier.align(Alignment.Top),
+            onClick = {
+                if (isEditingHeader) {
+                    // КОГДА НАЖАЛИ ГАЛОЧКУ: упаковываем новые данные в копию чемодана и отправляем наверх
+                    val updatedCharacter = character.copy(
+                        name = tempName,
+                        race = tempRace,
+                        charClass = tempClass,
+                        level = tempLevel
+                    )
+                    onCharacterChange(updatedCharacter)
+                }
+                isEditingHeader = !isEditingHeader
+            }
+        ) {
             Icon(if (isEditingHeader) Icons.Default.Check else Icons.Default.Edit, null, tint = MaterialTheme.colorScheme.primary)
         }
     }
@@ -675,6 +802,128 @@ fun LanguageSelectionScreen(onLanguageSelected: (String) -> Unit) {
                 modifier = Modifier.fillMaxWidth(0.7f).padding(4.dp)
             ) {
                 Text(text = name)
+            }
+        }
+    }
+}
+
+@Composable
+fun TavernScreen(
+    storage: CharacterStorage,
+    onCharacterSelected: (CharacterSaveData) -> Unit
+) {
+    // Загружаем всех персонажей из памяти телефона
+    var characterList by remember { mutableStateOf(storage.getAllCharacters()) }
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Text(
+            text = "Таверна",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Кнопка создания нового персонажа
+        Button(
+            onClick = {
+                // Создаем болванку с базовыми статами
+                val defaultStats = listOf(
+                    StatSaveData("Сила", 10, emptyMap()),
+                    StatSaveData("Ловкость", 10, emptyMap()),
+                    StatSaveData("Телосложение", 10, emptyMap()),
+                    StatSaveData("Интеллект", 10, emptyMap()),
+                    StatSaveData("Мудрость", 10, emptyMap()),
+                    StatSaveData("Харизма", 10, emptyMap())
+                )
+                val newChar = CharacterSaveData(
+                    name = "Новый искатель приключений",
+                    race = "Человек",
+                    charClass = "Воин",
+                    level = "1",
+                    maxHp = 10,
+                    currentHp = 10,
+                    imageUri = null,
+                    stats = defaultStats,
+                    knownSpells = emptyList()
+                )
+                storage.saveCharacter(newChar) // Сохраняем в сейф
+                characterList = storage.getAllCharacters() // Обновляем экран
+            },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+        ) {
+            Text("Создать нового персонажа")
+        }
+
+        // Список существующих персонажей
+        LazyColumn {
+            items(characterList) { char ->
+                ElevatedCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                        .clickable { onCharacterSelected(char) } // При клике открываем его лист
+                ) {
+                    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Person, contentDescription = null, modifier = Modifier.size(40.dp))
+                        Spacer(Modifier.width(16.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(char.name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Text("${char.race} • ${char.charClass} • Ур. ${char.level}", color = Color.Gray)
+                        }
+                        // Кнопка удаления (если сожрал дракон)
+                        IconButton(onClick = {
+                            storage.deleteCharacter(char.id)
+                            characterList = storage.getAllCharacters()
+                        }) {
+                            Icon(Icons.Default.Delete, contentDescription = "Удалить", tint = Color.Red)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ReferenceTab(
+    monsters: List<Monster> // Принимаем список монстров из базы
+) {
+    var selectedCategory by remember { mutableIntStateOf(0) }
+    val categories = listOf("Бестиарий", "Расы", "Классы")
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TabRow(selectedTabIndex = selectedCategory) {
+            categories.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedCategory == index,
+                    onClick = { selectedCategory = index },
+                    text = { Text(title, fontWeight = FontWeight.Bold) }
+                )
+            }
+        }
+
+        Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            when (selectedCategory) {
+                0 -> {
+                    // --- БЕСТИАРИЙ ---
+                    if (monsters.isEmpty()) {
+                        Text("База монстров пуста. Загрузка...", color = Color.Gray, modifier = Modifier.align(Alignment.Center))
+                    } else {
+                        LazyColumn {
+                            items(monsters) { monster ->
+                                ElevatedCard(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+                                    ListItem(
+                                        headlineContent = { Text(monster.name, fontWeight = FontWeight.Bold) },
+                                        supportingContent = { Text("${monster.size} ${monster.type} | Опасность: ${monster.challengeRating}") },
+                                        trailingContent = { Text("${monster.xp} XP", color = Color.Gray, style = MaterialTheme.typography.labelMedium) }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+                1 -> Text("Эльфы, Дворфы, Тифлинги...", color = Color.Gray, modifier = Modifier.align(Alignment.Center))
+                2 -> Text("Воины, Плуты, Барды...", color = Color.Gray, modifier = Modifier.align(Alignment.Center))
             }
         }
     }
