@@ -58,6 +58,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ListItem
 import com.example.dndhelper.data.Monster
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.foundation.clickable
 
 
 var charLevel by mutableStateOf("5")
@@ -884,6 +886,7 @@ fun TavernScreen(
         }
     }
 }
+
 @Composable
 fun ReferenceTab(
     monsters: List<Monster> // Принимаем список монстров из базы
@@ -891,6 +894,10 @@ fun ReferenceTab(
     var selectedCategory by remember { mutableIntStateOf(0) }
     val categories = listOf("Бестиарий", "Расы", "Классы")
 
+    // ЭТА ПЕРЕМЕННАЯ ЗАПОМНИТ, НА КАКОГО МОНСТРА НАЖАЛИ
+    var monsterForDetail by remember { mutableStateOf<Monster?>(null) }
+
+    // ГЛАВНЫЙ СЦЕНАРИЙ ОТРИСОВКИ
     Column(modifier = Modifier.fillMaxSize()) {
         TabRow(selectedTabIndex = selectedCategory) {
             categories.forEachIndexed { index, title ->
@@ -913,10 +920,28 @@ fun ReferenceTab(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            // Ключ it.id теперь работает железно!
                             items(monsters, key = { it.id }) { monster ->
-                                // ВЫЗЫВАЕМ НАШУ НОВУЮ АНИМИРОВАННУЮ КАРТОЧКУ
-                                MonsterCard(monster = monster)
+                                // СТАРАЯ МАЛЕНЬКАЯ КАРТОЧКА
+                                Card(
+                                    modifier = Modifier.fillMaxWidth().clickable {
+                                        // КЛИК: Запоминаем монстра, чтобы показать окно детализации
+                                        monsterForDetail = monster
+                                    },
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                ) {
+                                    Column(modifier = Modifier.padding(16.dp)) {
+                                        Text(monster.name ?: "Неизвестный", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                                        Spacer(modifier = Modifier.height(4.dp))
+
+                                        // ПРАВИЛЬНЫЙ СОГЛАСОВАННЫЙ ПЕРЕВОД
+                                        Text(
+                                            text = translateSizeAndType(monster.size, monster.type),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        // (КД, ОЗ, Опасность в маленькой карточке можно убрать или оставить)
+                                    }
+                                }
                             }
                         }
                     }
@@ -925,5 +950,13 @@ fun ReferenceTab(
                 2 -> Text("Воины, Плуты, Барды...", color = Color.Gray, modifier = Modifier.align(Alignment.Center))
             }
         }
+    }
+
+    // --- МАГИЯ: ПОКАЗЫВАЕМ ПОЛНЫЙ СТАТ-БЛОК В ДИАЛОГЕ ---
+    monsterForDetail?.let { monster ->
+        MonsterDetailDialog(
+            monster = monster,
+            onDismiss = { monsterForDetail = null } // ЗАКРЫТЬ: забываем монстра
+        )
     }
 }

@@ -74,4 +74,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // Это для парсинга JSON
+    implementation("com.google.code.gson:gson:2.10.1")
 }
