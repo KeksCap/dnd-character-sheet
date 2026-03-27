@@ -83,7 +83,11 @@ class MainActivity : ComponentActivity() {
                                 storage.saveCharacter(updatedChar)
                                 selectedCharacter = updatedChar
                             },
-                            onBackToTavern = { selectedCharacter = null }
+                            onBackToTavern = { selectedCharacter = null },
+                                    onLanguageChange = { newLang ->
+                                prefs.edit().putString("language", newLang).apply()
+                                selectedLanguage = newLang
+                            }
                         )
                     }
                 }

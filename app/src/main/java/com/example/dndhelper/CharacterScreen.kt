@@ -94,12 +94,13 @@ fun MainGameContent(
     bestiaryList: List<Monster>,
     bestiaryViewModel: BestiaryViewModel,
     currentRuleset: String,
-    onRulesetChange: (String) -> Unit
+    onRulesetChange: (String) -> Unit,
+    onLanguageChange: (String) -> Unit
 ) {
     var activeTab by remember { mutableIntStateOf(0) }
+    var showSettingsDialog by remember { mutableStateOf(false) }
 
     Scaffold(
-        // ДОБАВИЛИ: Верхняя полоска с кнопкой "Назад"
         topBar = {
             Row(
                 modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.primaryContainer).padding(8.dp),
@@ -108,7 +109,17 @@ fun MainGameContent(
                 IconButton(onClick = onBackToTavern) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "В Таверну")
                 }
-                Text(text = "Имя: ${character.name}", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                // Добавили modifier = Modifier.weight(1f), чтобы текст отодвинул шестеренку вправо
+                Text(
+                    text = "Имя: ${character.name}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.weight(1f)
+                )
+                // --- ДОБАВЛЯЕМ КНОПКУ НАСТРОЕК ---
+                IconButton(onClick = { showSettingsDialog = true }) {
+                    Icon(Icons.Default.Settings, contentDescription = "Настройки")
+                }
             }
         },
         bottomBar = {
@@ -122,6 +133,33 @@ fun MainGameContent(
             }
         }
     ) { padding ->
+        // --- НАШЕ НОВОЕ ВСПЛЫВАЮЩЕЕ ОКНО ---
+        if (showSettingsDialog) {
+            AlertDialog(
+                onDismissRequest = { showSettingsDialog = false },
+                title = { Text("Настройки", fontWeight = FontWeight.Bold) },
+                text = {
+                    Column {
+                        Text("Язык базы данных и заклинаний:")
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                            Button(
+                                onClick = { onLanguageChange("ru"); showSettingsDialog = false },
+                                colors = ButtonDefaults.buttonColors(containerColor = if (language == "ru") MaterialTheme.colorScheme.primary else Color.Gray)
+                            ) { Text("Русский") }
+
+                            Button(
+                                onClick = { onLanguageChange("en"); showSettingsDialog = false },
+                                colors = ButtonDefaults.buttonColors(containerColor = if (language == "en") MaterialTheme.colorScheme.primary else Color.Gray)
+                            ) { Text("English") }
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showSettingsDialog = false }) { Text("Закрыть") }
+                }
+            )
+        }
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             when (activeTab) {
                 0 -> CharacterSheetTab(language = language, character = character, onCharacterChange = onCharacterChange)
