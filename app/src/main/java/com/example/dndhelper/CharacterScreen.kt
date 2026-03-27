@@ -53,13 +53,17 @@ import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AutoFixHigh
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ListItem
 import com.example.dndhelper.data.Monster
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntOffset
+import kotlinx.coroutines.launch
 
 
 var charLevel by mutableStateOf("5")
@@ -88,7 +92,9 @@ fun MainGameContent(
     onCharacterChange: (CharacterSaveData) -> Unit,
     onBackToTavern: () -> Unit,
     bestiaryList: List<Monster>,
-    bestiaryViewModel: BestiaryViewModel
+    bestiaryViewModel: BestiaryViewModel,
+    currentRuleset: String,
+    onRulesetChange: (String) -> Unit
 ) {
     var activeTab by remember { mutableIntStateOf(0) }
 
@@ -121,7 +127,11 @@ fun MainGameContent(
                 0 -> CharacterSheetTab(language = language, character = character, onCharacterChange = onCharacterChange)
                 1 -> EquipmentTab()
                 2 -> SpellsDirectoryTab(spells = spells, classSpells = classSpells, language = language, character = character, onCharacterChange = onCharacterChange)
-                3 -> ReferenceTab(monsters = bestiaryList) // Вызов новой вкладки!
+                3 -> ReferenceTab(
+                    monsters = bestiaryList,
+                    currentRuleset = currentRuleset,
+                    onRulesetChange = onRulesetChange
+                )
             }
         }
     }
@@ -889,15 +899,18 @@ fun TavernScreen(
 
 @Composable
 fun ReferenceTab(
-    monsters: List<Monster> // Принимаем список монстров из базы
+    monsters: List<Monster>,
+    currentRuleset: String,
+    onRulesetChange: (String) -> Unit
 ) {
     var selectedCategory by remember { mutableIntStateOf(0) }
     val categories = listOf("Бестиарий", "Расы", "Классы")
 
-    // ЭТА ПЕРЕМЕННАЯ ЗАПОМНИТ, НА КАКОГО МОНСТРА НАЖАЛИ
+    var searchQuery by remember { mutableStateOf("") }
+    val listState = rememberLazyListState()
+    val filteredMonsters = monsters.filter { it.name?.contains(searchQuery, ignoreCase = true) == true }
     var monsterForDetail by remember { mutableStateOf<Monster?>(null) }
 
-    // ГЛАВНЫЙ СЦЕНАРИЙ ОТРИСОВКИ
     Column(modifier = Modifier.fillMaxSize()) {
         TabRow(selectedTabIndex = selectedCategory) {
             categories.forEachIndexed { index, title ->
@@ -912,51 +925,99 @@ fun ReferenceTab(
         Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             when (selectedCategory) {
                 0 -> {
-                    // --- БЕСТИАРИЙ ---
-                    if (monsters.isEmpty()) {
-                        Text("База монстров пуста. Загрузка...", color = Color.Gray, modifier = Modifier.align(Alignment.Center))
-                    } else {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            items(monsters, key = { it.id }) { monster ->
-                                // СТАРАЯ МАЛЕНЬКАЯ КАРТОЧКА
-                                Card(
-                                    modifier = Modifier.fillMaxWidth().clickable {
-                                        // КЛИК: Запоминаем монстра, чтобы показать окно детализации
-                                        monsterForDetail = monster
-                                    },
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                                ) {
-                                    Column(modifier = Modifier.padding(16.dp)) {
-                                        Text(monster.name ?: "Неизвестный", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                                        Spacer(modifier = Modifier.height(4.dp))
+                    Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            OutlinedTextField(
+                                value = searchQuery,
+                                onValueChange = { searchQuery = it },
+                                label = { Text("Поиск...") },
+                                modifier = Modifier.weight(1f),
+                                singleLine = true
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            // Тумблер 2014/2024
+                            RulesetToggle(currentRuleset, onRulesetChange)
+                        }
 
-                                        // ПРАВИЛЬНЫЙ СОГЛАСОВАННЫЙ ПЕРЕВОД
-                                        Text(
-                                            text = translateSizeAndType(monster.size, monster.type),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                        // (КД, ОЗ, Опасность в маленькой карточке можно убрать или оставить)
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Box(modifier = Modifier.weight(1f)) {
+                            LazyColumn(
+                                state = listState,
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                items(filteredMonsters, key = { it.id }) { monster ->
+                                    Card(
+                                        modifier = Modifier.fillMaxWidth().clickable { monsterForDetail = monster },
+                                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                    ) {
+                                        Column(modifier = Modifier.padding(16.dp)) {
+                                            Text(monster.name ?: "Неизвестный", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                                            Spacer(modifier = Modifier.height(4.dp))
+                                            Text(
+                                                text = translateSizeAndType(monster.size, monster.type),
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
                                     }
                                 }
                             }
+                            DraggableScrollbar(listState, filteredMonsters.size, Modifier.align(Alignment.CenterEnd))
                         }
                     }
                 }
-                1 -> Text("Эльфы, Дворфы, Тифлинги...", color = Color.Gray, modifier = Modifier.align(Alignment.Center))
-                2 -> Text("Воины, Плуты, Барды...", color = Color.Gray, modifier = Modifier.align(Alignment.Center))
+                1 -> Box(Modifier.fillMaxSize()) { Text("Эльфы, Дворфы, Тифлинги...", Modifier.align(Alignment.Center), Color.Gray) }
+                2 -> Box(Modifier.fillMaxSize()) { Text("Воины, Плуты, Барды...", Modifier.align(Alignment.Center), Color.Gray) }
             }
         }
     }
 
-    // --- МАГИЯ: ПОКАЗЫВАЕМ ПОЛНЫЙ СТАТ-БЛОК В ДИАЛОГЕ ---
     monsterForDetail?.let { monster ->
-        MonsterDetailDialog(
-            monster = monster,
-            onDismiss = { monsterForDetail = null } // ЗАКРЫТЬ: забываем монстра
+        MonsterDetailDialog(monster = monster, onDismiss = { monsterForDetail = null })
+    }
+}
+
+@Composable
+fun RulesetToggle(current: String, onToggle: (String) -> Unit) {
+    Row(modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(MaterialTheme.colorScheme.surfaceVariant)) {
+        listOf("2014", "2024").forEach { ver ->
+            Text(
+                text = ver,
+                modifier = Modifier
+                    .clickable { onToggle(ver) }
+                    .background(if (current == ver) MaterialTheme.colorScheme.primary else Color.Transparent)
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                color = if (current == ver) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.Bold, fontSize = 12.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun DraggableScrollbar(listState: LazyListState, listSize: Int, modifier: Modifier = Modifier) {
+    val coroutineScope = rememberCoroutineScope()
+    if (listSize == 0) return
+    val offsetProgress = if (listSize > 0) listState.firstVisibleItemIndex.toFloat() / listSize else 0f
+
+    BoxWithConstraints(modifier = modifier.fillMaxHeight().width(32.dp)) {
+        val trackHeight = constraints.maxHeight.toFloat()
+        val currentOffsetY = (offsetProgress * trackHeight).coerceIn(0f, trackHeight - 100f)
+
+        Box(
+            modifier = Modifier
+                .offset { IntOffset(0, currentOffsetY.toInt()) }
+                .width(6.dp).height(40.dp).clip(RoundedCornerShape(4.dp))
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+                .align(Alignment.TopEnd)
+                .pointerInput(listSize) {
+                    detectVerticalDragGestures { change, _ ->
+                        val newProgress = (change.position.y / trackHeight).coerceIn(0f, 1f)
+                        coroutineScope.launch { listState.scrollToItem((newProgress * listSize).toInt().coerceIn(0, listSize - 1)) }
+                    }
+                }
         )
     }
 }
