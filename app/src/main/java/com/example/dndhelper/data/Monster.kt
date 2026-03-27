@@ -1,22 +1,31 @@
-package com.example.dndhelper.data // <-- Убедись, что тут твой пакет!
+package com.example.dndhelper.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// @Entity говорит Андроиду, что это таблица в базе данных
-@Entity(tableName = "bestiary_table")
+@Entity(tableName = "monsters")
 data class Monster(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0, // Уникальный номер монстра (генерируется сам)
+    // В логе: name = 'id', type = 'INTEGER', notNull = 'true', primaryKeyPosition = '1'
+    @PrimaryKey val id: Int,
+    val slug: String?,
+    val name: String?,
+    val size: String?,
+    val type: String?,
+    val alignment: String?,
 
-    val name: String,        // Название (например, "Взрослый красный дракон")
-    val type: String,        // Тип (например, "Дракон", "Нежить", "Зверь")
-    val size: String,        // Размер ("Огромный", "Средний")
-    val challengeRating: String, // Опасность (CR), например "1/4", "5", "17"
-    val xp: Int,             // Опыт за убийство
+    // В логе: name = 'armor_class', type = 'INTEGER', notNull = 'false'
+    @ColumnInfo(name = "armor_class") val armorClass: Int?,
 
-    val imageUrl: String?,   // Ссылка на картинку (может быть null)
+    // В логе: name = 'hit_points', type = 'INTEGER', notNull = 'false'
+    @ColumnInfo(name = "hit_points") val hitPoints: Int?,
 
-    // Сюда будем пихать весь остальной JSON (статы, атаки)
-    val detailsJson: String
+    // В логе: name = 'cr', type = 'REAL', notNull = 'false'
+    val cr: Double?,
+
+    // В логе: name = 'document', type = 'TEXT', notNull = 'false'
+    val document: String?,
+
+    // В логе: name = 'raw_data', type = 'TEXT', notNull = 'false'
+    @ColumnInfo(name = "raw_data") val rawData: String?
 )

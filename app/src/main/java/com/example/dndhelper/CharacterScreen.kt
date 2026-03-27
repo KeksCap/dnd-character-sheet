@@ -85,7 +85,8 @@ fun MainGameContent(
     storage: CharacterStorage,
     onCharacterChange: (CharacterSaveData) -> Unit,
     onBackToTavern: () -> Unit,
-    bestiaryList: List<Monster>
+    bestiaryList: List<Monster>,
+    bestiaryViewModel: BestiaryViewModel
 ) {
     var activeTab by remember { mutableIntStateOf(0) }
 
@@ -883,7 +884,6 @@ fun TavernScreen(
         }
     }
 }
-
 @Composable
 fun ReferenceTab(
     monsters: List<Monster> // Принимаем список монстров из базы
@@ -909,15 +909,14 @@ fun ReferenceTab(
                     if (monsters.isEmpty()) {
                         Text("База монстров пуста. Загрузка...", color = Color.Gray, modifier = Modifier.align(Alignment.Center))
                     } else {
-                        LazyColumn {
-                            items(monsters) { monster ->
-                                ElevatedCard(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
-                                    ListItem(
-                                        headlineContent = { Text(monster.name, fontWeight = FontWeight.Bold) },
-                                        supportingContent = { Text("${monster.size} ${monster.type} | Опасность: ${monster.challengeRating}") },
-                                        trailingContent = { Text("${monster.xp} XP", color = Color.Gray, style = MaterialTheme.typography.labelMedium) }
-                                    )
-                                }
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            // Ключ it.id теперь работает железно!
+                            items(monsters, key = { it.id }) { monster ->
+                                // ВЫЗЫВАЕМ НАШУ НОВУЮ АНИМИРОВАННУЮ КАРТОЧКУ
+                                MonsterCard(monster = monster)
                             }
                         }
                     }
