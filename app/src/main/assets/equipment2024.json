@@ -1,0 +1,1333 @@
+{
+  "weapons": [
+    {
+      "nameRu": "Дубина",
+      "nameEn": "Club",
+      "costRu": "1 см",
+      "costEn": "1 SP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к4 Дробящий",
+      "damageEn": "1d4 Bludgeoning"
+    },
+    {
+      "nameRu": "Кинжал",
+      "nameEn": "Dagger",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "weapon",
+      "damage": "1к4 Колющий",
+      "damageEn": "1d4 Piercing"
+    },
+    {
+      "nameRu": "Большая дубина",
+      "nameEn": "Greatclub",
+      "costRu": "2 см",
+      "costEn": "2 SP",
+      "weightRu": "10 фн.",
+      "weightEn": "10 lb.",
+      "category": "weapon",
+      "damage": "1к8 Дробящий",
+      "damageEn": "1d8 Bludgeoning"
+    },
+    {
+      "nameRu": "Ручной топор",
+      "nameEn": "Handaxe",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к6 Рубящий",
+      "damageEn": "1d6 Slashing"
+    },
+    {
+      "nameRu": "Метательное копьё",
+      "nameEn": "Javelin",
+      "costRu": "5 см",
+      "costEn": "5 SP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к6 Колющий",
+      "damageEn": "1d6 Piercing"
+    },
+    {
+      "nameRu": "Лёгкий молот",
+      "nameEn": "Light Hammer",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к4 Дробящий",
+      "damageEn": "1d4 Bludgeoning"
+    },
+    {
+      "nameRu": "Булава",
+      "nameEn": "Mace",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "weapon",
+      "damage": "1к6 Дробящий",
+      "damageEn": "1d6 Bludgeoning"
+    },
+    {
+      "nameRu": "Боевой посох",
+      "nameEn": "Quarterstaff",
+      "costRu": "2 см",
+      "costEn": "2 SP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "weapon",
+      "damage": "1к6 Дробящий",
+      "damageEn": "1d6 Bludgeoning"
+    },
+    {
+      "nameRu": "Серп",
+      "nameEn": "Sickle",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к4 Рубящий",
+      "damageEn": "1d4 Slashing"
+    },
+    {
+      "nameRu": "Копьё",
+      "nameEn": "Spear",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "weapon",
+      "damage": "1к6 Колющий",
+      "damageEn": "1d6 Piercing"
+    },
+    {
+      "nameRu": "Дротик",
+      "nameEn": "Dart",
+      "costRu": "5 мм",
+      "costEn": "5 CP",
+      "weightRu": "¼ фн.",
+      "weightEn": "¼ lb.",
+      "category": "weapon",
+      "damage": "1к4 Колющий",
+      "damageEn": "1d4 Piercing"
+    },
+    {
+      "nameRu": "Лёгкий арбалет",
+      "nameEn": "Light Crossbow",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "weapon",
+      "damage": "1к8 Колющий",
+      "damageEn": "1d8 Piercing"
+    },
+    {
+      "nameRu": "Короткий лук",
+      "nameEn": "Shortbow",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к6 Колющий",
+      "damageEn": "1d6 Piercing"
+    },
+    {
+      "nameRu": "Праща",
+      "nameEn": "Sling",
+      "costRu": "1 см",
+      "costEn": "1 SP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "weapon",
+      "damage": "1к4 Дробящий",
+      "damageEn": "1d4 Bludgeoning"
+    },
+    {
+      "nameRu": "Боевой топор",
+      "nameEn": "Battleaxe",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "weapon",
+      "damage": "1к8 Рубящий",
+      "damageEn": "1d8 Slashing"
+    },
+    {
+      "nameRu": "Цеп",
+      "nameEn": "Flail",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к8 Дробящий",
+      "damageEn": "1d8 Bludgeoning"
+    },
+    {
+      "nameRu": "Глефа",
+      "nameEn": "Glaive",
+      "costRu": "20 зм",
+      "costEn": "20 GP",
+      "weightRu": "6 фн.",
+      "weightEn": "6 lb.",
+      "category": "weapon",
+      "damage": "1к10 Рубящий",
+      "damageEn": "1d10 Slashing"
+    },
+    {
+      "nameRu": "Секира",
+      "nameEn": "Greataxe",
+      "costRu": "30 зм",
+      "costEn": "30 GP",
+      "weightRu": "7 фн.",
+      "weightEn": "7 lb.",
+      "category": "weapon",
+      "damage": "1к12 Рубящий",
+      "damageEn": "1d12 Slashing"
+    },
+    {
+      "nameRu": "Двуручный меч",
+      "nameEn": "Greatsword",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "6 фн.",
+      "weightEn": "6 lb.",
+      "category": "weapon",
+      "damage": "2к6 Рубящий",
+      "damageEn": "2d6 Slashing"
+    },
+    {
+      "nameRu": "Алебарда",
+      "nameEn": "Halberd",
+      "costRu": "20 зм",
+      "costEn": "20 GP",
+      "weightRu": "6 фн.",
+      "weightEn": "6 lb.",
+      "category": "weapon",
+      "damage": "1к10 Рубящий",
+      "damageEn": "1d10 Slashing"
+    },
+    {
+      "nameRu": "Рыцарское копьё",
+      "nameEn": "Lance",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "6 фн.",
+      "weightEn": "6 lb.",
+      "category": "weapon",
+      "damage": "1к10 Колющий",
+      "damageEn": "1d10 Piercing"
+    },
+    {
+      "nameRu": "Длинный меч",
+      "nameEn": "Longsword",
+      "costRu": "15 зм",
+      "costEn": "15 GP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "weapon",
+      "damage": "1к8 Рубящий",
+      "damageEn": "1d8 Slashing"
+    },
+    {
+      "nameRu": "Молот",
+      "nameEn": "Maul",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "10 фн.",
+      "weightEn": "10 lb.",
+      "category": "weapon",
+      "damage": "2к6 Дробящий",
+      "damageEn": "2d6 Bludgeoning"
+    },
+    {
+      "nameRu": "Моргенштерн",
+      "nameEn": "Morningstar",
+      "costRu": "15 зм",
+      "costEn": "15 GP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "weapon",
+      "damage": "1к8 Колющий",
+      "damageEn": "1d8 Piercing"
+    },
+    {
+      "nameRu": "Пика",
+      "nameEn": "Pike",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "18 фн.",
+      "weightEn": "18 lb.",
+      "category": "weapon",
+      "damage": "1к10 Колющий",
+      "damageEn": "1d10 Piercing"
+    },
+    {
+      "nameRu": "Рапира",
+      "nameEn": "Rapier",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к8 Колющий",
+      "damageEn": "1d8 Piercing"
+    },
+    {
+      "nameRu": "Скимитар",
+      "nameEn": "Scimitar",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "weapon",
+      "damage": "1к6 Рубящий",
+      "damageEn": "1d6 Slashing"
+    },
+    {
+      "nameRu": "Короткий меч",
+      "nameEn": "Shortsword",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к6 Колющий",
+      "damageEn": "1d6 Piercing"
+    },
+    {
+      "nameRu": "Трезубец",
+      "nameEn": "Trident",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "weapon",
+      "damage": "1к8 Колющий",
+      "damageEn": "1d8 Piercing"
+    },
+    {
+      "nameRu": "Боевой молот",
+      "nameEn": "Warhammer",
+      "costRu": "15 зм",
+      "costEn": "15 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "weapon",
+      "damage": "1к8 Дробящий",
+      "damageEn": "1d8 Bludgeoning"
+    },
+    {
+      "nameRu": "Боевая кирка",
+      "nameEn": "War Pick",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к8 Колющий",
+      "damageEn": "1d8 Piercing"
+    },
+    {
+      "nameRu": "Кнут",
+      "nameEn": "Whip",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "weapon",
+      "damage": "1к4 Рубящий",
+      "damageEn": "1d4 Slashing"
+    },
+    {
+      "nameRu": "Духовая трубка",
+      "nameEn": "Blowgun",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "weapon",
+      "damage": "1 Колющий",
+      "damageEn": "1 Piercing"
+    },
+    {
+      "nameRu": "Ручной арбалет",
+      "nameEn": "Hand Crossbow",
+      "costRu": "75 зм",
+      "costEn": "75 GP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "weapon",
+      "damage": "1к6 Колющий",
+      "damageEn": "1d6 Piercing"
+    },
+    {
+      "nameRu": "Тяжёлый арбалет",
+      "nameEn": "Heavy Crossbow",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "18 фн.",
+      "weightEn": "18 lb.",
+      "category": "weapon",
+      "damage": "1к10 Колющий",
+      "damageEn": "1d10 Piercing"
+    },
+    {
+      "nameRu": "Длинный лук",
+      "nameEn": "Longbow",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "weapon",
+      "damage": "1к8 Колющий",
+      "damageEn": "1d8 Piercing"
+    },
+    {
+      "nameRu": "Мушкет",
+      "nameEn": "Musket",
+      "costRu": "500 зм",
+      "costEn": "500 GP",
+      "weightRu": "10 фн.",
+      "weightEn": "10 lb.",
+      "category": "weapon",
+      "damage": "1к12 Колющий",
+      "damageEn": "1d12 Piercing"
+    },
+    {
+      "nameRu": "Пистолет",
+      "nameEn": "Pistol",
+      "costRu": "250 зм",
+      "costEn": "250 GP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "weapon",
+      "damage": "1к10 Колющий",
+      "damageEn": "1d10 Piercing"
+    }
+  ],
+  "armor": [
+    {
+      "nameRu": "Стёганый доспех",
+      "nameEn": "Padded Armor",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "8 фн.",
+      "weightEn": "8 lb.",
+      "category": "armor",
+      "acRu": "11 + мод. Лов.",
+      "acEn": "11 + Dex modifier",
+      "baseAc": 11,
+      "type": 1
+    },
+    {
+      "nameRu": "Кожаный доспех",
+      "nameEn": "Leather Armor",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "10 фн.",
+      "weightEn": "10 lb.",
+      "category": "armor",
+      "acRu": "11 + мод. Лов.",
+      "acEn": "11 + Dex modifier",
+      "baseAc": 11,
+      "type": 1
+    },
+    {
+      "nameRu": "Клёпаная кожа",
+      "nameEn": "Studded Leather Armor",
+      "costRu": "45 зм",
+      "costEn": "45 GP",
+      "weightRu": "13 фн.",
+      "weightEn": "13 lb.",
+      "category": "armor",
+      "acRu": "12 + мод. Лов.",
+      "acEn": "12 + Dex modifier",
+      "baseAc": 12,
+      "type": 1
+    },
+    {
+      "nameRu": "Шкурный доспех",
+      "nameEn": "Hide Armor",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "12 фн.",
+      "weightEn": "12 lb.",
+      "category": "armor",
+      "acRu": "12 + мод. Лов. (макс. 2)",
+      "acEn": "12 + Dex modifier (max 2)",
+      "baseAc": 12,
+      "type": 2
+    },
+    {
+      "nameRu": "Кольчужная рубаха",
+      "nameEn": "Chain Shirt",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "20 фн.",
+      "weightEn": "20 lb.",
+      "category": "armor",
+      "acRu": "13 + мод. Лов. (макс. 2)",
+      "acEn": "13 + Dex modifier (max 2)",
+      "baseAc": 13,
+      "type": 2
+    },
+    {
+      "nameRu": "Чешуйчатый доспех",
+      "nameEn": "Scale Mail",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "45 фн.",
+      "weightEn": "45 lb.",
+      "category": "armor",
+      "acRu": "14 + мод. Лов. (макс. 2)",
+      "acEn": "14 + Dex modifier (max 2)",
+      "baseAc": 14,
+      "type": 2
+    },
+    {
+      "nameRu": "Кираса",
+      "nameEn": "Breastplate",
+      "costRu": "400 зм",
+      "costEn": "400 GP",
+      "weightRu": "20 фн.",
+      "weightEn": "20 lb.",
+      "category": "armor",
+      "acRu": "14 + мод. Лов. (макс. 2)",
+      "acEn": "14 + Dex modifier (max 2)",
+      "baseAc": 14,
+      "type": 2
+    },
+    {
+      "nameRu": "Полулатный доспех",
+      "nameEn": "Half Plate Armor",
+      "costRu": "750 зм",
+      "costEn": "750 GP",
+      "weightRu": "40 фн.",
+      "weightEn": "40 lb.",
+      "category": "armor",
+      "acRu": "15 + мод. Лов. (макс. 2)",
+      "acEn": "15 + Dex modifier (max 2)",
+      "baseAc": 15,
+      "type": 2
+    },
+    {
+      "nameRu": "Колечный доспех",
+      "nameEn": "Ring Mail",
+      "costRu": "30 зм",
+      "costEn": "30 GP",
+      "weightRu": "40 фн.",
+      "weightEn": "40 lb.",
+      "category": "armor",
+      "acRu": "14",
+      "acEn": "14",
+      "baseAc": 14,
+      "type": 3
+    },
+    {
+      "nameRu": "Кольчуга",
+      "nameEn": "Chain Mail",
+      "costRu": "75 зм",
+      "costEn": "75 GP",
+      "weightRu": "55 фн.",
+      "weightEn": "55 lb.",
+      "category": "armor",
+      "acRu": "16",
+      "acEn": "16",
+      "baseAc": 16,
+      "type": 3
+    },
+    {
+      "nameRu": "Наборный доспех",
+      "nameEn": "Splint Armor",
+      "costRu": "200 зм",
+      "costEn": "200 GP",
+      "weightRu": "60 фн.",
+      "weightEn": "60 lb.",
+      "category": "armor",
+      "acRu": "17",
+      "acEn": "17",
+      "baseAc": 17,
+      "type": 3
+    },
+    {
+      "nameRu": "Латный доспех",
+      "nameEn": "Plate Armor",
+      "costRu": "1 500 зм",
+      "costEn": "1,500 GP",
+      "weightRu": "65 фн.",
+      "weightEn": "65 lb.",
+      "category": "armor",
+      "acRu": "18",
+      "acEn": "18",
+      "baseAc": 18,
+      "type": 3
+    },
+    {
+      "nameRu": "Щит",
+      "nameEn": "Shield",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "6 фн.",
+      "weightEn": "6 lb.",
+      "category": "armor",
+      "acRu": "+2",
+      "acEn": "+2",
+      "baseAc": 2,
+      "type": 0
+    }
+  ],
+  "gear": [
+    {
+      "nameRu": "Кислота",
+      "nameEn": "Acid",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Алхимический огонь",
+      "nameEn": "Alchemist's Fire",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Боеприпасы",
+      "nameEn": "Ammunition",
+      "costRu": "Варьируется",
+      "costEn": "Varies",
+      "weightRu": "Варьируется",
+      "weightEn": "Varies",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Противоядие",
+      "nameEn": "Antitoxin",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Магическая фокусировка",
+      "nameEn": "Arcane Focus",
+      "costRu": "Варьируется",
+      "costEn": "Varies",
+      "weightRu": "Варьируется",
+      "weightEn": "Varies",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Рюкзак",
+      "nameEn": "Backpack",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Металлические шарики",
+      "nameEn": "Ball Bearings",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Бочка",
+      "nameEn": "Barrel",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "70 фн.",
+      "weightEn": "70 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Корзина",
+      "nameEn": "Basket",
+      "costRu": "4 см",
+      "costEn": "4 SP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Спальник",
+      "nameEn": "Bedroll",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "7 фн.",
+      "weightEn": "7 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Колокольчик",
+      "nameEn": "Bell",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Одеяло",
+      "nameEn": "Blanket",
+      "costRu": "5 см",
+      "costEn": "5 SP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Блок и лебёдка",
+      "nameEn": "Block and Tackle",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Книга",
+      "nameEn": "Book",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Бутылка стеклянная",
+      "nameEn": "Bottle, Glass",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Ведро",
+      "nameEn": "Bucket",
+      "costRu": "5 мм",
+      "costEn": "5 CP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор взломщика",
+      "nameEn": "Burglar's Pack",
+      "costRu": "16 зм",
+      "costEn": "16 GP",
+      "weightRu": "42 фн.",
+      "weightEn": "42 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Шипы",
+      "nameEn": "Caltrops",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Свеча",
+      "nameEn": "Candle",
+      "costRu": "1 мм",
+      "costEn": "1 CP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Футляр для арб. болтов",
+      "nameEn": "Case, Crossbow Bolt",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Футляр для карт/свитков",
+      "nameEn": "Case, Map or Scroll",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Цепь",
+      "nameEn": "Chain",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "10 фн.",
+      "weightEn": "10 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Сундук",
+      "nameEn": "Chest",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "25 фн.",
+      "weightEn": "25 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор для лазания",
+      "nameEn": "Climber's Kit",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "12 фн.",
+      "weightEn": "12 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Одежда богатая",
+      "nameEn": "Clothes, Fine",
+      "costRu": "15 зм",
+      "costEn": "15 GP",
+      "weightRu": "6 фн.",
+      "weightEn": "6 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Одежда дорожная",
+      "nameEn": "Clothes, Traveler's",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Мешочек с компонентами",
+      "nameEn": "Component Pouch",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Костюм",
+      "nameEn": "Costume",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Лом",
+      "nameEn": "Crowbar",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор дипломата",
+      "nameEn": "Diplomat's Pack",
+      "costRu": "39 зм",
+      "costEn": "39 GP",
+      "weightRu": "39 фн.",
+      "weightEn": "39 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Друидическая фокусировка",
+      "nameEn": "Druidic Focus",
+      "costRu": "Варьируется",
+      "costEn": "Varies",
+      "weightRu": "Варьируется",
+      "weightEn": "Varies",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор исследователя подземелий",
+      "nameEn": "Dungeoneer's Pack",
+      "costRu": "12 зм",
+      "costEn": "12 GP",
+      "weightRu": "55 фн.",
+      "weightEn": "55 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор артиста",
+      "nameEn": "Entertainer's Pack",
+      "costRu": "40 зм",
+      "costEn": "40 GP",
+      "weightRu": "58½ фн.",
+      "weightEn": "58½ lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор путешественника",
+      "nameEn": "Explorer's Pack",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "55 фн.",
+      "weightEn": "55 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Фляга",
+      "nameEn": "Flask",
+      "costRu": "2 мм",
+      "costEn": "2 CP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Абордажный крюк",
+      "nameEn": "Grappling Hook",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор целителя",
+      "nameEn": "Healer's Kit",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Священный символ",
+      "nameEn": "Holy Symbol",
+      "costRu": "Варьируется",
+      "costEn": "Varies",
+      "weightRu": "Варьируется",
+      "weightEn": "Varies",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Святая вода",
+      "nameEn": "Holy Water",
+      "costRu": "25 зм",
+      "costEn": "25 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Охотничий капкан",
+      "nameEn": "Hunting Trap",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "25 фн.",
+      "weightEn": "25 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Чернила",
+      "nameEn": "Ink",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Чернильная ручка",
+      "nameEn": "Ink Pen",
+      "costRu": "2 мм",
+      "costEn": "2 CP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Кувшин",
+      "nameEn": "Jug",
+      "costRu": "2 мм",
+      "costEn": "2 CP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Лестница",
+      "nameEn": "Ladder",
+      "costRu": "1 см",
+      "costEn": "1 SP",
+      "weightRu": "25 фн.",
+      "weightEn": "25 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Лампа",
+      "nameEn": "Lamp",
+      "costRu": "5 см",
+      "costEn": "5 SP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Фонарь направленный",
+      "nameEn": "Lantern, Bullseye",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Фонарь закрытый",
+      "nameEn": "Lantern, Hooded",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Замок",
+      "nameEn": "Lock",
+      "costRu": "10 зм",
+      "costEn": "10 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Увеличительное стекло",
+      "nameEn": "Magnifying Glass",
+      "costRu": "100 зм",
+      "costEn": "100 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Кандалы",
+      "nameEn": "Manacles",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "6 фн.",
+      "weightEn": "6 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Карта",
+      "nameEn": "Map",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Зеркало",
+      "nameEn": "Mirror",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "½ фн.",
+      "weightEn": "½ lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Сеть",
+      "nameEn": "Net",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "3 фн.",
+      "weightEn": "3 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Масло",
+      "nameEn": "Oil",
+      "costRu": "1 см",
+      "costEn": "1 SP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Бумага",
+      "nameEn": "Paper",
+      "costRu": "2 см",
+      "costEn": "2 SP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Пергамент",
+      "nameEn": "Parchment",
+      "costRu": "1 см",
+      "costEn": "1 SP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Духи",
+      "nameEn": "Perfume",
+      "costRu": "5 зм",
+      "costEn": "5 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Яд обычный",
+      "nameEn": "Poison, Basic",
+      "costRu": "100 зм",
+      "costEn": "100 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Шест",
+      "nameEn": "Pole",
+      "costRu": "5 мм",
+      "costEn": "5 CP",
+      "weightRu": "7 фн.",
+      "weightEn": "7 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Чугунок",
+      "nameEn": "Pot, Iron",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "10 фн.",
+      "weightEn": "10 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Зелье лечения",
+      "nameEn": "Potion of Healing",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "½ фн.",
+      "weightEn": "½ lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Кошель",
+      "nameEn": "Pouch",
+      "costRu": "5 см",
+      "costEn": "5 SP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор священника",
+      "nameEn": "Priest's Pack",
+      "costRu": "33 зм",
+      "costEn": "33 GP",
+      "weightRu": "29 фн.",
+      "weightEn": "29 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Колчан",
+      "nameEn": "Quiver",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Таран переносной",
+      "nameEn": "Ram, Portable",
+      "costRu": "4 зм",
+      "costEn": "4 GP",
+      "weightRu": "35 фн.",
+      "weightEn": "35 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Рационы",
+      "nameEn": "Rations",
+      "costRu": "5 см",
+      "costEn": "5 SP",
+      "weightRu": "2 фн.",
+      "weightEn": "2 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Ряса",
+      "nameEn": "Robe",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "4 фн.",
+      "weightEn": "4 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Верёвка",
+      "nameEn": "Rope",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Мешок",
+      "nameEn": "Sack",
+      "costRu": "1 мм",
+      "costEn": "1 CP",
+      "weightRu": "½ фн.",
+      "weightEn": "½ lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Набор учёного",
+      "nameEn": "Scholar's Pack",
+      "costRu": "40 зм",
+      "costEn": "40 GP",
+      "weightRu": "22 фн.",
+      "weightEn": "22 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Лопата",
+      "nameEn": "Shovel",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Сигнальный свисток",
+      "nameEn": "Signal Whistle",
+      "costRu": "5 мм",
+      "costEn": "5 CP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Свиток заклинания (Заговор)",
+      "nameEn": "Spell Scroll (Cantrip)",
+      "costRu": "30 зм",
+      "costEn": "30 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Свиток заклинания (1-й уровень)",
+      "nameEn": "Spell Scroll (Level 1)",
+      "costRu": "50 зм",
+      "costEn": "50 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Шипы железные",
+      "nameEn": "Spikes, Iron",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "5 фн.",
+      "weightEn": "5 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Подзорная труба",
+      "nameEn": "Spyglass",
+      "costRu": "1 000 зм",
+      "costEn": "1,000 GP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Бечёвка",
+      "nameEn": "String",
+      "costRu": "1 см",
+      "costEn": "1 SP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Палатка",
+      "nameEn": "Tent",
+      "costRu": "2 зм",
+      "costEn": "2 GP",
+      "weightRu": "20 фн.",
+      "weightEn": "20 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Трутница",
+      "nameEn": "Tinderbox",
+      "costRu": "5 см",
+      "costEn": "5 SP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Факел",
+      "nameEn": "Torch",
+      "costRu": "1 мм",
+      "costEn": "1 CP",
+      "weightRu": "1 фн.",
+      "weightEn": "1 lb.",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Пузырёк",
+      "nameEn": "Vial",
+      "costRu": "1 зм",
+      "costEn": "1 GP",
+      "weightRu": "—",
+      "weightEn": "—",
+      "category": "gear"
+    },
+    {
+      "nameRu": "Бурдюк",
+      "nameEn": "Waterskin",
+      "costRu": "2 см",
+      "costEn": "2 SP",
+      "weightRu": "5 фн. (полный)",
+      "weightEn": "5 lb. (full)",
+      "category": "gear"
+    }
+  ]
+}

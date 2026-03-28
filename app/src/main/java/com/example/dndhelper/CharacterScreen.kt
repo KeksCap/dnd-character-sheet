@@ -58,6 +58,11 @@ import com.example.dndhelper.data.Monster
 import com.example.dndhelper.data.Race
 import com.example.dndhelper.data.DndClass
 import com.example.dndhelper.data.ClassFeature
+import com.example.dndhelper.data.CustomWeapon
+import com.example.dndhelper.data.CustomArmor
+import com.example.dndhelper.data.StandardEquipment
+import com.example.dndhelper.data.StandardItem
+
 import com.example.dndhelper.data.Subclass
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.animation.AnimatedVisibility
@@ -75,9 +80,9 @@ var charLevel by mutableStateOf("5")
 val knownSpells = mutableStateListOf<SpellInfo>()
 
 @Composable
-fun trStat(name: String): String {
-    val isEn = LocalAppLanguage.current == "en" || LocalAppLanguage.current == "english"
+fun trStat(name: String, isEn: Boolean): String {
     if (!isEn) return name
+
     return when(name) {
         "Сила", "Strength" -> "Strength"
         "Ловкость", "Dexterity" -> "Dexterity"
@@ -142,8 +147,8 @@ data class AbilityScore(
     val skillProficiencies: MutableMap<String, Int> = mutableStateMapOf()
 )
 data class InventoryItem(val id: Int, var name: String, var count: Int)
-data class Weapon(val id: Int, val name: String, val damage: String)
-data class Armor(val id: Int, val name: String, val ac: Int)
+// data class Weapon and Armor removed, using com.example.dndhelper.data equivalents
+
 
 @Composable
 fun MainGameContent(
@@ -165,6 +170,12 @@ fun MainGameContent(
 ) {
     var activeTab by remember { mutableIntStateOf(0) }
     var showSettingsDialog by remember { mutableStateOf(false) }
+
+    val context = androidx.compose.ui.platform.LocalContext.current
+    LaunchedEffect(Unit) {
+        StandardEquipment.initialize(context)
+    }
+
 
     Scaffold(
         topBar = {
@@ -226,11 +237,13 @@ fun MainGameContent(
                 }
             )
         }
+        val isEn = language == "en" || language == "english"
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             when (activeTab) {
-                0 -> CharacterSheetTab(language = language, character = character, onCharacterChange = onCharacterChange)
-                1 -> EquipmentTab()
-                2 -> SpellsDirectoryTab(spells = spells, classSpells = classSpells, language = language, character = character, onCharacterChange = onCharacterChange)
+                0 -> CharacterSheetTab(isEn = isEn, language = language, character = character, onCharacterChange = onCharacterChange)
+
+                1 -> EquipmentTab(isEn = isEn, character = character, onCharacterChange = onCharacterChange)
+                2 -> SpellsDirectoryTab(isEn = isEn, spells = spells, classSpells = classSpells, language = language, character = character, onCharacterChange = onCharacterChange)
                 3 -> ReferenceTab(
                     monsters = bestiaryList,
                     races = races,
@@ -241,17 +254,13 @@ fun MainGameContent(
                 )
             }
         }
+
     }
 }
 
 @Composable
-fun SpellsDirectoryTab(
-    spells: List<Spell>,
-    classSpells: Map<String, List<String>>,
-    language: String,
-    character: CharacterSaveData, // <--- НОВОЕ
-    onCharacterChange: (CharacterSaveData) -> Unit // <--- НОВОЕ
-) {
+fun SpellsDirectoryTab(isEn: Boolean, spells: List<Spell>, classSpells: Map<String, List<String>>, language: String, character: CharacterSaveData, onCharacterChange: (CharacterSaveData) -> Unit) {
+
     var selectedSpell by remember { mutableStateOf<SpellInfo?>(null) }
     var selectedClass by remember { mutableStateOf("Все") }
     var searchQuery by remember { mutableStateOf("") }
@@ -259,7 +268,8 @@ fun SpellsDirectoryTab(
     // ДОБАВИЛИ: Состояние сортировки (0 - нет, 1 - по возрастанию, 2 - по убыванию)
     var sortOrder by remember { mutableIntStateOf(0) }
 
-    val isRussian = language.lowercase().let { it == "ru" || it == "русский" || it == "russian" }
+    val isRussian = !isEn
+
 
     // Умный фильтр по классу и тексту
     val filteredSpells = spells.filter { spell ->
@@ -475,10 +485,13 @@ fun SpellsDirectoryTab(
 
 @Composable
 fun CharacterSheetTab(
-    language: String,
-    character: CharacterSaveData, // <--- НОВОЕ
-    onCharacterChange: (CharacterSaveData) -> Unit // <--- НОВОЕ
+    isEn: Boolean,
+    language: String, // Вернули обратно для корректной работы tr и внутренних проверок
+    character: CharacterSaveData,
+    onCharacterChange: (CharacterSaveData) -> Unit
 ) {
+
+
     var maxHpInput by remember { mutableStateOf("45") }
     val maxHp = maxHpInput.toIntOrNull() ?: 1
     var currentHp by remember { mutableIntStateOf(39) }
@@ -492,33 +505,35 @@ fun CharacterSheetTab(
         AbilityScore("Хар", 8, Icons.Default.SelfImprovement, listOf("Убеждение", "Обман"))
     ))}
 
+    val strValue = stats.find { it.name == "Сила" || it.name == "Strength" }?.baseScore ?: 10
+    val strMod = getStatMod(strValue)
     val dexValue = stats.find { it.name == "Ловкость" || it.name == "Dexterity" }?.baseScore ?: 10
-    val dexMod = (dexValue - 10) / 2
+    val dexMod = getStatMod(dexValue)
+    val profBonus = getProficiencyBonus(character.level)
 
     // Инициатива (текст)
     val initiativeText = if (dexMod >= 0) "+$dexMod" else "$dexMod"
 
     // --- КД КАЛЬКУЛЯТОР ---
-    // Список доспехов: Triple(Название, Базовый КД, Тип: 0=без, 1=лёгкий, 2=средний, 3=тяжёлый)
     data class ArmorEntry(val nameRu: String, val nameEn: String, val baseAc: Int, val type: Int)
-    val armorList = listOf(
-        ArmorEntry("Без брони", "Unarmored", 10, 0),
-        ArmorEntry("Кожаный (лёгкий)", "Leather (Light)", 11, 1),
-        ArmorEntry("Клёпаная кожа (лёгкий)", "Studded Leather (Light)", 12, 1),
-        ArmorEntry("Шкурный (средний)", "Hide (Medium)", 12, 2),
-        ArmorEntry("Кольчужная рубаха (средний)", "Chain Shirt (Medium)", 13, 2),
-        ArmorEntry("Чешуйчатый (средний)", "Scale Mail (Medium)", 14, 2),
-        ArmorEntry("Кираса (средний)", "Breastplate (Medium)", 14, 2),
-        ArmorEntry("Пластинчатый (средний)", "Half Plate (Medium)", 15, 2),
-        ArmorEntry("Кольчуга (тяжёлый)", "Ring Mail (Heavy)", 14, 3),
-        ArmorEntry("Кольчужный (тяжёлый)", "Chain Mail (Heavy)", 16, 3),
-        ArmorEntry("Чешуйчатый дракона (тяжёлый)", "Splint (Heavy)", 17, 3),
-        ArmorEntry("Латы (тяжёлый)", "Plate (Heavy)", 18, 3)
-    )
-    var selectedArmorIndex by remember { mutableIntStateOf(0) }
-    var shieldEquipped by remember { mutableStateOf(false) }
-    var magicBonus by remember { mutableIntStateOf(0) }
+    
+    // Подгружаем броню из JSON и добавляем состояние "Без брони"
+    val standardArmorList = listOf(ArmorEntry("Без брони", "Unarmored", 10, 0)) +
+        StandardEquipment.getArmor().map { 
+            ArmorEntry(it.nameRu, it.nameEn, it.baseAc ?: 10, it.type ?: 0) 
+        }
+
+
+    // Добавляем кастомную броню из чемодана
+    val armorList = standardArmorList + character.customArmors.map {
+        ArmorEntry(it.name, it.name, it.baseAc, it.type)
+    }
+
+    val selectedArmorIndex = character.selectedArmorIndex
+    val shieldEquipped = character.shieldEquipped
+    val magicBonus = character.magicBonus
     var showAcDialog by remember { mutableStateOf(false) }
+
 
     val selectedArmor = armorList[selectedArmorIndex]
     val dexBonus = when (selectedArmor.type) {
@@ -531,7 +546,8 @@ fun CharacterSheetTab(
 
     // Стейт для всплывающего окна заклинания
     var selectedKnownSpellInfo by remember { mutableStateOf<SpellInfo?>(null) }
-    val isRussian = language.lowercase().let { it == "ru" || it == "русский" || it == "russian" }
+    val isRussian = !isEn
+
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState())) {
 
@@ -697,7 +713,8 @@ fun CharacterSheetTab(
                         Text(tr("Выберите броню:", "Select armor:"), fontWeight = FontWeight.Bold)
                         armorList.forEachIndexed { index, armor ->
                             val isSelected = selectedArmorIndex == index
-                            val label = if (LocalAppLanguage.current == "en") armor.nameEn else armor.nameRu
+                            val label = if (isEn) armor.nameEn else armor.nameRu
+
                             val typeLabel = when (armor.type) {
                                 0 -> tr("Без брони", "Unarmored")
                                 1 -> tr("Лёгкий", "Light")
@@ -705,7 +722,8 @@ fun CharacterSheetTab(
                                 else -> tr("Тяжёлый", "Heavy")
                             }
                             Surface(
-                                modifier = Modifier.fillMaxWidth().clickable { selectedArmorIndex = index },
+                                modifier = Modifier.fillMaxWidth().clickable { onCharacterChange(character.copy(selectedArmorIndex = index)) },
+
                                 shape = RoundedCornerShape(8.dp),
                                 color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
                                 tonalElevation = if (isSelected) 4.dp else 0.dp
@@ -728,7 +746,8 @@ fun CharacterSheetTab(
 
                         // Щит
                         Surface(
-                            modifier = Modifier.fillMaxWidth().clickable { shieldEquipped = !shieldEquipped },
+                            modifier = Modifier.fillMaxWidth().clickable { onCharacterChange(character.copy(shieldEquipped = !shieldEquipped)) },
+
                             shape = RoundedCornerShape(8.dp),
                             color = if (shieldEquipped) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant
                         ) {
@@ -736,19 +755,21 @@ fun CharacterSheetTab(
                                 Icon(Icons.Default.Shield, null, tint = if (shieldEquipped) MaterialTheme.colorScheme.secondary else Color.Gray)
                                 Spacer(Modifier.width(8.dp))
                                 Text(tr("Щит (+2)", "Shield (+2)"), modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                                Switch(checked = shieldEquipped, onCheckedChange = { shieldEquipped = it })
+                                Switch(checked = shieldEquipped, onCheckedChange = { onCharacterChange(character.copy(shieldEquipped = it)) })
+
                             }
                         }
 
                         // Магический бонус
                         Text(tr("Магический бонус к броне:", "Magic armor bonus:"), fontWeight = FontWeight.Bold)
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            IconButton(onClick = { if (magicBonus > 0) magicBonus-- }, modifier = Modifier.size(40.dp)) { Text("-", fontSize = 22.sp, fontWeight = FontWeight.Bold) }
+                            IconButton(onClick = { if (magicBonus > 0) onCharacterChange(character.copy(magicBonus = magicBonus - 1)) }, modifier = Modifier.size(40.dp)) { Text("-", fontSize = 22.sp, fontWeight = FontWeight.Bold) }
                             Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.padding(horizontal = 8.dp)) {
                                 Text("+$magicBonus", fontWeight = FontWeight.ExtraBold, fontSize = 22.sp, modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
                             }
-                            IconButton(onClick = { if (magicBonus < 5) magicBonus++ }, modifier = Modifier.size(40.dp)) { Text("+", fontSize = 22.sp, fontWeight = FontWeight.Bold) }
+                            IconButton(onClick = { if (magicBonus < 5) onCharacterChange(character.copy(magicBonus = magicBonus + 1)) }, modifier = Modifier.size(40.dp)) { Text("+", fontSize = 22.sp, fontWeight = FontWeight.Bold) }
                         }
+
 
                         // Итоговый КД
                         Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.fillMaxWidth()) {
@@ -780,17 +801,232 @@ fun CharacterSheetTab(
                     Box(modifier = Modifier.weight(1f)) {
                         StatCard(
                             stat = statData,
+                            isEn = isEn,
                             onValueChange = { newValue ->
+
                                 stats = stats.map { if (it.name == statData.name) it.copy(baseScore = newValue) else it }
                             }
                         )
                     }
                 }
+        }
+    }
+
+
+        // --- РАЗДЕЛ АТАК ---
+        Spacer(Modifier.height(16.dp))
+        Text(tr("АТАКИ", "ATTACKS"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        ElevatedCard(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+            Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                val equippedStandard = StandardEquipment.getWeapons().filter { character.equippedStandardWeapons.contains(it.nameEn) }
+                
+                if (character.customWeapons.isEmpty() && equippedStandard.isEmpty()) {
+                    Text(tr("Нет экипированного оружия", "No equipped weapons"), color = Color.Gray, fontSize = 12.sp)
+                }
+
+                // Стандартное оружие
+                equippedStandard.forEach { weapon ->
+                    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(if (isEn) weapon.nameEn else weapon.nameRu, fontWeight = FontWeight.Bold)
+                            val dmg = if (isEn) weapon.damageEn else weapon.damage
+                            
+                            // Настройки из сохранения или значения по умолчанию
+                            val isDefaultRanged = listOf("Shortbow", "Longbow", "Crossbow", "Sling", "Blowgun", "Dart").any { weapon.nameEn.contains(it, ignoreCase = true) }
+                            val ability = character.standardWeaponAbilities[weapon.nameEn] ?: (if (isDefaultRanged) "DEX" else "STR")
+                            val isProf = character.standardWeaponProficiencies[weapon.nameEn] ?: true
+                            
+                            val modValue = if (ability == "DEX") dexMod else strMod
+                            val totalHit = modValue + (if (isProf) profBonus else 0)
+                            val hitSign = if (totalHit >= 0) "+" else ""
+                            
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("$hitSign$totalHit", fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.secondary)
+                                Spacer(Modifier.width(4.dp))
+                                Text("(${if (ability == "STR") tr("СИЛ", "STR") else tr("ЛОВ", "DEX")} ${if (isProf) "+ $profBonus" else ""})", fontSize = 10.sp, color = Color.Gray)
+                                Spacer(Modifier.width(8.dp))
+                                Text(dmg ?: "", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                            }
+                        }
+                        
+                        // Кнопки быстрой настройки
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            // Переключатель характеристики
+                            val ability = character.standardWeaponAbilities[weapon.nameEn] ?: (if (listOf("Shortbow", "Longbow", "Crossbow", "Sling", "Blowgun", "Dart").any { weapon.nameEn.contains(it, ignoreCase = true) }) "DEX" else "STR")
+                            TextButton(
+                                onClick = {
+                                    val newAbility = if (ability == "STR") "DEX" else "STR"
+                                    onCharacterChange(character.copy(standardWeaponAbilities = character.standardWeaponAbilities + (weapon.nameEn to newAbility)))
+                                },
+                                contentPadding = PaddingValues(0.dp),
+                                modifier = Modifier.height(30.dp).widthIn(min = 40.dp)
+                            ) {
+                                Text(if (ability == "STR") tr("СИЛ", "STR") else tr("ЛОВ", "DEX"), fontSize = 10.sp)
+                            }
+                            
+                            // Переключатель владения
+                            val isProf = character.standardWeaponProficiencies[weapon.nameEn] ?: true
+                            IconButton(
+                                onClick = {
+                                    onCharacterChange(character.copy(standardWeaponProficiencies = character.standardWeaponProficiencies + (weapon.nameEn to !isProf)))
+                                },
+                                modifier = Modifier.size(30.dp)
+                            ) {
+                                Icon(
+                                    imageVector = if (isProf) Icons.Default.Star else Icons.Default.StarBorder,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp),
+                                    tint = if (isProf) MaterialTheme.colorScheme.primary else Color.Gray
+                                )
+                            }
+
+                            IconButton(onClick = {
+                                val updated = character.equippedStandardWeapons.filter { it != weapon.nameEn }
+                                onCharacterChange(character.copy(equippedStandardWeapons = updated))
+                            }, modifier = Modifier.size(30.dp)) { 
+                                Icon(Icons.Default.Clear, null, modifier = Modifier.size(16.dp), tint = Color.Gray) 
+                            }
+                        }
+                    }
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f))
+                }
+
+                // Кастомное оружие
+                character.customWeapons.forEach { weapon ->
+                    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(weapon.name, fontWeight = FontWeight.Bold)
+                            
+                            val modValue = if (weapon.ability == "DEX") dexMod else strMod
+                            val totalHit = modValue + (if (weapon.isProficient) profBonus else 0) + weapon.magicBonus
+                            val hitSign = if (totalHit >= 0) "+" else ""
+
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("$hitSign$totalHit", fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.secondary)
+                                Spacer(Modifier.width(4.dp))
+                                val breakdown = "(${if (weapon.ability == "STR") tr("СИЛ", "STR") else tr("ЛОВ", "DEX")}${if (weapon.isProficient) " + $profBonus" else ""}${if (weapon.magicBonus != 0) " + ${weapon.magicBonus}" else ""})"
+                                Text(breakdown, fontSize = 10.sp, color = Color.Gray)
+                                Spacer(Modifier.width(8.dp))
+                                Text(weapon.damage, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                            }
+                        }
+                        IconButton(onClick = {
+                            val updated = character.customWeapons.toMutableList().apply { remove(weapon) }
+                            onCharacterChange(character.copy(customWeapons = updated))
+                        }) { Icon(Icons.Default.Clear, null, modifier = Modifier.size(16.dp), tint = Color.Gray) }
+                    }
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f))
+                }
+                
+                // Кнопки добавления
+                var showAddAttackDialog by remember { mutableStateOf(false) }
+                var showListAttackDialog by remember { mutableStateOf(false) }
+
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    TextButton(onClick = { showListAttackDialog = true }) {
+                        Icon(Icons.Default.List, null, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Text(tr("Из списка", "From List"), fontSize = 12.sp)
+                    }
+                    Spacer(Modifier.width(8.dp))
+                    TextButton(onClick = { showAddAttackDialog = true }) {
+                        Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Text(tr("Своё", "Custom"), fontSize = 12.sp)
+                    }
+                }
+
+                // Диалог выбора из списка
+                if (showListAttackDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showListAttackDialog = false },
+                        title = { Text(tr("Выберите оружие", "Select Weapon")) },
+                        text = {
+                            Column(modifier = Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState())) {
+                                StandardEquipment.getWeapons().forEach { weapon ->
+                                    val name = if (isEn) weapon.nameEn else weapon.nameRu
+                                    val dmg = if (isEn) weapon.damageEn else weapon.damage
+                                    ListItem(
+                                        modifier = Modifier.clickable {
+                                            if (!character.equippedStandardWeapons.contains(weapon.nameEn)) {
+                                                onCharacterChange(character.copy(equippedStandardWeapons = character.equippedStandardWeapons + weapon.nameEn))
+                                            }
+                                            showListAttackDialog = false
+                                        },
+                                        headlineContent = { Text(name) },
+                                        supportingContent = { Text(dmg ?: "") },
+                                        trailingContent = {
+                                            if (character.equippedStandardWeapons.contains(weapon.nameEn)) {
+                                                Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary)
+                                            } else {
+                                                Icon(Icons.Default.Add, null)
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        },
+                        confirmButton = { TextButton(onClick = { showListAttackDialog = false }) { Text(tr("Закрыть", "Close")) } }
+                    )
+                }
+
+                // Диалог своего оружия
+                if (showAddAttackDialog) {
+                    var name by remember { mutableStateOf("") }
+                    var dmg by remember { mutableStateOf("") }
+                    var ability by remember { mutableStateOf("STR") }
+                    var isProf by remember { mutableStateOf(true) }
+                    var mBonus by remember { mutableStateOf("0") }
+
+                    AlertDialog(
+                        onDismissRequest = { showAddAttackDialog = false },
+                        title = { Text(tr("Новая атака", "New Attack")) },
+                        text = {
+                            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text(tr("Название", "Name")) })
+                                OutlinedTextField(value = dmg, onValueChange = { dmg = it }, label = { Text(tr("Урон (напр. 1d8+3)", "Damage (e.g. 1d8+3)")) })
+                                
+                                Text(tr("Характеристика:", "Ability:"))
+                                Row {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        RadioButton(selected = ability == "STR", onClick = { ability = "STR" })
+                                        Text(tr("СИЛ", "STR"))
+                                    }
+                                    Spacer(Modifier.width(16.dp))
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        RadioButton(selected = ability == "DEX", onClick = { ability = "DEX" })
+                                        Text(tr("ЛОВ", "DEX"))
+                                    }
+                                }
+                                
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Checkbox(checked = isProf, onCheckedChange = { isProf = it })
+                                    Text(tr("Владение", "Proficiency"))
+                                }
+                                
+                                OutlinedTextField(
+                                    value = mBonus, 
+                                    onValueChange = { if (it.all { c -> c.isDigit() || c == '-' }) mBonus = it }, 
+                                    label = { Text(tr("Маг. бонус / Доп.", "Magic / Misc Bonus")) },
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                )
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                if (name.isNotBlank()) {
+                                    val mb = mBonus.toIntOrNull() ?: 0
+                                    onCharacterChange(character.copy(customWeapons = character.customWeapons + CustomWeapon(name, dmg, ability, isProf, mb)))
+                                    showAddAttackDialog = false
+                                }
+                            }) { Text(tr("Добавить", "Add")) }
+                        },
+                        dismissButton = { TextButton(onClick = { showAddAttackDialog = false }) { Text(tr("Отмена", "Cancel")) } }
+                    )
+                }
             }
         }
 
-        // 5. ИЗВЕСТНЫЕ ЗАКЛИНАНИЯ
-        Spacer(Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -867,7 +1103,7 @@ fun CharacterSheetTab(
 
         // ВЫВОД ЗАКЛИНАНИЙ
         if (character.knownSpells.isEmpty()) {
-            Text(tr("Пока нет известных заклинаний. Добавьте их из Справочника или создайте своё!", "No known spells yet. Add them from Reference or create one!"), color = Color.Gray)
+            Text(tr("Пока нет известных заклинаний. Добавьте их из вкладки Заклинания или создайте своё!", "No known spells yet. Add them from Reference or create one!"), color = Color.Gray)
         } else {
             character.knownSpells.forEach { spell ->
                 ElevatedCard(
@@ -880,7 +1116,8 @@ fun CharacterSheetTab(
                         headlineContent = { Text(spell.name ?: "") },
                         supportingContent = {
                             // Если уровень 0, пишем "Заговор", иначе "Уровень: X"
-                            val levelText = if (spell.level == "0") tr("Заговор", "Cantrip") else "${tr("Уровень:", "Level:")} ${spell.level}"
+                            val levelText = if (spell.level == "0") tr("Заговор", "Cantrip") else tr("Уровень:", "Level:") + " ${spell.level}"
+
                             Text("$levelText | ${spell.castingTime}")
                         },
                         trailingContent = {
@@ -896,7 +1133,14 @@ fun CharacterSheetTab(
                 }
             }
         }
+
+        Spacer(Modifier.height(24.dp))
+        BiographyBlock(
+            character = character,
+            onCharacterChange = onCharacterChange
+        )
     } // Это закрывающая скобка Column
+
 
     // 6. ВСПЛЫВАЮЩЕЕ ОКНО ИНФОРМАЦИИ
     selectedKnownSpellInfo?.let { spell ->
@@ -1005,14 +1249,123 @@ fun HeaderInfoBlock(
 }
 
 @Composable
-fun StatCard(stat: AbilityScore, onValueChange: (Int) -> Unit) {
+fun BiographyBlock(
+    character: CharacterSaveData,
+    onCharacterChange: (CharacterSaveData) -> Unit
+) {
+    var isEditing by remember { mutableStateOf(false) }
+
+    // Текстовые поля
+    var age by remember(character) { mutableStateOf(character.age) }
+    var height by remember(character) { mutableStateOf(character.height) }
+    var weight by remember(character) { mutableStateOf(character.weight) }
+    var eyes by remember(character) { mutableStateOf(character.eyes) }
+    var skin by remember(character) { mutableStateOf(character.skin) }
+    var hair by remember(character) { mutableStateOf(character.hair) }
+    var background by remember(character) { mutableStateOf(character.background) }
+    var traits by remember(character) { mutableStateOf(character.personalityTraits) }
+    var ideals by remember(character) { mutableStateOf(character.ideals) }
+    var bonds by remember(character) { mutableStateOf(character.bonds) }
+    var flaws by remember(character) { mutableStateOf(character.flaws) }
+
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(tr("ЛИЧНОСТЬ И БИОГРАФИЯ", "PERSONALITY & BIO"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = {
+                if (isEditing) {
+                    onCharacterChange(character.copy(
+                        age = age, height = height, weight = weight, 
+                        eyes = eyes, skin = skin, hair = hair,
+                        background = background, personalityTraits = traits,
+                        ideals = ideals, bonds = bonds, flaws = flaws
+                    ))
+                }
+                isEditing = !isEditing
+            }) {
+                Icon(if (isEditing) Icons.Default.Check else Icons.Default.Edit, null, tint = MaterialTheme.colorScheme.primary)
+            }
+        }
+
+        ElevatedCard(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (isEditing) {
+                    // Физические данные
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(value = age, onValueChange = { age = it }, label = { Text(tr("Возраст", "Age")) }, modifier = Modifier.weight(1f))
+                        OutlinedTextField(value = height, onValueChange = { height = it }, label = { Text(tr("Рост", "Height")) }, modifier = Modifier.weight(1f))
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(value = weight, onValueChange = { weight = it }, label = { Text(tr("Вес", "Weight")) }, modifier = Modifier.weight(1f))
+                        OutlinedTextField(value = eyes, onValueChange = { eyes = it }, label = { Text(tr("Глаза", "Eyes")) }, modifier = Modifier.weight(1f))
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(value = skin, onValueChange = { skin = it }, label = { Text(tr("Кожа", "Skin")) }, modifier = Modifier.weight(1f))
+                        OutlinedTextField(value = hair, onValueChange = { hair = it }, label = { Text(tr("Волосы", "Hair")) }, modifier = Modifier.weight(1f))
+                    }
+                    OutlinedTextField(value = background, onValueChange = { background = it }, label = { Text(tr("Предыстория", "Background")) }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = traits, onValueChange = { traits = it }, label = { Text(tr("Черты характера", "Personality Traits")) }, modifier = Modifier.fillMaxWidth(), minLines = 2)
+                    OutlinedTextField(value = ideals, onValueChange = { ideals = it }, label = { Text(tr("Идеалы", "Ideals")) }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = bonds, onValueChange = { bonds = it }, label = { Text(tr("Привязанности", "Bonds")) }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = flaws, onValueChange = { flaws = it }, label = { Text(tr("Слабости", "Flaws")) }, modifier = Modifier.fillMaxWidth())
+                } else {
+                    // Просмотр физических данных
+                    BioInfoRow(tr("Возраст", "Age"), age, tr("Рост", "Height"), height)
+                    BioInfoRow(tr("Вес", "Weight"), weight, tr("Глаза", "Eyes"), eyes)
+                    BioInfoRow(tr("Кожа", "Skin"), skin, tr("Волосы", "Hair"), hair)
+                    
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    
+                    BioSection(tr("Предыстория", "Background"), background)
+                    BioSection(tr("Черты характера", "Personality Traits"), traits)
+                    BioSection(tr("Идеалы", "Ideals"), ideals)
+                    BioSection(tr("Привязанности", "Bonds"), bonds)
+                    BioSection(tr("Слабости", "Flaws"), flaws)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun BioInfoRow(label1: String, value1: String, label2: String, value2: String) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(label1, fontSize = 11.sp, color = Color.Gray)
+            Text(value1.ifBlank { "—" }, fontWeight = FontWeight.Bold)
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            Text(label2, fontSize = 11.sp, color = Color.Gray)
+            Text(value2.ifBlank { "—" }, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+@Composable
+fun BioSection(title: String, content: String) {
+    if (content.isNotBlank()) {
+        Column(modifier = Modifier.padding(bottom = 8.dp)) {
+            Text(title, fontSize = 11.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+            Text(content, style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+}
+
+
+@Composable
+fun StatCard(stat: AbilityScore, isEn: Boolean, onValueChange: (Int) -> Unit) {
+
     val modifier = (stat.baseScore - 10) / 2
     val profBonus = getProficiencyBonus(charLevel)
 
     ElevatedCard(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
         Column(modifier = Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(stat.icon, null, tint = Color(0xFF6750A4), modifier = Modifier.size(24.dp))
-            Text(trStat(stat.name), fontWeight = FontWeight.Bold)
+            Text(trStat(stat.name, isEn), fontWeight = FontWeight.Bold)
+
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { onValueChange(stat.baseScore - 1) }) { Text("-", fontSize = 24.sp) }
@@ -1055,7 +1408,8 @@ fun StatCard(stat: AbilityScore, onValueChange: (Int) -> Unit) {
                     )
 
                     Text(
-                        text = trStat(skill),
+                        text = trStat(skill, isEn),
+
                         modifier = Modifier.weight(1f).padding(start = 8.dp),
                         fontSize = 16.sp,
                         fontWeight = if (state > 0) FontWeight.Bold else FontWeight.Normal
@@ -1086,42 +1440,353 @@ fun CombatStatSquare(label: String, value: String, modifier: Modifier = Modifier
 }
 
 @Composable
-fun EquipmentTab() {
-    val weapons = remember { mutableStateListOf(Weapon(1, "Длинный меч", "1d8+3")) }
-    val armors = remember { mutableStateListOf(Armor(1, "Кольчуга", 16)) }
+fun EquipmentTab(
+    isEn: Boolean,
+    character: CharacterSaveData,
+    onCharacterChange: (CharacterSaveData) -> Unit
+) {
 
-    var newWepName by remember { mutableStateOf("") }
-    var newWepDamage by remember { mutableStateOf("") }
-    var newArmName by remember { mutableStateOf("") }
-    var newArmAc by remember { mutableStateOf("") }
+    var showQuickAddDialog by remember { mutableStateOf(false) }
+    var showCustomItemDialog by remember { mutableStateOf(false) }
+    var customItemType by remember { mutableIntStateOf(0) } // 0=Item, 1=Weapon, 2=Armor, 3=Treasure
+    var showRatesDialog by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState())) {
-        Text(tr("Снаряжение", "Inventory"), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-
-        // Оружие
-        ElevatedCard(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
-            Column(modifier = Modifier.padding(12.dp)) {
-                Text(tr("Оружие", "Weapons"), style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
-                Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    OutlinedTextField(value = newWepName, onValueChange = { newWepName = it }, label = { Text(tr("Название", "Name")) }, modifier = Modifier.weight(1f))
-                    OutlinedTextField(value = newWepDamage, onValueChange = { newWepDamage = it }, label = { Text(tr("Урон", "Damage")) }, modifier = Modifier.weight(0.7f))
-                    IconButton(onClick = { if (newWepName.isNotBlank()) { weapons.add(Weapon(weapons.size + 1, newWepName, newWepDamage)); newWepName = ""; newWepDamage = "" } }) { Icon(Icons.Default.Add, null) }
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        // --- МОНЕТЫ ---
+        item {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(tr("КОШЕЛЁК", "COIN PURSE"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                IconButton(onClick = { showRatesDialog = true }, modifier = Modifier.size(24.dp)) {
+                    Icon(Icons.Default.Help, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                 }
-                weapons.forEach { weapon ->
-                    ListItem(headlineContent = { Text(weapon.name) }, supportingContent = { Text("${tr("Урон", "Damage")}: ${weapon.damage}") }, trailingContent = { IconButton(onClick = { weapons.remove(weapon) }) { Icon(Icons.Default.Delete, null) } })
+            }
+            Spacer(Modifier.height(8.dp))
+            ElevatedCard(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    CoinRow(tr("Золотые (зм)", "Gold (gp)"), character.gp, { onCharacterChange(character.copy(gp = it)) }, Color(0xFFFFD700))
+                    CoinRow(tr("Серебряные (см)", "Silver (sp)"), character.sp, { onCharacterChange(character.copy(sp = it)) }, Color(0xFFC0C0C0))
+                    CoinRow(tr("Медные (мм)", "Copper (cp)"), character.cp, { onCharacterChange(character.copy(cp = it)) }, Color(0xFFCD7F32))
+                    CoinRow(tr("Платиновые (пм)", "Platinum (pp)"), character.pp, { onCharacterChange(character.copy(pp = it)) }, Color(0xFFE5E4E2))
+                    CoinRow(tr("Электрумовые (эм)", "Electrum (ep)"), character.ep, { onCharacterChange(character.copy(ep = it)) }, Color(0xFF50C878))
+                }
+            }
+            Spacer(Modifier.height(24.dp))
+
+            if (showRatesDialog) {
+                AlertDialog(
+                    onDismissRequest = { showRatesDialog = false },
+                    title = { Text(tr("Курс валют", "Currency Rates")) },
+                    text = {
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text("1 ${tr("платиновая (пм)", "platinum (pp)")} = 10 ${tr("золотых (зм)", "gold (gp)")}")
+                            Text("1 ${tr("золотая (зм)", "gold (gp)")} = 10 ${tr("серебряных (см)", "silver (sp)")}")
+                            Text("1 ${tr("серебряная (см)", "silver (sp)")} = 10 ${tr("медных (мм)", "copper (cp)")}")
+                            Text("1 ${tr("электрумовая (эм)", "electrum (ep)")} = 5 ${tr("серебряных (см)", "silver (sp)")}")
+                            HorizontalDivider(Modifier.padding(vertical = 4.dp))
+                            Text(tr("1 зм = 2 эм = 10 см = 100 мм", "1 gp = 2 ep = 10 sp = 100 cp"), style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                        }
+                    },
+                    confirmButton = { TextButton(onClick = { showRatesDialog = false }) { Text("OK") } }
+                )
+            }
+        }
+
+
+
+        item {
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text(tr("ИНВЕНТАРЬ", "INVENTORY"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Row {
+                    IconButton(onClick = { showQuickAddDialog = true }) { Icon(Icons.Default.Add, "Quick Add", tint = MaterialTheme.colorScheme.primary) }
+                    IconButton(onClick = { customItemType = 0; showCustomItemDialog = true }) { Icon(Icons.Default.Edit, "Custom", tint = MaterialTheme.colorScheme.primary) }
                 }
             }
         }
+
+        items(character.inventoryItems) { item ->
+            ListItem(
+                headlineContent = { Text(item) },
+                trailingContent = {
+                    IconButton(onClick = {
+                        val updated = character.inventoryItems.toMutableList().apply { remove(item) }
+                        onCharacterChange(character.copy(inventoryItems = updated))
+                    }) { Icon(Icons.Default.Delete, null, tint = Color.Gray) }
+                }
+            )
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+
+        }
+
+        // --- КАСТОМНОЕ ОРУЖИЕ И БРОНЯ ---
+        if (character.customWeapons.isNotEmpty() || character.customArmors.isNotEmpty()) {
+            item {
+                Spacer(Modifier.height(16.dp))
+                Text(tr("СПЕЦ. СНАРЯЖЕНИЕ", "SPECIAL GEAR"), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+            }
+
+            items(character.customWeapons) { weapon ->
+                ListItem(
+                    headlineContent = { Text(weapon.name) },
+                    supportingContent = { Text(weapon.damage) },
+                    leadingContent = { Icon(Icons.Default.Gavel, null) },
+                    trailingContent = {
+                        IconButton(onClick = {
+                            val updated = character.customWeapons.toMutableList().apply { remove(weapon) }
+                            onCharacterChange(character.copy(customWeapons = updated))
+                        }) { Icon(Icons.Default.Delete, null, tint = Color.Gray) }
+                    }
+                )
+            }
+            items(character.customArmors) { armor ->
+                ListItem(
+                    headlineContent = { Text(armor.name) },
+                    supportingContent = { Text("AC: ${armor.baseAc} | ${if (armor.type == 1) "Light" else if (armor.type == 2) "Medium" else "Heavy"}") },
+                    leadingContent = { Icon(Icons.Default.Shield, null) },
+                    trailingContent = {
+                        IconButton(onClick = {
+                            val updated = character.customArmors.toMutableList().apply { remove(armor) }
+                            onCharacterChange(character.copy(customArmors = updated))
+                        }) { Icon(Icons.Default.Delete, null, tint = Color.Gray) }
+                    }
+                )
+            }
+        }
+
+        // --- СОКРОВИЩА ---
+        item {
+            Spacer(Modifier.height(24.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text(tr("СОКРОВИЩА", "TREASURES"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
+                IconButton(onClick = { customItemType = 3; showCustomItemDialog = true }) { Icon(Icons.Default.Add, null, tint = MaterialTheme.colorScheme.secondary) }
+            }
+        }
+
+        items(character.treasures) { treasure ->
+            ListItem(
+                headlineContent = { Text(treasure, color = MaterialTheme.colorScheme.secondary) },
+                trailingContent = {
+                    IconButton(onClick = {
+                        val updated = character.treasures.toMutableList().apply { remove(treasure) }
+                        onCharacterChange(character.copy(treasures = updated))
+                    }) { Icon(Icons.Default.Delete, null, tint = Color.Gray) }
+                }
+            )
+        }
+        
+        item {
+            Spacer(Modifier.height(16.dp))
+            // Кнопки добавления кастомных типов
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(onClick = { customItemType = 1; showCustomItemDialog = true }, modifier = Modifier.weight(1f)) {
+                    Text(tr("+Оружие", "+Weapon"), fontSize = 12.sp)
+                }
+                Button(onClick = { customItemType = 2; showCustomItemDialog = true }, modifier = Modifier.weight(1f)) {
+                    Text(tr("+Броня", "+Armor"), fontSize = 12.sp)
+                }
+            }
+            Spacer(Modifier.height(100.dp))
+        }
+    }
+
+    // --- ДИАЛОГ БЫСТРОГО ДОБАВЛЕНИЯ ---
+    if (showQuickAddDialog) {
+        AlertDialog(
+            onDismissRequest = { showQuickAddDialog = false },
+            title = { Text(tr("Снаряжение 2024", "2024 Equipment")) },
+            text = {
+                Column(modifier = Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState())) {
+                    Text(tr("Оружие", "Weapons"), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    StandardEquipment.getWeapons().forEach { item ->
+                        val isEquipped = character.equippedStandardWeapons.contains(item.nameEn)
+                        QuickAddItem(
+                            item = item, 
+                            isEn = isEn,
+                            isEquipped = isEquipped,
+                            onAdd = {
+                                val name = if (isEn) item.nameEn else item.nameRu
+                                val cost = if (isEn) item.costEn else item.costRu
+                                val updated = character.inventoryItems + "$name ($cost)"
+                                onCharacterChange(character.copy(inventoryItems = updated))
+                            },
+                            onEquip = {
+                                val updated = if (isEquipped) {
+                                    character.equippedStandardWeapons - item.nameEn
+                                } else {
+                                    character.equippedStandardWeapons + item.nameEn
+                                }
+                                onCharacterChange(character.copy(equippedStandardWeapons = updated))
+                            }
+                        )
+                    }
+
+
+                    Spacer(Modifier.height(8.dp))
+                    Text(tr("Доспехи", "Armor"), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    StandardEquipment.getArmor().forEach { item ->
+                        QuickAddItem(
+                            item = item, 
+                            isEn = isEn,
+                            onAdd = {
+                                val name = if (isEn) item.nameEn else item.nameRu
+                                val cost = if (isEn) item.costEn else item.costRu
+                                val updated = character.inventoryItems + "$name ($cost)"
+                                onCharacterChange(character.copy(inventoryItems = updated))
+                            }
+                        )
+                    }
+
+
+                    Spacer(Modifier.height(8.dp))
+                    Text(tr("Снаряжение", "Gear"), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    StandardEquipment.getGear().forEach { item ->
+                        QuickAddItem(
+                            item = item, 
+                            isEn = isEn,
+                            onAdd = {
+                                val name = if (isEn) item.nameEn else item.nameRu
+                                val cost = if (isEn) item.costEn else item.costRu
+                                val updated = character.inventoryItems + "$name ($cost)"
+                                onCharacterChange(character.copy(inventoryItems = updated))
+                            }
+                        )
+                    }
+
+
+                }
+            },
+            confirmButton = { TextButton(onClick = { showQuickAddDialog = false }) { Text(tr("Закрыть", "Close")) } }
+        )
+    }
+
+    // --- ДИАЛОГ КАСТОМНОГО ПРЕДМЕТА ---
+    if (showCustomItemDialog) {
+        var name by remember { mutableStateOf("") }
+        var extra by remember { mutableStateOf("") } // Damage for weapon, AC for armor
+        var type by remember { mutableIntStateOf(1) } // For armor type
+        
+        // Для оружия
+        var ability by remember { mutableStateOf("STR") }
+        var isProf by remember { mutableStateOf(true) }
+        var mBonus by remember { mutableStateOf("0") }
+
+        AlertDialog(
+            onDismissRequest = { showCustomItemDialog = false },
+            title = { Text(when(customItemType) {
+                0 -> tr("Новый предмет", "New Item")
+                1 -> tr("Новое оружие", "New Weapon")
+                2 -> tr("Новая броня", "New Armor")
+                else -> tr("Новое сокровище", "New Treasure")
+            }) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text(tr("Название", "Name")) }, modifier = Modifier.fillMaxWidth())
+                    if (customItemType == 1) {
+                        OutlinedTextField(value = extra, onValueChange = { extra = it }, label = { Text(tr("Урон (напр. 1d8)", "Damage (e.g. 1d8)")) }, modifier = Modifier.fillMaxWidth())
+                        
+                        Text(tr("Характеристика:", "Ability:"))
+                        Row {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(selected = ability == "STR", onClick = { ability = "STR" })
+                                Text(tr("СИЛ", "STR"))
+                            }
+                            Spacer(Modifier.width(16.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(selected = ability == "DEX", onClick = { ability = "DEX" })
+                                Text(tr("ЛОВ", "DEX"))
+                            }
+                        }
+                        
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(checked = isProf, onCheckedChange = { isProf = it })
+                            Text(tr("Владение", "Proficiency"))
+                        }
+                        
+                        OutlinedTextField(
+                            value = mBonus, 
+                            onValueChange = { if (it.all { c -> c.isDigit() || c == '-' }) mBonus = it }, 
+                            label = { Text(tr("Маг. бонус / Доп.", "Magic / Misc Bonus")) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    } else if (customItemType == 2) {
+                        OutlinedTextField(value = extra, onValueChange = { extra = it }, label = { Text(tr("Базовый КД", "Base AC")) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
+                        Text(tr("Тип брони:", "Armor Type:"))
+                        Column {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(selected = type == 1, onClick = { type = 1 }); Text(tr("Легкая", "Light"))
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(selected = type == 2, onClick = { type = 2 }); Text(tr("Средняя", "Medium"))
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(selected = type == 3, onClick = { type = 3 }); Text(tr("Тяжелая", "Heavy"))
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    if (name.isNotBlank()) {
+                        when (customItemType) {
+                            0 -> onCharacterChange(character.copy(inventoryItems = character.inventoryItems + name))
+                            1 -> {
+                                val mb = mBonus.toIntOrNull() ?: 0
+                                onCharacterChange(character.copy(customWeapons = character.customWeapons + CustomWeapon(name, extra, ability, isProf, mb)))
+                            }
+                            2 -> onCharacterChange(character.copy(customArmors = character.customArmors + CustomArmor(name, extra.toIntOrNull() ?: 10, type)))
+                            3 -> onCharacterChange(character.copy(treasures = character.treasures + name))
+                        }
+                        showCustomItemDialog = false
+                    }
+                }) { Text(tr("Добавить", "Add")) }
+            },
+            dismissButton = { TextButton(onClick = { showCustomItemDialog = false }) { Text(tr("Отмена", "Cancel")) } }
+        )
     }
 }
 
 @Composable
-fun SpellsDirectoryTab() {
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        Icon(Icons.Default.AutoStories, modifier = Modifier.size(64.dp), contentDescription = null)
-        Text("Справочник dnd.su", style = MaterialTheme.typography.headlineSmall)
+fun QuickAddItem(
+    item: StandardItem, 
+    isEn: Boolean, 
+    isEquipped: Boolean = false,
+    onAdd: () -> Unit,
+    onEquip: (() -> Unit)? = null
+) {
+    val name = if (isEn) item.nameEn else item.nameRu
+    val extra = if (isEn) {
+        item.damageEn ?: (if (item.acEn != null) "AC: ${item.acEn}" else null) ?: (if (item.weightEn != "—") item.weightEn else null) ?: item.costEn
+    } else {
+        item.damage ?: (if (item.acRu != null) "КД: ${item.acRu}" else null) ?: (if (item.weightRu != "—") item.weightRu else null) ?: item.costRu
     }
+
+    ListItem(
+        modifier = Modifier.clickable { onAdd() },
+        headlineContent = { Text(name) },
+        supportingContent = { Text(extra) },
+        trailingContent = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (onEquip != null) {
+                    TextButton(onClick = onEquip) {
+                        Text(
+                            text = if (isEquipped) tr("Снять", "Unfit") else tr("Экип.", "Equip"),
+                            fontSize = 12.sp,
+                            color = if (isEquipped) Color.Gray else MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                Icon(Icons.Default.Add, null, tint = MaterialTheme.colorScheme.primary)
+            }
+        }
+    )
 }
+
+
+
+// Duplicate SpellsDirectoryTab removed. Use the version at line 261.
+
 
 fun getProficiencyBonus(level: String): Int {
     val lvl = level.toIntOrNull() ?: 1
@@ -1133,6 +1798,10 @@ fun getProficiencyBonus(level: String): Int {
         lvl in 17..20 -> 6
         else -> 2
     }
+}
+
+fun getStatMod(score: Int): Int {
+    return Math.floorDiv(score - 10, 2)
 }
 @Composable
 fun LanguageSelectionScreen(onLanguageSelected: (String) -> Unit) {
@@ -1204,7 +1873,11 @@ fun TavernScreen(
                     currentHp = 10,
                     imageUri = null,
                     stats = defaultStats,
-                    knownSpells = emptyList()
+                    knownSpells = emptyList(),
+                    selectedArmorIndex = 0,
+                    shieldEquipped = false,
+                    magicBonus = 0
+
                 )
                 storage.saveCharacter(newChar) // Сохраняем в сейф
                 characterList = storage.getAllCharacters() // Обновляем экран
@@ -1611,6 +2284,30 @@ fun ClassDetailScreen(
                 }
                 
                 Spacer(Modifier.height(24.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun CoinRow(label: String, value: Int, onValueChange: (Int) -> Unit, color: Color) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Surface(shape = CircleShape, color = color, modifier = Modifier.size(12.dp)) {}
+            Spacer(Modifier.width(8.dp))
+            Text(label, fontSize = 14.sp)
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { if (value > 0) onValueChange(value - 1) }, modifier = Modifier.size(32.dp)) {
+                Text("-", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            }
+            Text("$value", modifier = Modifier.padding(horizontal = 8.dp), fontWeight = FontWeight.Bold)
+            IconButton(onClick = { onValueChange(value + 1) }, modifier = Modifier.size(32.dp)) {
+                Text("+", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
