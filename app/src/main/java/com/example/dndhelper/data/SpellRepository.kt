@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
 
-// 1. Добавляем классы-помощники, чтобы Gson понимал структуру твоего ClassSpells.json
+// Вспомогательные классы для ClassSpells.json (оставляем как есть)
 data class ClassData(
     val title: TitleData?,
     val spells: List<String>?
@@ -20,47 +20,50 @@ data class TitleData(
 class SpellRepository(private val context: Context) {
     private val gson = Gson()
 
-    fun loadSpellsFromAssets(): List<Spell> {
+    // Открываем БД заклинаний
+    private val spellDb by lazy { SpellDatabase.getDatabase(context) }
+
+    // Загружаем все заклинания из БД (возвращаем в старом формате List<Spell> для совместимости с UI)
+    suspend fun loadSpellsFromDb(): List<Spell> {
         return try {
-            val inputStream = context.assets.open("allSpells.json")
-            val reader = InputStreamReader(inputStream)
-
-            val listType = object : TypeToken<List<Spell>>() {}.type
-            val spellList: List<Spell> = gson.fromJson(reader, listType)
-
-            reader.close()
-            Log.d("DND_LOG", "✅ УСПЕХ! Загружено: ${spellList.size} заклинаний")
-
-            spellList
+            val entities = spellDb.spellDao().getAllSpells()
+            Log.d("DND_LOG", "Loaded ${entities.size} spells from DB")
+            entities.map { it.toSpell() }
         } catch (e: Exception) {
-            Log.e("DND_LOG", "❌ ОШИБКА: ${e.message}")
+            Log.e("DND_LOG", "Error loading spells from DB: ${e.message}")
             e.printStackTrace()
             emptyList()
         }
     }
 
+    // Поиск заклинаний по имени (для фильтра по классу)
+    suspend fun getSpellsByNames(names: List<String>): List<Spell> {
+        return try {
+            spellDb.spellDao().getSpellsByName(names).map { it.toSpell() }
+        } catch (e: Exception) {
+            Log.e("DND_LOG", "Error searching spells: ${e.message}")
+            emptyList()
+        }
+    }
+
+    // ClassSpells.json остаётся без изменений — он небольшой и не несёт ценных данных
     fun loadClassSpells(): Map<String, List<String>> {
         return try {
             val inputStream = context.assets.open("ClassSpells.json")
             val reader = InputStreamReader(inputStream)
-
-            // 2. Читаем JSON в правильном формате (Словарь объектов ClassData)
             val typeToken = object : TypeToken<Map<String, ClassData>>() {}.type
             val parsedData: Map<String, ClassData> = gson.fromJson(reader, typeToken)
             reader.close()
 
-            // 3. Превращаем это в простой словарь для интерфейса: "Имя на русском" -> "Список заклинаний"
             val result = mutableMapOf<String, List<String>>()
             for ((key, classData) in parsedData) {
-                // Если есть русский перевод — берем его, иначе оставляем английский ключ
                 val className = classData.title?.ru ?: key
                 val spells = classData.spells ?: emptyList()
                 result[className] = spells
             }
-
             result
         } catch (e: Exception) {
-            Log.e("DND_LOG", "Ошибка загрузки классов: ${e.message}")
+            Log.e("DND_LOG", "Error loading class spells: ${e.message}")
             emptyMap()
         }
     }

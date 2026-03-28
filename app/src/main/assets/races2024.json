@@ -1,0 +1,718 @@
+[
+  {
+    "nameEn": "Aasimar",
+    "nameRu": "Аазимар",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Medium or Small. You choose the size when you select this species."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet."
+      },
+      {
+        "name": "Celestial Revelation",
+        "desc": "When you reach 3rd level, choose one of the following revelation options: Heavenly Wings (gain a flying speed), Inner Radiance (deal radiant damage in an aura around you), or Necrotic Shroud (frighten enemies and deal necrotic damage). You can use this revelation as an action once per Long Rest."
+      },
+      {
+        "name": "Darkvision",
+        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
+      },
+      {
+        "name": "Healing Hands",
+        "desc": "As a Magic action, you can touch a creature and heal it. The creature regains a number of Hit Points equal to the roll of a number of d4s equal to your Proficiency Bonus. You can't use this trait again until you finish a Long Rest."
+      },
+      {
+        "name": "Celestial Resistance",
+        "desc": "You have Resistance to Necrotic damage and Radiant damage."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Средний или Маленький. Вы выбираете размер при выборе этого вида."
+      },
+      {
+        "name": "Скорость",
+        "desc": "Ваша базовая скорость перемещения — 30 футов."
+      },
+      {
+        "name": "Небесное откровение",
+        "desc": "На 3-м уровне выберите один из следующих вариантов откровения: Небесные крылья (получаете скорость полёта), Внутреннее сияние (наносите сияющий урон в ауре вокруг себя) или Некротический покров (наводите страх на врагов и наносите некротический урон). Использование требует Магического действия. Доступно раз за Продолжительный отдых."
+      },
+      {
+        "name": "Тёмное зрение",
+        "desc": "Вы можете видеть при тусклом свете на 60 футов так же, как при ярком, и в темноте так же, как при тусклом."
+      },
+      {
+        "name": "Целительные руки",
+        "desc": "Магическим действием вы можете коснуться существа и исцелить его на количество хитов, равное броску нескольких костей d4 (их число равно вашему Бонусу Мастерства). Доступно один раз до конца Продолжительного отдыха."
+      },
+      {
+        "name": "Небесное сопротивление",
+        "desc": "Вы обладаете Сопротивлением к Некротическому урону и урону Излучением."
+      }
+    ],
+    "subraces": []
+  },
+  {
+    "nameEn": "Dragonborn",
+    "nameRu": "Драконорождённый",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Medium."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet."
+      },
+      {
+        "name": "Draconic Ancestry",
+        "desc": "Choose your draconic ancestry from the provided table, which determines your Damage Type and Breath Weapon shape."
+      },
+      {
+        "name": "Breath Weapon",
+        "desc": "As an action, or when taking the Attack action (replacing one attack), exhale energy. Creatures in the area make a Dexterity or Constitution saving throw (depending on ancestry) DC 8 + Con mod + PB, taking 1d10 damage of your ancestry's type (increases at lvls 5, 11, 17). Uses equal your Proficiency Bonus per Long Rest."
+      },
+      {
+        "name": "Damage Resistance",
+        "desc": "You have Resistance to the Damage Type associated with your Draconic Ancestry."
+      },
+      {
+        "name": "Darkvision",
+        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
+      },
+      {
+        "name": "Draconic Flight",
+        "desc": "At 5th level, you can sprout spectral wings momentarily to gain a Fly Speed equal to your Speed for 10 minutes (Usage once per Long Rest)."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Средний."
+      },
+      {
+        "name": "Скорость",
+        "desc": "Ваша базовая скорость перемещения — 30 футов."
+      },
+      {
+        "name": "Драконье наследие",
+        "desc": "Выберите драконьего предка по таблице: это определит Тип Урона и форму Оружия дыхания."
+      },
+      {
+        "name": "Оружие дыхания",
+        "desc": "Во время совершения действия Атака вы можете заменить одну из атак выдыханием энергии. Существа совершают спасбросок: при провале они получают 1d10 урона вашего типа наследия (урон растёт на 5, 11 и 17 ур). Вы можете использовать эту черту количество раз, равное вашему Бонусу Мастерства за Продолжительный отдых."
+      },
+      {
+        "name": "Сопротивление урону",
+        "desc": "Вы имеете Сопротивление типу урона, связанному с вашим Драконьим наследием."
+      },
+      {
+        "name": "Тёмное зрение",
+        "desc": "Вы можете видеть при тусклом свете на 60 футов так же, как при ярком, и в темноте так же, как при тусклом."
+      },
+      {
+        "name": "Драконий полёт",
+        "desc": "На 5-м уровне вы получаете способность призывать призрачные крылья, раз в Продолжительный отдых получая Скорость Полёта 30 футов на 10 минут."
+      }
+    ],
+    "subraces": []
+  },
+  {
+    "nameEn": "Dwarf",
+    "nameRu": "Дварф",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Medium."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet. Your speed is not reduced by wearing Heavy armor."
+      },
+      {
+        "name": "Darkvision",
+        "desc": "You can see in Dim Light within 120 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
+      },
+      {
+        "name": "Dwarven Resilience",
+        "desc": "You have Advantage on saving throws you make to avoid or end the Poisoned condition on yourself. You also have Resistance to Poison damage."
+      },
+      {
+        "name": "Dwarven Toughness",
+        "desc": "Your Hit Point maximum increases by 1, and it increases by 1 every time you gain a level."
+      },
+      {
+        "name": "Stonecunning",
+        "desc": "You have Tremorsense out to 60 feet on stone surfaces. As a Bonus Action, you can touch a stone surface and know the history of its creation."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Средний."
+      },
+      {
+        "name": "Скорость",
+        "desc": "Ваша базовая скорость перемещения — 30 футов. Ваша скорость не падает при ношении Тяжёлой брони."
+      },
+      {
+        "name": "Тёмное зрение",
+        "desc": "Радиус вашего зрения в темноте увеличен до 120 футов."
+      },
+      {
+        "name": "Дварфийская стойкость",
+        "desc": "Вы совершаете с Преимуществом спасброски от состояния Отравлен. Также у вас есть Сопротивление урону Ядом."
+      },
+      {
+        "name": "Дварфийская выносливость",
+        "desc": "Ваш максимум Хитов увеличивается на 1, и растёт ещё на 1 на каждом получаемом уровне."
+      },
+      {
+        "name": "Знание камня",
+        "desc": "Вы обладаете Сейсмочувством в радиусе 60 футов через каменные поверхности. Даёт бонусы при оценке камней и подземелий."
+      }
+    ],
+    "subraces": []
+  },
+  {
+    "nameEn": "Elf",
+    "nameRu": "Эльф",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Medium."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet."
+      },
+      {
+        "name": "Darkvision",
+        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
+      },
+      {
+        "name": "Keen Senses",
+        "desc": "You gain Proficiency in the Perception, Insight, or Survival skill."
+      },
+      {
+        "name": "Fey Ancestry",
+        "desc": "You have Advantage on saving throws you make to avoid or end the Charmed condition on yourself."
+      },
+      {
+        "name": "Trance",
+        "desc": "You don't need to sleep, and magic can't put you to sleep. You can finish a Long Rest in 4 hours if you spend those hours in a trancelike meditation."
+      },
+      {
+        "name": "Elven Lineage",
+        "desc": "Choose a Lineage (Drow, High Elf, or Wood Elf). You gain magic and traits based on your chosen Lineage."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Средний."
+      },
+      {
+        "name": "Скорость",
+        "desc": "Ваша базовая скорость перемещения — 30 футов."
+      },
+      {
+        "name": "Тёмное зрение",
+        "desc": "Вы можете видеть при тусклом свете на 60 футов так же, как при ярком, и в темноте так же, как при тусклом."
+      },
+      {
+        "name": "Острые чувства",
+        "desc": "Вы получаете Владение навыком на выбор: Внимательность, Проницательность или Выживание."
+      },
+      {
+        "name": "Наследие фей",
+        "desc": "Вы совершаете с Преимуществом спасброски для избегания состояния Очарован."
+      },
+      {
+        "name": "Транс",
+        "desc": "Вам не нужен сон и магия не способна вас усыпить. Чтобы завершить Продолжительный Отдых вам достаточно провести 4 часа занимаясь медитацией."
+      },
+      {
+        "name": "Эльфийская родословная",
+        "desc": "Выберите вашу родословную (Дроу, Высший Эльф или Лесной Эльф). Это даст вам заклинания и дополнительную скорость."
+      }
+    ],
+    "subraces": [
+      {
+        "nameEn": "Drow",
+        "nameRu": "Дроу",
+        "traitsEn": [
+          {
+            "name": "Lineage Spells",
+            "desc": "You know Dancing Lights. At 3rd level, you learn Faerie Fire. At 5th level, you learn Darkness. You can cast each natively once per Long rest."
+          }
+        ],
+        "traitsRu": [
+          {
+            "name": "Заклинания наследия",
+            "desc": "Вы знаете заговор Пляшущие огоньки. На 3-м вы можете творить Огонь Фей, а на 5-м Тьму один раз до Продолжительного отдыха."
+          }
+        ]
+      },
+      {
+        "nameEn": "High Elf",
+        "nameRu": "Высший Эльф",
+        "traitsEn": [
+          {
+            "name": "Lineage Spells",
+            "desc": "You know Prestidigitation. At 3rd level, Detect Magic. At 5th level, Misty Step."
+          }
+        ],
+        "traitsRu": [
+          {
+            "name": "Заклинания наследия",
+            "desc": "Вы знаете заговор Фокусы. На 3-м Обнаружение магии, а на 5-м Туманный шаг."
+          }
+        ]
+      },
+      {
+        "nameEn": "Wood Elf",
+        "nameRu": "Лесной Эльф",
+        "traitsEn": [
+          {
+            "name": "Fleet of Foot",
+            "desc": "Your walking speed increases to 35 feet."
+          },
+          {
+            "name": "Lineage Spells",
+            "desc": "You know Druidcraft. At 3rd level, Longstrider. At 5th level, Pass without Trace."
+          }
+        ],
+        "traitsRu": [
+          {
+            "name": "Быстроногий",
+            "desc": "Ваша скорость становится 35 футов."
+          },
+          {
+            "name": "Заклинания",
+            "desc": "Заговор: Искусство друидов. На 3-м: Скороход. На 5-м: Без следа."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nameEn": "Gnome",
+    "nameRu": "Гном",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Small."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet."
+      },
+      {
+        "name": "Darkvision",
+        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
+      },
+      {
+        "name": "Gnomish Cunning",
+        "desc": "You have Advantage on Intelligence, Wisdom, and Charisma saving throws."
+      },
+      {
+        "name": "Gnomish Lineage",
+        "desc": "Choose Forest Gnome or Rock Gnome to receive spells and abilities."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Маленький."
+      },
+      {
+        "name": "Скорость",
+        "desc": "30 футов."
+      },
+      {
+        "name": "Тёмное зрение",
+        "desc": "Радиус 60 футов."
+      },
+      {
+        "name": "Гномья хитрость",
+        "desc": "У вас есть Преимущество на все спасброски Интеллекта, Мудрости и Харизмы."
+      },
+      {
+        "name": "Родословная гномов",
+        "desc": "Выберите родословную Лесного или Скального гнома."
+      }
+    ],
+    "subraces": [
+      {
+        "nameEn": "Forest Gnome",
+        "nameRu": "Лесной Гном",
+        "traitsEn": [
+          {
+            "name": "Speak with Animals",
+            "desc": "You know Minor Illusion and Speak with Animals. You can cast Speak with animals Wis Mod times per long rest."
+          }
+        ],
+        "traitsRu": [
+          {
+            "name": "Общение с животными",
+            "desc": "Вы знаете Малую Иллюзию и Разговор с животными."
+          }
+        ]
+      },
+      {
+        "nameEn": "Rock Gnome",
+        "nameRu": "Скальный гном",
+        "traitsEn": [
+          {
+            "name": "Tinker",
+            "desc": "You know Mending and Prestidigitation. You can craft 3 mini devices a day."
+          }
+        ],
+        "traitsRu": [
+          {
+            "name": "Изобретатель",
+            "desc": "Знаете заговоры Починка и Фокусы. Можете раз в день создавать до 3 крошечных механизмов."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "nameEn": "Goliath",
+    "nameRu": "Голиаф",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Medium."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 35 feet."
+      },
+      {
+        "name": "Giant Ancestry",
+        "desc": "Choose one Giant type. This provides you with an action (e.g., reduce damage, increase speed, elemental attacks) usable PB times per day."
+      },
+      {
+        "name": "Large Form",
+        "desc": "At 5th level, as a Bonus Action, you can become Large for 10 minutes, gaining Advantage on STR checks and additional speed."
+      },
+      {
+        "name": "Powerful Build",
+        "desc": "You have Advantage on saving throws to avoid being Grappled."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Средний."
+      },
+      {
+        "name": "Скорость",
+        "desc": "Ваша базовая скорость перемещения — 35 футов!"
+      },
+      {
+        "name": "Великанье наследие",
+        "desc": "Выберите вид Великана (Холмовой, Каменный, Огненный и тд), чтобы получить уникальную способность, которую можно использовать раз в день."
+      },
+      {
+        "name": "Большая форма",
+        "desc": "На 5-м уровне вы можете Бонусным действием увеличиться до Большого размера на 10 минут, получая Преимущество на проверки Силы."
+      },
+      {
+        "name": "Мощное телосложение",
+        "desc": "У вас есть Преимущество на проверки во избежание Захвата."
+      }
+    ],
+    "subraces": []
+  },
+  {
+    "nameEn": "Halfling",
+    "nameRu": "Полурослик",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Small."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet."
+      },
+      {
+        "name": "Brave",
+        "desc": "You have Advantage on saving throws you make to avoid or end the Frightened condition on yourself."
+      },
+      {
+        "name": "Halfling Nimbleness",
+        "desc": "You can move through the space of any creature that is of a size larger than yours."
+      },
+      {
+        "name": "Lucky",
+        "desc": "When you roll a 1 on the d20 for a D20 Test, you can reroll the die and must use the new roll."
+      },
+      {
+        "name": "Naturally Stealthy",
+        "desc": "You can hide even when you are obscured only by a creature that is at least one size larger than you."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Маленький."
+      },
+      {
+        "name": "Скорость",
+        "desc": "Ваша базовая скорость перемещения — 30 футов."
+      },
+      {
+        "name": "Храбрый",
+        "desc": "Вы обладаете Преимуществом на спасброски от состояния Испуган."
+      },
+      {
+        "name": "Проворство полурослика",
+        "desc": "Вы можете двигаться сквозь пространство любого существа, которое больше вас по размеру."
+      },
+      {
+        "name": "Везучий",
+        "desc": "Когда при Проверке D20 (атака, спасбросок, навык) выпадает 1, вы можете перебросить кость и обязаны принять новый результат."
+      },
+      {
+        "name": "Естественная скрытность",
+        "desc": "Вы можете пытаться прятаться, даже если скрыты только существом превышающим вас по размеру."
+      }
+    ],
+    "subraces": []
+  },
+  {
+    "nameEn": "Human",
+    "nameRu": "Человек",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Medium or Small. You choose the size when you select this species."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet."
+      },
+      {
+        "name": "Resourceful",
+        "desc": "You gain Heroic Inspiration whenever you finish a Long Rest."
+      },
+      {
+        "name": "Skillful",
+        "desc": "You gain Proficiency in one Skill of your choice."
+      },
+      {
+        "name": "Versatile",
+        "desc": "You gain one Origin Feat of your choice."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Средний или Маленький (на ваш выбор)."
+      },
+      {
+        "name": "Скорость",
+        "desc": "30 футов."
+      },
+      {
+        "name": "Изобретательный",
+        "desc": "После каждого Продолжительного Отдыха вы получаете Героическое Вдохновение!"
+      },
+      {
+        "name": "Умелый",
+        "desc": "Вы получаете Владение одним Навыком на ваш выбор."
+      },
+      {
+        "name": "Универсальный",
+        "desc": "Вы можете сразу выбрать одну Черту Происхождения (Origin Feat)!"
+      }
+    ],
+    "subraces": []
+  },
+  {
+    "nameEn": "Orc",
+    "nameRu": "Орк",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Medium."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet."
+      },
+      {
+        "name": "Darkvision",
+        "desc": "You can see in Dim Light within 120 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
+      },
+      {
+        "name": "Adrenaline Rush",
+        "desc": "You can take the Dash action as a Bonus Action. When you do so, you gain Temporary Hit Points equal to your level."
+      },
+      {
+        "name": "Relentless Endurance",
+        "desc": "When you are reduced to 0 Hit Points but not killed outright, you can drop to 1 Hit Point instead. You can't use this trait again until you finish a Long Rest."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Средний."
+      },
+      {
+        "name": "Скорость",
+        "desc": "30 футов."
+      },
+      {
+        "name": "Тёмное зрение",
+        "desc": "Радиус 120 футов."
+      },
+      {
+        "name": "Выброс адреналина",
+        "desc": "Вы можете использовать Рывок как Бонусное действие. Сделав так, вы также получаете Временные Хиты, равные вашему уровню!"
+      },
+      {
+        "name": "Неукротимая выносливость",
+        "desc": "Если ваши хиты опустились до 0, но вы не были убиты наповал, они вместо этого опускаются до 1. Использование — раз в Продолжительный отдых."
+      }
+    ],
+    "subraces": []
+  },
+  {
+    "nameEn": "Tiefling",
+    "nameRu": "Тифлинг",
+    "traitsEn": [
+      {
+        "name": "Creature Type",
+        "desc": "You are a Humanoid."
+      },
+      {
+        "name": "Size",
+        "desc": "You are Medium or Small."
+      },
+      {
+        "name": "Speed",
+        "desc": "Your base walking speed is 30 feet."
+      },
+      {
+        "name": "Darkvision",
+        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
+      },
+      {
+        "name": "Fiendish Legacy",
+        "desc": "Choose your legacy: Abyssal, Chthonic, or Infernal. This choice determines your Damage Resistance and spells learned at 1st, 3rd, and 5th levels."
+      },
+      {
+        "name": "Otherworldly Wings",
+        "desc": "At 5th level, for 10 minutes as a Bonus Action, you sprout wings. Gain Fly speed equal to your Speed."
+      }
+    ],
+    "traitsRu": [
+      {
+        "name": "Тип существа",
+        "desc": "Вы — Гуманоид."
+      },
+      {
+        "name": "Размер",
+        "desc": "Средний или Маленький."
+      },
+      {
+        "name": "Скорость",
+        "desc": "30 футов."
+      },
+      {
+        "name": "Тёмное зрение",
+        "desc": "Радиус 60 футов."
+      },
+      {
+        "name": "Дьявольское наследие",
+        "desc": "Выберите: Бездны, Хтоническое или Инфернальное. Определяет ваше Сопротивление Урону и список дополнительных заклинаний."
+      },
+      {
+        "name": "Потусторонние крылья",
+        "desc": "На 5-м уровне вы Бонусным действием на 10 минут можете распустить крылья и получить скорость полёта 30 футов."
+      }
+    ],
+    "subraces": []
+  }
+]

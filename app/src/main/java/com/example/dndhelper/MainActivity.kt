@@ -9,25 +9,47 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import com.example.dndhelper.data.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+// --- ГЛОБАЛЬНЫЕ ИНСТРУМЕНТЫ ЛОКАЛИЗАЦИИ ---
+val LocalAppLanguage = compositionLocalOf { "ru" }
+
+@Composable
+fun tr(ru: String, en: String): String {
+    val currentLang = LocalAppLanguage.current.lowercase()
+    val isEn = currentLang == "en" || currentLang == "english"
+    return if (isEn) en else ru
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val repository = SpellRepository(this)
+        val raceRepository = RaceRepository(this)
+        val classRepository = ClassRepository(this)
         val storage = CharacterStorage(this)
         val prefs = getSharedPreferences("dnd_settings", MODE_PRIVATE)
 
         setContent {
-            // Состояния для заклинаний
+            // Состояния для заклинаний и рас
             var spellList by remember { mutableStateOf(emptyList<Spell>()) }
             var classSpells by remember { mutableStateOf(emptyMap<String, List<String>>()) }
+            var raceList2014 by remember { mutableStateOf(emptyList<Race>()) }
+            var raceList2024 by remember { mutableStateOf(emptyList<Race>()) }
+            var classList2014 by remember { mutableStateOf(emptyList<DndClass>()) }
+            var classList2024 by remember { mutableStateOf(emptyList<DndClass>()) }
 
             // Состояние персонажа и настроек
             var selectedCharacter by remember { mutableStateOf<CharacterSaveData?>(null) }
             var selectedLanguage by remember { mutableStateOf<String?>(prefs.getString("language", null)) }
             var selectedRuleset by remember { mutableStateOf(prefs.getString("ruleset", "2024") ?: "2024") }
+            val raceList = if (selectedRuleset == "2024") raceList2024 else raceList2014
+            val classList = if (selectedRuleset == "2024") classList2024 else classList2014
 
             // Определение имени файла БД на основе выбора пользователя
             val dbName = when {
@@ -46,16 +68,29 @@ class MainActivity : ComponentActivity() {
             val bestiaryList by bestiaryViewModel.monsters.collectAsState()
 
             LaunchedEffect(Unit) {
-                spellList = repository.loadSpellsFromAssets()
-                classSpells = repository.loadClassSpells()
+                withContext(Dispatchers.IO) {
+                    val loadedSpells = repository.loadSpellsFromDb()
+                    val loadedClassSpells = repository.loadClassSpells()
+                    val loadedRaces14 = raceRepository.loadRaces("2014")
+                    val loadedRaces24 = raceRepository.loadRaces("2024")
+                    val loadedClasses14 = classRepository.loadClasses("2014")
+                    val loadedClasses24 = classRepository.loadClasses("2024")
+                    spellList = loadedSpells
+                    classSpells = loadedClassSpells
+                    raceList2014 = loadedRaces14
+                    raceList2024 = loadedRaces24
+                    classList2014 = loadedClasses14
+                    classList2024 = loadedClasses24
+                }
             }
             MaterialTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    if (selectedLanguage == null) {
-                        LanguageSelectionScreen { lang ->
+                CompositionLocalProvider(LocalAppLanguage provides (selectedLanguage ?: "ru")) {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        if (selectedLanguage == null) {
+                            LanguageSelectionScreen { lang ->
                             prefs.edit().putString("language", lang).apply()
                             selectedLanguage = lang
                         }
@@ -68,6 +103,8 @@ class MainActivity : ComponentActivity() {
                         MainGameContent(
                             spells = spellList,
                             classSpells = classSpells,
+                            races = raceList,
+                            classes = classList,
                             language = selectedLanguage!!,
                             character = selectedCharacter!!,
                             storage = storage,
@@ -85,10 +122,11 @@ class MainActivity : ComponentActivity() {
                             },
                             onBackToTavern = { selectedCharacter = null },
                                     onLanguageChange = { newLang ->
-                                prefs.edit().putString("language", newLang).apply()
-                                selectedLanguage = newLang
-                            }
-                        )
+                                    prefs.edit().putString("language", newLang).apply()
+                                    selectedLanguage = newLang
+                                }
+                            )
+                        }
                     }
                 }
             }

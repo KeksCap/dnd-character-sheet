@@ -19,9 +19,13 @@ fun parseMonsterRawData(json: String?): MonsterRawData? {
 
 // ПРАВИЛЬНЫЙ ГРАММАТИЧЕСКИЙ ПЕРЕВОД
 // Берет размер И ТИП, чтобы согласовать роды (ОгромнОЕ чудовище, МаленькИЙ зверь)
-fun translateSizeAndType(size: String?, type: String?): String {
+fun translateSizeAndType(size: String?, type: String?, language: String = "ru"): String {
     val s = size?.lowercase() ?: "?"
     val t = type?.lowercase() ?: "?"
+
+    if (language == "en") {
+        return "${s.replaceFirstChar { it.uppercase() }} ${t.replaceFirstChar { it.uppercase() }}"
+    }
 
     // Сначала переведем тип, чтобы понять род
     val typeRu = when (t) {
@@ -80,8 +84,11 @@ fun translateSizeAndType(size: String?, type: String?): String {
 }
 
 // Перевод мировоззрения
-fun translateAlignment(alignment: String?): String {
+fun translateAlignment(alignment: String?, language: String = "ru"): String {
     if (alignment == null) return "?"
+    
+    if (language == "en") return alignment.replaceFirstChar { it.uppercase() }
+
     return alignment.lowercase()
         .replace("chaotic evil", "хаотично-злой")
         .replace("chaotic good", "хаотично-добрый")

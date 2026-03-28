@@ -24,13 +24,15 @@ import com.example.dndhelper.data.Monster
 // --- ВСПОМОГАТЕЛЬНЫЕ КОМПОНЕНТЫ ДЛЯ ДИЗАЙНА ---
 
 @Composable
-fun StatItem(name: String, value: Int?, save: Int? = null) {
+fun StatItem(name: String, value: Int?, save: Int? = null, language: String = "ru") {
+    val isEn = language == "en"
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = name, fontWeight = FontWeight.Bold, color = Color(0xFF8B0000))
         val mod = value?.let { (it - 10) / 2 }?.let { if (it >= 0) "+$it" else "$it" } ?: "?"
         Text(text = "$mod ($value)", fontSize = 16.sp, fontWeight = FontWeight.Bold)
         save?.let {
-            Text(text = "Спас: ${if (it >= 0) "+$it" else "$it"}", fontSize = 12.sp, color = Color.Gray)
+            val saveText = if (isEn) "Save" else "Спас"
+            Text(text = "$saveText: ${if (it >= 0) "+$it" else "$it"}", fontSize = 12.sp, color = Color.Gray)
         }
     }
 }
@@ -61,8 +63,10 @@ fun StatHeader(text: String) {
 @Composable
 fun MonsterDetailDialog(
     monster: Monster,
+    language: String = "ru",
     onDismiss: () -> Unit
 ) {
+    val isEn = language == "en"
     // Парсим rawData один раз при открытии
     val fullData = remember(monster) { parseMonsterRawData(monster.rawData) }
 
@@ -86,15 +90,15 @@ fun MonsterDetailDialog(
             ) {
                 // ИМЯ
                 Text(
-                    text = monster.name ?: "Неизвестный",
+                    text = monster.name ?: (if (isEn) "Unknown" else "Неизвестный"),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF8B0000)
                 )
 
                 // ТИП, РАЗМЕР, МИРОВОЗЗРЕНИЕ (Уже согласовано грамматически)
-                val typeRu = translateSizeAndType(monster.size, monster.type)
-                val alignmentRu = translateAlignment(monster.alignment)
+                val typeRu = translateSizeAndType(monster.size, monster.type, language)
+                val alignmentRu = translateAlignment(monster.alignment, language)
                 Text(text = "$typeRu, $alignmentRu", fontStyle = FontStyle.Italic, color = Color.Gray)
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -103,8 +107,10 @@ fun MonsterDetailDialog(
 
                 // КД, ХП, СКОРОСТЬ
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(text = "🛡️ КД: ${monster.armorClass ?: "-"}", fontWeight = FontWeight.Bold)
-                    Text(text = "❤️ ОЗ: ${monster.hitPoints ?: "-"}", fontWeight = FontWeight.Bold)
+                    val acText = if (isEn) "🛡️ AC" else "🛡️ КД"
+                    val hpText = if (isEn) "❤️ HP" else "❤️ ОЗ"
+                    Text(text = "$acText: ${monster.armorClass ?: "-"}", fontWeight = FontWeight.Bold)
+                    Text(text = "$hpText: ${monster.hitPoints ?: "-"}", fontWeight = FontWeight.Bold)
 
                     val speedRu = fullData?.speed?.toList()?.joinToString(", ") { "${it.first}: ${it.second}" } ?: "?"
                     Text(text = "🏃 $speedRu", color = Color.Gray, modifier = Modifier.weight(1f), textAlign = TextAlign.End)
@@ -116,15 +122,15 @@ fun MonsterDetailDialog(
 
                 // --- ШЕСТЬ ХАРАКТЕРИСТИК И СПАСБРОСКИ ---
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    StatItem("СИЛ", fullData?.strength, fullData?.strength_save)
-                    StatItem("ЛОВ", fullData?.dexterity, fullData?.dexterity_save)
-                    StatItem("ТЕЛ", fullData?.constitution, fullData?.constitution_save)
+                    StatItem(if (isEn) "STR" else "СИЛ", fullData?.strength, fullData?.strength_save, language)
+                    StatItem(if (isEn) "DEX" else "ЛОВ", fullData?.dexterity, fullData?.dexterity_save, language)
+                    StatItem(if (isEn) "CON" else "ТЕЛ", fullData?.constitution, fullData?.constitution_save, language)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    StatItem("ИНТ", fullData?.intelligence, fullData?.intelligence_save)
-                    StatItem("МУД", fullData?.wisdom, fullData?.wisdom_save)
-                    StatItem("ХАР", fullData?.charisma, fullData?.charisma_save)
+                    StatItem(if (isEn) "INT" else "ИНТ", fullData?.intelligence, fullData?.intelligence_save, language)
+                    StatItem(if (isEn) "WIS" else "МУД", fullData?.wisdom, fullData?.wisdom_save, language)
+                    StatItem(if (isEn) "CHA" else "ХАР", fullData?.charisma, fullData?.charisma_save, language)
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -132,31 +138,36 @@ fun MonsterDetailDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // --- ЧУВСТВА, ЯЗЫКИ, ОПАСНОСТЬ ---
-                fullData?.senses?.let { Text(text = "Чувства: $it") }
-                fullData?.languages?.let { Text(text = "Языки: $it") }
-                Text(text = "Опасность: ${monster.cr ?: "?"} (${(monster.cr ?: 0.0) * 200} ОП)", fontWeight = FontWeight.Bold)
+                val sensesLabel = if (isEn) "Senses" else "Чувства"
+                val langLabel = if (isEn) "Languages" else "Языки"
+                val crLabel = if (isEn) "Challenge" else "Опасность"
+                val xpLabel = if (isEn) "XP" else "ОП"
+                
+                fullData?.senses?.let { Text(text = "$sensesLabel: $it") }
+                fullData?.languages?.let { Text(text = "$langLabel: $it") }
+                Text(text = "$crLabel: ${monster.cr ?: "?"} (${(monster.cr ?: 0.0) * 200.0} $xpLabel)", fontWeight = FontWeight.Bold)
 
                 // --- СПОСОБНОСТИ (ПАССИВКИ) ---
                 fullData?.special_abilities?.ifEmpty { null }?.let { abilities ->
-                    StatHeader("Особенности")
+                    StatHeader(if (isEn) "Features" else "Особенности")
                     abilities.forEach { ActionItem(it) }
                 }
 
                 // --- ДЕЙСТВИЯ (АТАКИ) ---
                 fullData?.actions?.ifEmpty { null }?.let { actions ->
-                    StatHeader("Действия")
+                    StatHeader(if (isEn) "Actions" else "Действия")
                     actions.forEach { ActionItem(it) }
                 }
 
                 // --- ЛЕГЕНДАРНЫЕ ДЕЙСТВИЯ ---
                 fullData?.legendary_actions?.ifEmpty { null }?.let { actions ->
-                    StatHeader("Легендарные действия")
+                    StatHeader(if (isEn) "Legendary Actions" else "Легендарные действия")
                     actions.forEach { ActionItem(it) }
                 }
 
                 // --- ЛОР И ОПИСАНИЕ (BOT IT!) ---
                 fullData?.desc?.let {
-                    StatHeader("Описание")
+                    StatHeader(if (isEn) "Description" else "Описание")
                     Text(text = it, style = MaterialTheme.typography.bodyMedium, fontStyle = FontStyle.Italic)
                 }
 
@@ -164,7 +175,7 @@ fun MonsterDetailDialog(
 
                 // КНОПКА ЗАКРЫТЬ
                 Button(onClick = onDismiss, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                    Text("Закрыть")
+                    Text(if (isEn) "Close" else "Закрыть")
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
