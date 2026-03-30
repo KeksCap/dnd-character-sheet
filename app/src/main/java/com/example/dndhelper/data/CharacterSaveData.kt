@@ -50,7 +50,25 @@ data class CharacterSaveData(
     val ideals: String = "",
     val bonds: String = "",
     val flaws: String = "",
-    val magicItems: List<MagicItem> = emptyList()
+    val magicItems: List<MagicItem> = emptyList(),
+
+    // --- ЯЧЕЙКИ ЗАКЛИНАНИЙ (1-9 УРОВЕНЬ + 0 ИНДЕКС) ---
+    val maxSpellSlots: List<Int> = List(10) { 0 },
+    val currentSpellSlots: List<Int> = List(10) { 0 },
+
+    // --- КОСТИ ХИТОВ (SHORT REST) ---
+    val maxHitDice: Int = 1,
+    val currentHitDice: Int = 1,
+    val hitDiceType: Int = 8, // Значение грани (6, 8, 10, 12)
+
+    // --- ЗЕЛЬЯ ЛЕЧЕНИЯ ---
+    val potionHealing: Int = 0,   // 2d4 + 2
+    val potionGreater: Int = 0,   // 4d4 + 4
+    val potionSuperior: Int = 0,  // 8d4 + 8
+    val potionSupreme: Int = 0,    // 10d4 + 20
+
+    // --- ДРУГОЕ ---
+    val speed: String = "30ft"
 )
 
 // Кастомное оружие

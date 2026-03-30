@@ -45,6 +45,18 @@ import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MedicalServices
+import androidx.compose.material.icons.filled.Coffee
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.RadioButtonUnchecked
+import androidx.compose.material.icons.filled.NightsStay
+import androidx.compose.material.icons.filled.Remove
 import com.example.dndhelper.data.CharacterSaveData
 import com.example.dndhelper.data.CharacterStorage
 import com.example.dndhelper.data.StatSaveData
@@ -499,9 +511,9 @@ fun CharacterSheetTab(
 ) {
 
 
-    var maxHpInput by remember { mutableStateOf("45") }
+    var maxHpInput by remember(character.id) { mutableStateOf(character.maxHp.toString()) }
     val maxHp = maxHpInput.toIntOrNull() ?: 1
-    var currentHp by remember { mutableIntStateOf(39) }
+    var currentHp by remember(character.id, character.currentHp) { mutableIntStateOf(character.currentHp) }
 
     var stats by remember { mutableStateOf(listOf(
         AbilityScore("Сила", 16, Icons.Default.FitnessCenter, listOf("Атлетика")),
@@ -602,11 +614,54 @@ fun CharacterSheetTab(
                 if (isEditingHp) {
                     OutlinedTextField(
                         value = maxHpInput,
-                        onValueChange = { if (it.all { c -> c.isDigit() }) maxHpInput = it },
+                        onValueChange = { 
+                            if (it.all { c -> c.isDigit() }) {
+                                maxHpInput = it
+                                val newMax = it.toIntOrNull() ?: character.maxHp
+                                if (newMax != character.maxHp) {
+                                    onCharacterChange(character.copy(maxHp = newMax))
+                                }
+                            }
+                        },
                         label = { Text(tr("Макс. ХП", "Max HP")) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.width(150.dp).padding(bottom = 8.dp)
                     )
+
+                    // Настройка Костей Хитов
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 8.dp)) {
+                        Text(tr("Кости Хитов: ", "Hit Dice: "), style = MaterialTheme.typography.bodySmall)
+                        
+                        var showDiceMenu by remember { mutableStateOf(false) }
+                        TextButton(onClick = { showDiceMenu = true }) {
+                            Text("d${character.hitDiceType}", fontWeight = FontWeight.Bold)
+                        }
+                        DropdownMenu(expanded = showDiceMenu, onDismissRequest = { showDiceMenu = false }) {
+                            listOf(6, 8, 10, 12).forEach { dice ->
+                                DropdownMenuItem(
+                                    text = { Text("d$dice") },
+                                    onClick = { 
+                                        onCharacterChange(character.copy(hitDiceType = dice))
+                                        showDiceMenu = false
+                                    }
+                                )
+                            }
+                        }
+
+                        Spacer(Modifier.width(8.dp))
+                        
+                        OutlinedTextField(
+                            value = character.maxHitDice.toString(),
+                            onValueChange = { 
+                                val newVal = it.toIntOrNull() ?: character.maxHitDice
+                                onCharacterChange(character.copy(maxHitDice = newVal, currentHitDice = newVal.coerceAtMost(newVal))) 
+                            },
+                            label = { Text(tr("Макс. кол-во", "Max dice")) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier.width(100.dp),
+                            textStyle = TextStyle(fontSize = 12.sp)
+                        )
+                    }
                 } else {
                     Text("$currentHp / $maxHp", fontSize = 36.sp, fontWeight = FontWeight.ExtraBold)
                 }
@@ -624,8 +679,11 @@ fun CharacterSheetTab(
                                     val event = awaitPointerEvent()
                                     val scrollDelta = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
                                     if (scrollDelta != 0f) {
-                                        if (scrollDelta < 0) currentHp = (currentHp + 1).coerceAtMost(maxHp)
-                                        else currentHp = (currentHp - 1).coerceAtLeast(0)
+                                        val newHp = if (scrollDelta < 0) (currentHp + 1).coerceAtMost(maxHp)
+                                                    else (currentHp - 1).coerceAtLeast(0)
+                                        if (newHp != currentHp) {
+                                            onCharacterChange(character.copy(currentHp = newHp))
+                                        }
                                         event.changes.forEach { it.consume() }
                                     }
                                 }
@@ -643,7 +701,7 @@ fun CharacterSheetTab(
                     // --- УРОН ---
                     val damageRed = Color(0xFFB71C1C)
                     Button(
-                        onClick = { currentHp = (currentHp - 5).coerceAtLeast(0) },
+                        onClick = { onCharacterChange(character.copy(currentHp = (currentHp - 5).coerceAtLeast(0))) },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = damageRed.copy(alpha = 0.75f)),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
@@ -651,7 +709,7 @@ fun CharacterSheetTab(
                         Text("-5", fontWeight = FontWeight.Bold, fontSize = 13.sp)
                     }
                     Button(
-                        onClick = { currentHp = (currentHp - 1).coerceAtLeast(0) },
+                        onClick = { onCharacterChange(character.copy(currentHp = (currentHp - 1).coerceAtLeast(0))) },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = damageRed),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
@@ -664,7 +722,7 @@ fun CharacterSheetTab(
                     // --- ЛЕЧЕНИЕ ---
                     val healGreen = Color(0xFF2E7D32)
                     Button(
-                        onClick = { currentHp = (currentHp + 1).coerceAtMost(maxHp) },
+                        onClick = { onCharacterChange(character.copy(currentHp = (currentHp + 1).coerceAtMost(maxHp))) },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = healGreen.copy(alpha = 0.75f)),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
@@ -672,13 +730,159 @@ fun CharacterSheetTab(
                         Text("+1", fontWeight = FontWeight.Bold, fontSize = 13.sp)
                     }
                     Button(
-                        onClick = { currentHp = (currentHp + 5).coerceAtMost(maxHp) },
+                        onClick = { onCharacterChange(character.copy(currentHp = (currentHp + 5).coerceAtMost(maxHp))) },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = healGreen),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
                     ) {
                         Text("+5", fontWeight = FontWeight.Bold, fontSize = 13.sp)
                     }
+                }
+
+                // --- БЫСТРЫЕ КНОПКИ ЗЕЛИЙ (ПОЯВЛЯЮТСЯ ЕСЛИ ЕСТЬ) ---
+                val potions = listOf(
+                    Triple(character.potionHealing, tr("Зелье", "Potion"), "2d4+2"),
+                    Triple(character.potionGreater, tr("Большое", "Greater"), "4d4+4"),
+                    Triple(character.potionSuperior, tr("Отличное", "Superior"), "8d4+8"),
+                    Triple(character.potionSupreme, tr("Превосходное", "Supreme"), "10d4+20")
+                )
+                
+                if (potions.any { it.first > 0 }) {
+                    Text(
+                        tr("ВЫПИТЬ ЗЕЛЬЕ:", "DRINK POTION:"), 
+                        fontSize = 10.sp, 
+                        fontWeight = FontWeight.Bold, 
+                        modifier = Modifier.padding(top = 12.dp),
+                        color = Color.Gray
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        potions.forEach { (count, name, formula) ->
+                            if (count > 0) {
+                                FilterChip(
+                                    selected = false,
+                                    onClick = {
+                                        // Логика лечения зельем
+                                        val healAmount = when(formula) {
+                                            "2d4+2" -> (1..2).sumOf { (1..4).random() } + 2
+                                            "4d4+4" -> (1..4).sumOf { (1..4).random() } + 4
+                                            "8d4+8" -> (1..8).sumOf { (1..4).random() } + 8
+                                            "10d4+20" -> (1..10).sumOf { (1..4).random() } + 20
+                                            else -> 0
+                                        }
+                                        val newHp = (character.currentHp + healAmount).coerceAtMost(character.maxHp)
+                                        val fieldToUpdate = when(formula) {
+                                            "2d4+2" -> character.copy(potionHealing = count - 1, currentHp = newHp)
+                                            "4d4+4" -> character.copy(potionGreater = count - 1, currentHp = newHp)
+                                            "8d4+8" -> character.copy(potionSuperior = count - 1, currentHp = newHp)
+                                            "10d4+20" -> character.copy(potionSupreme = count - 1, currentHp = newHp)
+                                            else -> character
+                                        }
+                                        onCharacterChange(fieldToUpdate)
+                                    },
+                                    label = { Text("$name ($count)") },
+                                    leadingIcon = { Icon(Icons.Default.LocalPharmacy, null, modifier = Modifier.size(16.dp)) }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                // --- КНОПКИ ОТДЫХА ---
+                var showLongRestDialog by remember { mutableStateOf(false) }
+                var showShortRestDialog by remember { mutableStateOf(false) }
+                
+                Row(modifier = Modifier.padding(top = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Короткий отдых
+                    Button(
+                        onClick = { showShortRestDialog = true },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Icon(Icons.Default.Coffee, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(tr("КОРОТКИЙ", "SHORT"), fontWeight = FontWeight.Bold)
+                    }
+
+                    // Длительный отдых
+                    Button(
+                        onClick = { showLongRestDialog = true },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Icon(Icons.Default.NightsStay, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(tr("ДЛИТЕЛЬНЫЙ", "LONG"), fontWeight = FontWeight.Bold)
+                    }
+                }
+
+                // Диалог Короткого отдыха
+                if (showShortRestDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showShortRestDialog = false },
+                        title = { Text(tr("Короткий отдых", "Short Rest")) },
+                        text = {
+                            Column {
+                                Text(tr("Кости хитов: ${character.currentHitDice} / ${character.maxHitDice} (d${character.hitDiceType})", 
+                                       "Hit Dice: ${character.currentHitDice} / ${character.maxHitDice} (d${character.hitDiceType})"))
+                                Spacer(Modifier.height(8.dp))
+                                if (character.currentHitDice > 0) {
+                                    Button(
+                                        onClick = {
+                                            val roll = (1..character.hitDiceType).random()
+                                            val conValue = stats.find { it.name == "Тело" || it.name == "Constitution" }?.baseScore ?: 10
+                                            val conMod = (conValue - 10) / 2
+                                            val heal = (roll + conMod).coerceAtLeast(1)
+                                            onCharacterChange(character.copy(
+                                                currentHitDice = character.currentHitDice - 1,
+                                                currentHp = (character.currentHp + heal).coerceAtMost(character.maxHp)
+                                            ))
+                                        },
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Text(tr("Потратить 1 кость и полечиться", "Spend 1 die and heal"))
+                                    }
+                                } else {
+                                    Text(tr("Нет доступных костей хитов!", "No hit dice available!"), color = Color.Gray)
+                                }
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = { showShortRestDialog = false }) { Text(tr("Закончить", "Finish")) }
+                        }
+                    )
+                }
+
+                if (showLongRestDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showLongRestDialog = false },
+                        title = { Text(tr("Длительный отдых", "Long Rest")) },
+                        text = { Text(tr("Восстановить все хиты, ячейки и часть костей хитов?", "Restore all health, slots, and some hit dice?")) },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                // По правилам восстанавливается половина от макс количества костей хитов (минимум 1).
+                                val diceToRestore = (character.maxHitDice / 2).coerceAtLeast(1)
+                                val updated = character.copy(
+                                    currentHp = character.maxHp,
+                                    currentSpellSlots = character.maxSpellSlots,
+                                    currentHitDice = (character.currentHitDice + diceToRestore).coerceAtMost(character.maxHitDice)
+                                )
+                                onCharacterChange(updated)
+                                showLongRestDialog = false
+                            }) {
+                                Text(tr("Да", "Yes"))
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showLongRestDialog = false }) {
+                                Text(tr("Нет", "No"))
+                            }
+                        }
+                    )
                 }
             }
         }
@@ -706,8 +910,43 @@ fun CharacterSheetTab(
                     }
                 }
             }
-            CombatStatSquare(tr("ИНИЦ.", "INIT."), initiativeText, Modifier.weight(1f))
-            CombatStatSquare(tr("СКОРОСТЬ", "SPEED"), tr("30фт", "30ft"), Modifier.weight(1f))
+            var showSpeedDialog by remember { mutableStateOf(false) }
+            
+            CombatStatSquare(
+                label = tr("ИНИЦ.", "INIT."), 
+                value = initiativeText, 
+                modifier = Modifier.weight(1f)
+            )
+            CombatStatSquare(
+                label = tr("СКОРОСТЬ", "SPEED"), 
+                value = character.speed, 
+                modifier = Modifier.weight(1f).clickable { showSpeedDialog = true }
+            )
+
+            if (showSpeedDialog) {
+                var speedInput by remember { mutableStateOf(character.speed) }
+                AlertDialog(
+                    onDismissRequest = { showSpeedDialog = false },
+                    title = { Text(tr("Изменить скорость", "Edit Speed")) },
+                    text = {
+                        OutlinedTextField(
+                            value = speedInput,
+                            onValueChange = { speedInput = it },
+                            label = { Text(tr("Скорость", "Speed")) },
+                            singleLine = true
+                        )
+                    },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            onCharacterChange(character.copy(speed = speedInput))
+                            showSpeedDialog = false
+                        }) { Text("OK") }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showSpeedDialog = false }) { Text(tr("Отмена", "Cancel")) }
+                    }
+                )
+            }
         }
 
         // --- Диалог Калькулятора КД ---
@@ -1176,6 +1415,145 @@ fun CharacterSheetTab(
             )
         }
 
+        // --- БЛОК ЯЧЕЕК ЗАКЛИНАНИЙ ---
+        Text(
+            text = tr("ЯЧЕЙКИ ЗАКЛИНАНИЙ", "SPELL SLOTS"),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+        )
+
+        ElevatedCard(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                var showAddSlotsDialog by remember { mutableStateOf(false) }
+                
+                val activeLevels = (1..9).filter { character.maxSpellSlots[it] > 0 }
+                
+                if (activeLevels.isEmpty()) {
+                    Text(
+                        tr("Ячейки не настроены.", "Slots not configured."),
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        color = Color.Gray,
+                        fontSize = 14.sp
+                    )
+                } else {
+                    activeLevels.forEach { lvl ->
+                        val max = character.maxSpellSlots[lvl]
+                        val current = character.currentSpellSlots[lvl]
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = tr("Уровень $lvl", "Level $lvl"),
+                                modifier = Modifier.width(80.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            // Кнопки для настройки МАКСИМУМА
+                            IconButton(
+                                onClick = {
+                                    val newMax = character.maxSpellSlots.toMutableList().apply { this[lvl] = (this[lvl] - 1).coerceAtLeast(0) }
+                                    val newCurrent = character.currentSpellSlots.toMutableList().apply { this[lvl] = this[lvl].coerceAtMost(newMax[lvl]) }
+                                    onCharacterChange(character.copy(maxSpellSlots = newMax, currentSpellSlots = newCurrent))
+                                },
+                                modifier = Modifier.size(30.dp)
+                            ) { Icon(Icons.Default.Remove, null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary) }
+
+                            Text("$max", modifier = Modifier.padding(horizontal = 4.dp), fontWeight = FontWeight.Bold)
+
+                            IconButton(
+                                onClick = {
+                                    val newMax = character.maxSpellSlots.toMutableList().apply { this[lvl] = (this[lvl] + 1).coerceAtMost(10) }
+                                    onCharacterChange(character.copy(maxSpellSlots = newMax))
+                                },
+                                modifier = Modifier.size(30.dp)
+                            ) { Icon(Icons.Default.Add, null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary) }
+
+                            Spacer(Modifier.width(12.dp))
+
+                            // Отображение текущих ячеек (кружочки)
+                            Row(modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState())) {
+                                for (i in 1..max) {
+                                    val isAvailable = i <= current
+                                    Icon(
+                                        imageVector = if (isAvailable) Icons.Default.Circle else Icons.Default.RadioButtonUnchecked,
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(24.dp)
+                                            .padding(2.dp)
+                                            .clickable {
+                                                val newCurrent = character.currentSpellSlots.toMutableList().apply {
+                                                    this[lvl] = if (isAvailable) i - 1 else i
+                                                }
+                                                onCharacterChange(character.copy(currentSpellSlots = newCurrent))
+                                            },
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Кнопка добавления ячеек для нового уровня
+                TextButton(
+                    onClick = { showAddSlotsDialog = true },
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                ) {
+                    Icon(Icons.Default.Add, null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(tr("ДОБАВИТЬ УРОВЕНЬ", "ADD LEVEL"))
+                }
+
+                if (showAddSlotsDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showAddSlotsDialog = false },
+                        title = { Text(tr("Добавить ячейки", "Add Spell Slots")) },
+                        text = {
+                            Column {
+                                Text(tr("Выберите уровень заклинаний:", "Select spell level:"))
+                                Spacer(Modifier.height(8.dp))
+                                (1..9).chunked(3).forEach { row ->
+                                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                                        row.forEach { lvl ->
+                                            val isAdded = character.maxSpellSlots[lvl] > 0
+                                            Button(
+                                                onClick = {
+                                                    val newMax = character.maxSpellSlots.toMutableList().apply { this[lvl] = 1 }
+                                                    val newCurrent = character.currentSpellSlots.toMutableList().apply { this[lvl] = 1 }
+                                                    onCharacterChange(character.copy(maxSpellSlots = newMax, currentSpellSlots = newCurrent))
+                                                    showAddSlotsDialog = false
+                                                },
+                                                modifier = Modifier.padding(4.dp),
+                                                enabled = !isAdded,
+                                                colors = ButtonDefaults.buttonColors(
+                                                    containerColor = if (isAdded) Color.Gray else MaterialTheme.colorScheme.primary
+                                                )
+                                            ) {
+                                                Text("$lvl")
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = { showAddSlotsDialog = false }) { Text(tr("Закрыть", "Close")) }
+                        }
+                    )
+                }
+            }
+        }
+
+        // КНОПКА СОЗДАНИЯ КАСТОМНОГО ЗАКЛИНАНИЯ
+        var showCreateSpellDialog by remember { mutableStateOf(false) }
+
         Row(
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -1186,11 +1564,10 @@ fun CharacterSheetTab(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
-            // КНОПКА СОЗДАНИЯ КАСТОМНОГО ЗАКЛИНАНИЯ
-            var showCreateSpellDialog by remember { mutableStateOf(false) }
             IconButton(onClick = { showCreateSpellDialog = true }) {
                 Icon(Icons.Default.Add, contentDescription = "Создать", tint = MaterialTheme.colorScheme.primary)
             }
+        }
 
             // --- ВСПЛЫВАЮЩЕЕ ОКНО ФОРМЫ СОЗДАНИЯ ---
             if (showCreateSpellDialog) {
@@ -1248,7 +1625,6 @@ fun CharacterSheetTab(
                     }
                 )
             }
-        }
 
         // ВЫВОД ЗАКЛИНАНИЙ
         if (character.knownSpells.isEmpty()) {
@@ -1636,6 +2012,21 @@ fun EquipmentTab(
                     confirmButton = { TextButton(onClick = { showRatesDialog = false }) { Text("OK") } }
                 )
             }
+        }
+
+        // --- ЗЕЛЬЯ ЛЕЧЕНИЯ (СНАРЯЖЕНИЕ) ---
+        item {
+            Text(tr("ЗЕЛЬЯ ЛЕЧЕНИЯ", "HEALING POTIONS"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+            Spacer(Modifier.height(8.dp))
+            ElevatedCard(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    PotionManagementRow(tr("Обычное (2к4+2)", "Healing (2d4+2)"), character.potionHealing) { onCharacterChange(character.copy(potionHealing = it)) }
+                    PotionManagementRow(tr("Большое (4к4+4)", "Greater (4d4+4)"), character.potionGreater) { onCharacterChange(character.copy(potionGreater = it)) }
+                    PotionManagementRow(tr("Отличное (8к4+8)", "Superior (8d4+8)"), character.potionSuperior) { onCharacterChange(character.copy(potionSuperior = it)) }
+                    PotionManagementRow(tr("Превосходное (10к4+20)", "Supreme (10d4+20)"), character.potionSupreme) { onCharacterChange(character.copy(potionSupreme = it)) }
+                }
+            }
+            Spacer(Modifier.height(24.dp))
         }
 
 
@@ -2524,6 +2915,30 @@ fun CoinRow(label: String, value: Int, onValueChange: (Int) -> Unit, color: Colo
 }
 
 @Composable
+fun PotionManagementRow(label: String, value: Int, onValueChange: (Int) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Default.MedicalServices, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+            Spacer(Modifier.width(8.dp))
+            Text(label, fontSize = 14.sp)
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { if (value > 0) onValueChange(value - 1) }, modifier = Modifier.size(32.dp)) {
+                Text("-", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            }
+            Text("$value", modifier = Modifier.padding(horizontal = 8.dp), fontWeight = FontWeight.Bold)
+            IconButton(onClick = { onValueChange(value + 1) }, modifier = Modifier.size(32.dp)) {
+                Text("+", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+    }
+}
+
+@Composable
 fun MagicItemDetailDialog(
     item: MagicItem,
     character: CharacterSaveData,
@@ -2811,4 +3226,4 @@ fun MagicItemsDirectoryTab(
         )
     }
 }
-
+
