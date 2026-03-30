@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
         val repository = SpellRepository(this)
         val raceRepository = RaceRepository(this)
         val classRepository = ClassRepository(this)
+        val magicItemRepository = MagicItemRepository(this)
         val storage = CharacterStorage(this)
         val prefs = getSharedPreferences("dnd_settings", MODE_PRIVATE)
 
@@ -43,6 +44,8 @@ class MainActivity : ComponentActivity() {
             var raceList2024 by remember { mutableStateOf(emptyList<Race>()) }
             var classList2014 by remember { mutableStateOf(emptyList<DndClass>()) }
             var classList2024 by remember { mutableStateOf(emptyList<DndClass>()) }
+            var magicItemList by remember { mutableStateOf(emptyList<MagicItem>()) }
+
 
             // Состояние персонажа и настроек
             var selectedCharacter by remember { mutableStateOf<CharacterSaveData?>(null) }
@@ -75,12 +78,14 @@ class MainActivity : ComponentActivity() {
                     val loadedRaces24 = raceRepository.loadRaces("2024")
                     val loadedClasses14 = classRepository.loadClasses("2014")
                     val loadedClasses24 = classRepository.loadClasses("2024")
+                    val loadedMagicItems = magicItemRepository.loadMagicItems()
                     spellList = loadedSpells
                     classSpells = loadedClassSpells
                     raceList2014 = loadedRaces14
                     raceList2024 = loadedRaces24
                     classList2014 = loadedClasses14
                     classList2024 = loadedClasses24
+                    magicItemList = loadedMagicItems
                 }
             }
             MaterialTheme {
@@ -124,7 +129,8 @@ class MainActivity : ComponentActivity() {
                                     onLanguageChange = { newLang ->
                                     prefs.edit().putString("language", newLang).apply()
                                     selectedLanguage = newLang
-                                }
+                                },
+                                magicItems = magicItemList
                             )
                         }
                     }

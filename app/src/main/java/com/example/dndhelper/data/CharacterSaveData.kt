@@ -49,7 +49,8 @@ data class CharacterSaveData(
     val personalityTraits: String = "",
     val ideals: String = "",
     val bonds: String = "",
-    val flaws: String = ""
+    val flaws: String = "",
+    val magicItems: List<MagicItem> = emptyList()
 )
 
 // Кастомное оружие

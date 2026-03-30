@@ -62,6 +62,9 @@ import com.example.dndhelper.data.CustomWeapon
 import com.example.dndhelper.data.CustomArmor
 import com.example.dndhelper.data.StandardEquipment
 import com.example.dndhelper.data.StandardItem
+import com.example.dndhelper.data.MagicItem
+import com.example.dndhelper.data.Attunement
+
 
 import com.example.dndhelper.data.Subclass
 import androidx.compose.runtime.mutableStateOf
@@ -76,7 +79,6 @@ import androidx.compose.foundation.Canvas
 import kotlinx.coroutines.launch
 
 
-var charLevel by mutableStateOf("5")
 val knownSpells = mutableStateListOf<SpellInfo>()
 
 @Composable
@@ -166,7 +168,8 @@ fun MainGameContent(
     bestiaryViewModel: BestiaryViewModel,
     currentRuleset: String,
     onRulesetChange: (String) -> Unit,
-    onLanguageChange: (String) -> Unit
+    onLanguageChange: (String) -> Unit,
+    magicItems: List<MagicItem> // НОВЫЙ СПИСОК
 ) {
     var activeTab by remember { mutableIntStateOf(0) }
     var showSettingsDialog by remember { mutableStateOf(false) }
@@ -240,7 +243,7 @@ fun MainGameContent(
         val isEn = language == "en" || language == "english"
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             when (activeTab) {
-                0 -> CharacterSheetTab(isEn = isEn, language = language, character = character, onCharacterChange = onCharacterChange)
+                0 -> CharacterSheetTab(isEn = isEn, language = language, character = character, onCharacterChange = onCharacterChange, magicItems = magicItems)
 
                 1 -> EquipmentTab(isEn = isEn, character = character, onCharacterChange = onCharacterChange)
                 2 -> SpellsDirectoryTab(isEn = isEn, spells = spells, classSpells = classSpells, language = language, character = character, onCharacterChange = onCharacterChange)
@@ -250,7 +253,10 @@ fun MainGameContent(
                     classes = classes,
                     currentRuleset = currentRuleset,
                     onRulesetChange = onRulesetChange,
-                    language = language
+                    language = language,
+                    magicItems = magicItems,
+                    character = character,
+                    onCharacterChange = onCharacterChange
                 )
             }
         }
@@ -488,7 +494,8 @@ fun CharacterSheetTab(
     isEn: Boolean,
     language: String, // Вернули обратно для корректной работы tr и внутренних проверок
     character: CharacterSaveData,
-    onCharacterChange: (CharacterSaveData) -> Unit
+    onCharacterChange: (CharacterSaveData) -> Unit,
+    magicItems: List<MagicItem>
 ) {
 
 
@@ -544,8 +551,15 @@ fun CharacterSheetTab(
     }
     val armorClass = selectedArmor.baseAc + dexBonus + (if (shieldEquipped) 2 else 0) + magicBonus
 
+    // Стейты для магических предметов
+    var selectedItemInSheet by remember { mutableStateOf<MagicItem?>(null) }
+    var showAddMagicItemDialog by remember { mutableStateOf(false) }
+    var showCreateCustomMagicItemInSheet by remember { mutableStateOf(false) }
+    var magicItemSearchQuery by remember { mutableStateOf("") }
+    
     // Стейт для всплывающего окна заклинания
     var selectedKnownSpellInfo by remember { mutableStateOf<SpellInfo?>(null) }
+
     val isRussian = !isEn
 
 
@@ -802,8 +816,8 @@ fun CharacterSheetTab(
                         StatCard(
                             stat = statData,
                             isEn = isEn,
+                            profBonus = profBonus,
                             onValueChange = { newValue ->
-
                                 stats = stats.map { if (it.name == statData.name) it.copy(baseScore = newValue) else it }
                             }
                         )
@@ -1025,6 +1039,141 @@ fun CharacterSheetTab(
                     )
                 }
             }
+        }
+
+        // --- МАГИЧЕСКИЕ ПРЕДМЕТЫ ---
+        Spacer(Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(tr("МАГИЧЕСКИЕ ПРЕДМЕТЫ", "MAGIC ITEMS"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Row {
+                TextButton(onClick = { showAddMagicItemDialog = true }) {
+                    Icon(Icons.Default.List, null, modifier = Modifier.size(16.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text(tr("Из списка", "From List"), fontSize = 12.sp, maxLines = 1, softWrap = false)
+                }
+                Spacer(Modifier.width(4.dp))
+                TextButton(onClick = { showCreateCustomMagicItemInSheet = true }) {
+                    Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text(tr("Своё", "Custom"), fontSize = 12.sp, maxLines = 1, softWrap = false)
+                }
+            }
+        }
+
+        ElevatedCard(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                if (character.magicItems.isEmpty()) {
+                    Text(tr("Нет магических предметов", "No magic items"), color = Color.Gray, fontSize = 12.sp, modifier = Modifier.padding(8.dp))
+                } else {
+                    character.magicItems.forEach { item ->
+                        val name = if (isEn) item.nameEn else item.nameRu
+                        val isAttuned = item.isAttuned
+                        
+                        ListItem(
+                            modifier = Modifier.clickable { selectedItemInSheet = item },
+                            headlineContent = { Text(name, fontWeight = FontWeight.Bold) },
+                            supportingContent = {
+                                Text(
+                                    text = buildString {
+                                        if (isAttuned) append("${tr("Настроено", "Attuned")} • ")
+                                        append(if (isEn) item.typeEn else item.typeRu)
+                                    },
+                                    color = if (isAttuned) MaterialTheme.colorScheme.tertiary else Color.Gray,
+                                    fontSize = 12.sp
+                                )
+                            },
+                            leadingContent = {
+                                Icon(
+                                    if (isAttuned) Icons.Default.Bolt else Icons.Default.Bolt,
+                                    null,
+                                    modifier = Modifier.size(20.dp),
+                                    tint = if (isAttuned) MaterialTheme.colorScheme.tertiary else Color.Gray.copy(alpha = 0.5f)
+                                )
+                            },
+                            trailingContent = {
+                                IconButton(onClick = {
+                                    val updated = character.magicItems.filterNot { it.slug == item.slug && it.nameEn == item.nameEn }
+                                    onCharacterChange(character.copy(magicItems = updated))
+                                }) { Icon(Icons.Default.Delete, null, tint = Color.Gray, modifier = Modifier.size(20.dp)) }
+                            }
+                        )
+                        if (item != character.magicItems.last()) {
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f))
+                        }
+                    }
+                }
+            }
+        }
+
+        // Диалоги для магических предметов
+        if (showAddMagicItemDialog) {
+            AlertDialog(
+                onDismissRequest = { showAddMagicItemDialog = false },
+                title = { Text(tr("Выберите предмет", "Select Magic Item")) },
+                text = {
+                    Column {
+                        OutlinedTextField(
+                            value = magicItemSearchQuery,
+                            onValueChange = { magicItemSearchQuery = it },
+                            label = { Text(tr("Поиск...", "Search...")) },
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                            singleLine = true
+                        )
+                        val itemsPick = magicItems.filter {
+                            val itemName = if (isEn) it.nameEn else it.nameRu
+                            itemName.contains(magicItemSearchQuery, ignoreCase = true)
+                        }.take(20)
+                        
+                        Column(modifier = Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState())) {
+                            itemsPick.forEach { item ->
+                                val name = if (isEn) item.nameEn else item.nameRu
+                                val isOwned = character.magicItems.any { it.slug == item.slug && it.nameEn == item.nameEn }
+                                ListItem(
+                                    modifier = Modifier.clickable {
+                                        if (!isOwned) {
+                                            onCharacterChange(character.copy(magicItems = character.magicItems + item))
+                                        }
+                                        showAddMagicItemDialog = false
+                                        magicItemSearchQuery = ""
+                                    },
+                                    headlineContent = { Text(name) },
+                                    supportingContent = { Text("${item.rarity ?: ""} • ${if (isEn) item.typeEn else item.typeRu}", fontSize = 11.sp) },
+                                    trailingContent = {
+                                        if (isOwned) Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary)
+                                        else Icon(Icons.Default.Add, null)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                },
+                confirmButton = { TextButton(onClick = { showAddMagicItemDialog = false; magicItemSearchQuery = "" }) { Text(tr("Закрыть", "Close")) } }
+            )
+        }
+
+        if (showCreateCustomMagicItemInSheet) {
+            AddCustomMagicItemDialog(
+                isEn = isEn,
+                onDismiss = { showCreateCustomMagicItemInSheet = false },
+                onAdd = { newItem ->
+                    onCharacterChange(character.copy(magicItems = character.magicItems + newItem))
+                    showCreateCustomMagicItemInSheet = false
+                }
+            )
+        }
+
+        if (selectedItemInSheet != null) {
+            MagicItemDetailDialog(
+                item = selectedItemInSheet!!,
+                character = character,
+                onCharacterChange = onCharacterChange,
+                onDismiss = { selectedItemInSheet = null },
+                isEn = isEn
+            )
         }
 
         Row(
@@ -1356,10 +1505,9 @@ fun BioSection(title: String, content: String) {
 
 
 @Composable
-fun StatCard(stat: AbilityScore, isEn: Boolean, onValueChange: (Int) -> Unit) {
+fun StatCard(stat: AbilityScore, isEn: Boolean, profBonus: Int, onValueChange: (Int) -> Unit) {
 
     val modifier = (stat.baseScore - 10) / 2
-    val profBonus = getProficiencyBonus(charLevel)
 
     ElevatedCard(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
         Column(modifier = Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -1381,8 +1529,7 @@ fun StatCard(stat: AbilityScore, isEn: Boolean, onValueChange: (Int) -> Unit) {
 
             stat.skills.forEach { skill ->
                 val state = stat.skillProficiencies[skill] ?: 0
-                // Рассчитываем итоговый бонус (Модификатор + Бонус мастерства, если выбран кружок)
-                val profBonus = getProficiencyBonus(charLevel)
+                // Рассчитываем итоговый бонус (Модификатор + Бонус мастерства, если выбран кружок. Удвоенный если эксперт)
                 val totalSkillBonus = modifier + (state * profBonus)
 
                 Row(
@@ -1572,6 +1719,57 @@ fun EquipmentTab(
                     }) { Icon(Icons.Default.Delete, null, tint = Color.Gray) }
                 }
             )
+        }
+
+        // --- МАГИЧЕСКИЕ ПРЕДМЕТЫ ---
+        if (character.magicItems.isNotEmpty()) {
+            item {
+                Spacer(Modifier.height(24.dp))
+                Text(tr("МАГИЧЕСКИЕ ПРЕДМЕТЫ", "MAGIC ITEMS"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.tertiary)
+            }
+
+            items(character.magicItems) { item ->
+                var showDetail by remember { mutableStateOf(false) }
+                val name = if (isEn) item.nameEn else item.nameRu
+                val isAttuned = item.isAttuned
+
+                ListItem(
+                    modifier = Modifier.clickable { showDetail = true },
+                    headlineContent = { Text(name, fontWeight = FontWeight.Bold) },
+                    supportingContent = { 
+                        Text(
+                            text = buildString {
+                                if (isAttuned) append("${tr("Настроено", "Attuned")} • ")
+                                append(if (isEn) item.typeEn else item.typeRu)
+                            },
+                            color = if (isAttuned) MaterialTheme.colorScheme.tertiary else Color.Gray,
+                            fontSize = 12.sp
+                        ) 
+                    },
+                    leadingContent = { 
+                        Icon(
+                            Icons.Default.AutoFixHigh, 
+                            null, 
+                            tint = if (isAttuned) MaterialTheme.colorScheme.tertiary else Color.Gray
+                        ) 
+                    },
+                    trailingContent = {
+                        IconButton(onClick = {
+                            val updated = character.magicItems.filterNot { it.slug == item.slug && it.nameEn == item.nameEn }
+                            onCharacterChange(character.copy(magicItems = updated))
+                        }) { Icon(Icons.Default.Delete, null, tint = Color.Gray) }
+                    }
+                )
+                if (showDetail) {
+                    MagicItemDetailDialog(
+                        item = item,
+                        character = character,
+                        onCharacterChange = onCharacterChange,
+                        onDismiss = { showDetail = false },
+                        isEn = isEn
+                    )
+                }
+            }
         }
         
         item {
@@ -1924,13 +2122,17 @@ fun ReferenceTab(
     classes: List<DndClass>,
     currentRuleset: String,
     onRulesetChange: (String) -> Unit,
-    language: String
+    language: String,
+    magicItems: List<MagicItem>,
+    character: CharacterSaveData,
+    onCharacterChange: (CharacterSaveData) -> Unit
 ) {
     var selectedCategory by remember { mutableIntStateOf(0) }
     val categories = listOf(
         tr("Бестиарий", "Bestiary"), 
         tr("Расы", "Races"), 
-        tr("Классы", "Classes")
+        tr("Классы", "Classes"),
+        tr("Маг. предметы", "Magic Items")
     )
 
     var searchQuery by remember { mutableStateOf("") }
@@ -2010,6 +2212,14 @@ fun ReferenceTab(
                 2 -> ClassesList(
                     classes = classes,
                     language = language,
+                    currentRuleset = currentRuleset,
+                    onRulesetChange = onRulesetChange
+                )
+                3 -> MagicItemsDirectoryTab(
+                    isEn = (language == "en" || language == "english"),
+                    magicItems = magicItems,
+                    character = character,
+                    onCharacterChange = onCharacterChange,
                     currentRuleset = currentRuleset,
                     onRulesetChange = onRulesetChange
                 )
@@ -2312,3 +2522,293 @@ fun CoinRow(label: String, value: Int, onValueChange: (Int) -> Unit, color: Colo
         }
     }
 }
+
+@Composable
+fun MagicItemDetailDialog(
+    item: MagicItem,
+    character: CharacterSaveData,
+    onCharacterChange: (CharacterSaveData) -> Unit,
+    onDismiss: () -> Unit,
+    isEn: Boolean
+) {
+    val name = if (isEn) item.nameEn else item.nameRu
+    val type = if (isEn) item.typeEn else item.typeRu
+    val subtype = if (isEn) item.subtypeEn else item.subtypeRu
+    val description = if (isEn) item.descriptionEn else item.descriptionRu
+    val isFavorite = character.magicItems.any { it.slug == item.slug && it.nameEn == item.nameEn }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(name, modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                    IconButton(onClick = {
+                        val updated = if (isFavorite) {
+                            character.magicItems.filterNot { it.slug == item.slug && it.nameEn == item.nameEn }
+                        } else {
+                            character.magicItems + item
+                        }
+                        onCharacterChange(character.copy(magicItems = updated))
+                    }) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
+                            contentDescription = null,
+                            tint = if (isFavorite) Color(0xFFFFD700) else Color.Gray
+                        )
+                    }
+                }
+                val typeText = buildString {
+                    append(type)
+                    if (!subtype.isNullOrBlank()) append(" ($subtype)")
+                    if (!item.rarity.isNullOrBlank()) append(", ${item.rarity}")
+                }
+                Text(
+                    text = typeText,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+        },
+        text = {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                if (item.attunement?.required == true) {
+                    val cond = item.attunement.condition ?: (if (isEn) "Required" else "Требуется")
+                    val isAttuned = item.isAttuned
+
+                    Surface(
+                        onClick = {
+                            val updatedItems = character.magicItems.map {
+                                if (it.slug == item.slug && it.nameEn == item.nameEn) {
+                                    it.copy(isAttuned = !isAttuned)
+                                } else it
+                            }
+                            onCharacterChange(character.copy(magicItems = updatedItems))
+                        },
+                        shape = RoundedCornerShape(8.dp),
+                        color = if (isAttuned) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.tertiaryContainer,
+                        modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth()
+                    ) {
+                        Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                if (isAttuned) Icons.Default.Bolt else Icons.Default.Bolt,
+                                null,
+                                modifier = Modifier.size(16.dp),
+                                tint = if (isAttuned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Text(
+                                text = "${tr("Настроено:", "Attuned:")} ${if (isAttuned) tr("Да", "Yes") else tr("Нет", "No")} ($cond)",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = if (isAttuned) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                val cleanText = description?.replace("<br>", "\n\n") ?: (if (isEn) "No description available." else "Описание отсутствует.")
+                Text(cleanText, style = MaterialTheme.typography.bodyMedium)
+                
+                if (item.spells.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(tr("Заклинания:", "Spells:"), fontWeight = FontWeight.Bold)
+                    Text(item.spells.joinToString(", "), style = MaterialTheme.typography.bodySmall)
+                }
+                
+                if (!item.document.isNullOrBlank()) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(tr("Источник: ${item.document}", "Source: ${item.document}"), fontSize = 10.sp, color = Color.Gray)
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(tr("Закрыть", "Close"))
+            }
+        }
+    )
+}
+
+@Composable
+fun AddCustomMagicItemDialog(
+    onDismiss: () -> Unit,
+    onAdd: (MagicItem) -> Unit,
+    isEn: Boolean
+) {
+    var name by remember { mutableStateOf("") }
+    var type by remember { mutableStateOf("") }
+    var rarity by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var attunementRequired by remember { mutableStateOf(false) }
+    var attunementCondition by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(tr("Новый магический предмет", "New Magic Item")) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.verticalScroll(rememberScrollState())) {
+                OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text(tr("Название", "Name")) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = type, onValueChange = { type = it }, label = { Text(tr("Тип (напр. Жезл)", "Type (e.g. Wand)")) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = rarity, onValueChange = { rarity = it }, label = { Text(tr("Редкость", "Rarity")) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(
+                    value = description, 
+                    onValueChange = { description = it }, 
+                    label = { Text(tr("Описание", "Description")) }, 
+                    modifier = Modifier.fillMaxWidth(),
+                    minLines = 3
+                )
+                
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = attunementRequired, onCheckedChange = { attunementRequired = it })
+                    Text(tr("Требуется настройка", "Attunement Required"))
+                }
+                
+                if (attunementRequired) {
+                    OutlinedTextField(
+                        value = attunementCondition, 
+                        onValueChange = { attunementCondition = it }, 
+                        label = { Text(tr("Условие настройки", "Attunement Condition")) }, 
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = {
+                if (name.isNotBlank()) {
+                    val newItem = MagicItem(
+                        slug = "custom-${System.currentTimeMillis()}",
+                        nameRu = name,
+                        nameEn = name,
+                        typeRu = type,
+                        typeEn = type,
+                        subtypeRu = null,
+                        subtypeEn = null,
+                        rarity = rarity,
+                        attunement = Attunement(attunementRequired, attunementCondition.ifBlank { null }),
+                        descriptionRu = description,
+                        descriptionEn = description,
+                        isCustom = true
+                    )
+                    onAdd(newItem)
+                }
+            }) { Text(tr("Добавить", "Add")) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(tr("Отмена", "Cancel")) }
+        }
+    )
+}
+
+@Composable
+fun MagicItemsDirectoryTab(
+    isEn: Boolean,
+    magicItems: List<MagicItem>,
+    character: CharacterSaveData,
+    onCharacterChange: (CharacterSaveData) -> Unit,
+    currentRuleset: String,
+    onRulesetChange: (String) -> Unit
+) {
+    var searchQuery by remember { mutableStateOf("") }
+    var selectedRarity by remember { mutableStateOf("Все") }
+    var selectedItem by remember { mutableStateOf<MagicItem?>(null) }
+    var showAddCustomDialog by remember { mutableStateOf(false) }
+
+    val rarities = listOf("Все") + magicItems.mapNotNull { it.rarity }.distinct().sorted()
+
+    val filteredItems = magicItems.filter { item ->
+        val name = if (isEn) item.nameEn else item.nameRu
+        
+        val matchesSearch = name.contains(searchQuery, ignoreCase = true)
+        val matchesRarity = selectedRarity == "Все" || item.rarity == selectedRarity
+        
+        val matchesEdition = if (currentRuleset == "2014") {
+            item.document == "2014" || item.document == "wotc-srd"
+        } else {
+            item.document != "2014" && item.document != "wotc-srd"
+        }
+        
+        matchesSearch && matchesRarity && matchesEdition
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                label = { Text(tr("Поиск...", "Search...")) },
+                leadingIcon = { Icon(Icons.Default.Search, null) },
+                modifier = Modifier.weight(1f),
+                singleLine = true
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            RulesetToggle(currentRuleset, onRulesetChange)
+        }
+
+        LazyRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            item {
+                IconButton(onClick = { showAddCustomDialog = true }, modifier = Modifier.padding(end = 8.dp).size(32.dp)) {
+                    Icon(Icons.Default.Add, contentDescription = "Добавить", tint = MaterialTheme.colorScheme.primary)
+                }
+            }
+            items(rarities) { rarity ->
+                FilterChip(
+                    selected = selectedRarity == rarity,
+                    onClick = { selectedRarity = rarity },
+                    label = { Text(rarity, fontSize = 12.sp) },
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
+        }
+
+        LazyColumn(modifier = Modifier.weight(1f)) {
+            items(filteredItems) { item ->
+                val name = if (isEn) item.nameEn else item.nameRu
+                val type = if (isEn) item.typeEn else item.typeRu
+                val isFavorite = character.magicItems.any { it.slug == item.slug && it.nameEn == item.nameEn }
+
+                ListItem(
+                    headlineContent = { Text(name, fontWeight = FontWeight.SemiBold) },
+                    supportingContent = { 
+                        Text("${item.rarity ?: ""} • $type", fontSize = 12.sp, color = Color.Gray) 
+                    },
+                    trailingContent = {
+                        if (isFavorite) Icon(Icons.Default.Star, null, tint = Color(0xFFFFD700), modifier = Modifier.size(16.dp))
+                    },
+                    modifier = Modifier.clickable { selectedItem = item }
+                )
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+            }
+        }
+    }
+
+    selectedItem?.let { item ->
+        MagicItemDetailDialog(
+            item = item,
+            character = character,
+            onCharacterChange = onCharacterChange,
+            onDismiss = { selectedItem = null },
+            isEn = isEn
+        )
+    }
+
+    if (showAddCustomDialog) {
+        AddCustomMagicItemDialog(
+            isEn = isEn,
+            onDismiss = { showAddCustomDialog = false },
+            onAdd = { newItem ->
+                onCharacterChange(character.copy(magicItems = character.magicItems + newItem))
+                showAddCustomDialog = false
+            }
+        )
+    }
+}
+
