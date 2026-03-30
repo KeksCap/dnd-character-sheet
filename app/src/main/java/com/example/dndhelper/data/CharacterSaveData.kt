@@ -50,6 +50,7 @@ data class CharacterSaveData(
     val ideals: String = "",
     val bonds: String = "",
     val flaws: String = "",
+    val biography: String = "",
     val magicItems: List<MagicItem> = emptyList(),
 
     // --- ЯЧЕЙКИ ЗАКЛИНАНИЙ (1-9 УРОВЕНЬ + 0 ИНДЕКС) ---
@@ -68,7 +69,10 @@ data class CharacterSaveData(
     val potionSupreme: Int = 0,    // 10d4 + 20
 
     // --- ДРУГОЕ ---
-    val speed: String = "30ft"
+    val speed: String = "30ft",
+    val activeConditions: List<String> = emptyList(), // Список названий активных состояний
+    val exhaustionLevel: Int = 0, // Уровень истощения 0-6
+    val use2024Rules: Boolean = false // Использовать правила 2024 года (SRD 5.2)
 )
 
 // Кастомное оружие

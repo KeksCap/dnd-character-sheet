@@ -1,0 +1,152 @@
+{
+  "blinded": {
+    "2014": {
+      "ru": "Ослеплённое существо не может видеть и автоматически проваливает любую проверку характеристики, требующую зрения. Броски атаки по этому существу совершаются с преимуществом, а броски атаки этого существа совершаются с помехой.",
+      "en": "A blinded creature can't see and automatically fails any ability check that requires sight. Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Ослеплённый», вы испытываете следующие эффекты.\n\n**_Не может видеть._** Вы не можете видеть и автоматически проваливаете любую проверку характеристики, требующую зрения.\n\n**_Атаки затронуты._** Броски атаки против вас совершаются с преимуществом, а ваши броски атаки совершаются с помехой.",
+      "en": "While you have the Blinded condition, you experience the following effects.\n\n**_Can't See._** You can't see and automatically fail any ability check that requires sight.\n\n**_Attacks Affected._** Attack rolls against you have Advantage, and your attack rolls have Disadvantage."
+    }
+  },
+  "charmed": {
+    "2014": {
+      "ru": "Очарованное существо не может атаковать очаровавшего или выбирать его целью вредоносных способностей или магических эффектов. Очаровавший совершает с преимуществом любую проверку характеристики для социального взаимодействия с этим существом.",
+      "en": "A charmed creature can't attack the charmer or target the charmer with harmful abilities or magical effects. The charmer has advantage on any ability check to interact socially with the creature."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Очарованный», вы испытываете следующие эффекты.\n\n**_Не может навредить очаровавшему._** Вы не можете атаковать очаровавшего или нацеливать на него наносящие урон способности или магические эффекты.\n\n**_Социальное преимущество._** Очаровавший совершает с преимуществом любую проверку характеристики для социального взаимодействия с вами.",
+      "en": "While you have the Charmed condition, you experience the following effects.\n\n**_Can't Harm the Charmer._** You can't attack the charmer or target the charmer with damaging abilities or magical effects.\n\n**_Social Advantage._** The charmer has Advantage on any ability check to interact with you socially."
+    }
+  },
+  "deafened": {
+    "2014": {
+      "ru": "Оглохшее существо не может слышать и автоматически проваливает любую проверку характеристики, требующую слуха.",
+      "en": "A deafened creature can't hear and automatically fails any ability check that requires hearing."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Оглохший», вы испытываете следующий эффект.\n\n**_Не может слышать._** Вы не можете слышать и автоматически проваливаете любую проверку характеристики, требующую слуха.",
+      "en": "While you have the Deafened condition, you experience the following effect.\n\n**_Can't Hear._** You can't hear and automatically fail any ability check that requires hearing."
+    }
+  },
+  "exhaustion": {
+    "2014": {
+      "ru": "Истощение измеряется в шести уровнях:\n1. Помеха на проверки характеристик\n2. Скорость уменьшена вдвое\n3. Помеха на броски атаки и спасброски\n4. Максимум хитов уменьшен вдвое\n5. Скорость снижена до 0\n6. Смерть",
+      "en": "Exhaustion is measured in six levels:\n1. Disadvantage on ability checks\n2. Speed halved\n3. Disadvantage on attack rolls and saving throws\n4. Hit point maximum halved\n5. Speed reduced to 0\n6. Death"
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Истощение», вы испытываете следующие эффекты.\n\n**_Уровни истощения._** Это состояние накапливается. Каждый раз, когда вы его получаете, вы получаете 1 уровень истощения. Вы умираете, если ваш уровень истощения достигает 6.\n\n**_Проверки d20 затронуты._** Когда вы совершаете проверку d20, результат броска уменьшается на 2, умноженное на ваш уровень истощения.\n\n**_Скорость снижена._** Ваша скорость уменьшается на количество футов, равное 5, умноженному на ваш уровень истощения.\n\n**_Снятие уровней истощения._** Завершение продолжительного отдыха снимает 1 ваш уровень истощения. Когда ваш уровень истощения достигает 0, состояние заканчивается.",
+      "en": "While you have the Exhaustion condition, you experience the following effects.\n\n**_Exhaustion Levels._** This condition is cumulative. Each time you receive it, you gain 1 Exhaustion level. You die if your Exhaustion level is 6.\n\n**_D20 Tests Affected._** When you make a D20 Test, the roll is reduced by 2 times your Exhaustion level.\n\n**_Speed Reduced._** Your Speed is reduced by a number of feet equal to 5 times your Exhaustion level.\n\n**_Removing Exhaustion Levels._** Finishing a Long Rest removes 1 of your Exhaustion levels. When your Exhaustion level reaches 0, the condition ends."
+    }
+  },
+  "frightened": {
+    "2014": {
+      "ru": "Испуганное существо совершает с помехой проверки характеристик и броски атаки, пока источник его страха находится в пределах линии взгляда. Существо не может добровольно приближаться к источнику своего страха.",
+      "en": "A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight. The creature can't willingly move closer to the source of its fear."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Испуганный», вы испытываете следующие эффекты.\n\n**_Проверки характеристик и атаки затронуты._** Вы совершаете с помехой проверки характеристик и броски атаки, пока источник страха находится в пределах прямой видимости.\n\n**_Не может приближаться._** Вы не можете добровольно приближаться к источнику страха.",
+      "en": "While you have the Frightened condition, you experience the following effects.\n\n**_Ability Checks and Attacks Affected._** You have Disadvantage on ability checks and attack rolls while the source of fear is within line of sight.\n\n**_Can't Approach._** You can't willingly move closer to the source of fear."
+    }
+  },
+  "grappled": {
+    "2014": {
+      "ru": "Скорость схваченного существа становится 0, и оно не может получить никакого бонуса к своей скорости. Состояние заканчивается, если схвативший становится недееспособным или если эффект перемещает существо за пределы досягаемости.",
+      "en": "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed. The condition ends if the grappler is incapacitated or if an effect removes the creature from reach."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Схваченный», вы испытываете следующие эффекты.\n\n**_Скорость 0._** Ваша скорость равна 0 и не может увеличиваться.\n\n**_Атаки затронуты._** Вы совершаете с помехой броски атаки против любой цели, кроме схватившего.\n\n**_Можно перемещать._** Схвативший может тащить или нести вас при перемещении, но каждый фут перемещения стоит ему 1 дополнительный фут, если вы не крошечный или на два или более размеров меньше его.",
+      "en": "While you have the Grappled condition, you experience the following effects.\n\n**_Speed 0._** Your Speed is 0 and can't increase.\n\n**_Attacks Affected._** You have Disadvantage on attack rolls against any target other than the grappler.\n\n**_Movable._** The grappler can drag or carry you when it moves, but every foot of movement costs it 1 extra foot unless you are Tiny or two or more sizes smaller than it."
+    }
+  },
+  "incapacitated": {
+    "2014": {
+      "ru": "Недееспособное существо не может совершать действия или реакции.",
+      "en": "An incapacitated creature can't take actions or reactions."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Недееспособный», вы испытываете следующие эффекты.\n\n**_Неактивен._** Вы не можете совершать никакие действия, бонусные действия или реакции.\n\n**_Нет концентрации._** Ваша концентрация прервана. *Бессловесный.* Вы не можете говорить.\n\n**_Застигнут врасплох._** Если вы недееспособны, когда бросаете инициативу, вы совершаете бросок с помехой.",
+      "en": "While you have the Incapacitated condition, you experience the following effects.\n\n**_Inactive._** You can't take any action, Bonus Action, or Reaction.\n\n**_No Concentration._** Your Concentration is broken. *Speechless.* You can't speak.\n\n**_Surprised._** If you're Incapacitated when you roll Initiative, you have Disadvantage on the roll."
+    }
+  },
+  "invisible": {
+    "2014": {
+      "ru": "Невидимое существо невозможно увидеть без помощи магии или особого чувства. Броски атаки по этому существу совершаются с помехой, а броски атаки этого существа совершаются с преимуществом.",
+      "en": "An invisible creature is impossible to see without the aid of magic or a special sense. Attack rolls against the creature have disadvantage, and the creature's attack rolls have advantage."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Невидимый», вы испытываете следующие эффекты.\n\n**_Внезапность._** Если вы невидимы, когда бросаете инициативу, вы совершаете бросок с преимуществом.\n\n**_Скрыт._** На вас не влияет никакой эффект, требующий, чтобы цель была видна. Броски атаки против вас совершаются с помехой, а ваши броски атаки совершаются с преимуществом.",
+      "en": "While you have the Invisible condition, you experience the following effects.\n\n**_Surprise._** If you're Invisible when you roll Initiative, you have Advantage on the roll.\n\n**_Concealed._** You aren't affected by any effect that requires its target to be seen. Attack rolls against you have Disadvantage, and your attack rolls have Advantage."
+    }
+  },
+  "paralyzed": {
+    "2014": {
+      "ru": "Парализованное существо недееспособно и не может двигаться или говорить. Существо автоматически проваливает спасброски Силы и Ловкости. Броски атаки по этому существу совершаются с преимуществом. Любая атака попадающая по существу является критическим попаданием в пределах 5 футов.",
+      "en": "A paralyzed creature is incapacitated and can't move or speak. The creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage. Any attack that hits the creature is a critical hit within 5 feet."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Парализованный», вы испытываете следующие эффекты.\n\n**_Недееспособный._** Вы находитесь в состоянии «Недееспособный».\n\n**_Скорость 0._** Ваша скорость равна 0 и не может увеличиваться.\n\n**_Спасброски затронуты._** Вы автоматически проваливаете спасброски Силы и Ловкости.\n\n**_Атаки затронуты._** Броски атаки против вас совершаются с преимуществом.\n\n**_Автоматические критические попадания._** Любой бросок атаки, попадающий по вам, является критическим попаданием, если атакующий находится в пределах 5 футов от вас.",
+      "en": "While you have the Paralyzed condition, you experience the following effects.\n\n**_Incapacitated._** You have the Incapacitated condition.\n\n**_Speed 0._** Your Speed is 0 and can't increase. Saving Throws Affected. You automatically fail Strength and Dexterity saving throws.\n\n**_Attacks Affected._** Attack rolls against you have Advantage.\n\n**_Automatic Critical Hits._** Any attack roll that hits you is a Critical Hit if the attacker is within 5 feet of you."
+    }
+  },
+  "petrified": {
+    "2014": {
+      "ru": "Окаменевшее существо превращается в твёрдое неживое вещество (обычно камень). Его вес увеличивается в десять раз, и оно прекращает стареть. Существо недееспособно, не может двигаться или говорить и не осознаёт окружающее. Броски атаки по этому существу совершаются с преимуществом. Существо автоматически проваливает спасброски Силы и Ловкости.",
+      "en": "A petrified creature is transformed into a solid inanimate substance. Its weight increases by a factor of ten, and it ceases aging. The creature is incapacitated, can't move or speak, and is unaware of its surroundings. Attack rolls against the creature have advantage. The creature automatically fails Strength and Dexterity saving throws."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Окаменевший», вы испытываете следующие эффекты.\n\n**_Превращён в неживое вещество._** Вы превращены в твёрдое вещество. Ваш вес увеличивается в десять раз, и вы перестаёте стареть.\n\n**_Недееспособный._** Вы находитесь в состоянии «Недееспособный».\n\n**_Скорость 0._** Ваша скорость равна 0 и не может увеличиваться.\n\n**_Спасброски затронуты._** Вы автоматически проваливаете спасброски Силы и Ловкости.\n\n**_Атаки затронуты._** Броски атаки против вас совершаются с преимуществом.",
+      "en": "While you have the Petrified condition, you experience the following effects.\n\n**_Turned to Inanimate Substance._** You are transformed into a solid inanimate substance. Your weight increases by a factor of ten, and you cease aging.\n\n**_Incapacitated._** You have the Incapacitated condition.\n\n**_Speed 0._** Your Speed is 0 and can't increase. Attacks Affected. Attack rolls against you have Advantage. Saving Throws Affected. You automatically fail Strength and Dexterity saving throws."
+    }
+  },
+  "poisoned": {
+    "2014": {
+      "ru": "Отравленное существо совершает с помехой броски атаки и проверки характеристик.",
+      "en": "A poisoned creature has disadvantage on attack rolls and ability checks."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Отравленный», вы испытываете следующий эффект.\n\n**_Проверки характеристик и атаки затронуты._** Вы совершаете с помехой броски атаки и проверки характеристик.",
+      "en": "While you have the Poisoned condition, you experience the following effect.\n\n**_Ability Checks and Attacks Affected._** You have Disadvantage on attack rolls and ability checks."
+    }
+  },
+  "prone": {
+    "2014": {
+      "ru": "Единственный вариант перемещения лежащего существа — ползти. Существо совершает с помехой броски атаки. Бросок атаки по этому существу совершается с преимуществом в пределах 5 футов, иначе с помехой.",
+      "en": "A prone creature's only movement option is to crawl. The creature has disadvantage on attack rolls. An attack roll against the creature has advantage if the attacker is within 5 feet, otherwise disadvantage."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Лежащий», вы испытываете следующие эффекты.\n\n**_Ограниченное перемещение._** Ваши единственные варианты перемещения — ползти или потратить половину скорости, чтобы подняться. Если ваша скорость 0, вы не можете подняться.\n\n**_Атаки затронуты._** Вы совершаете с помехой броски атаки. Бросок атаки против вас совершается с преимуществом в пределах 5 футов, иначе с помехой.",
+      "en": "While you have the Prone condition, you experience the following effects.\n\n**_Restricted Movement._** Your only movement options are to crawl or to spend half your speed to stand up. If your Speed is 0, you can't right yourself.\n\n**_Attacks Affected._** You have Disadvantage on attack rolls. An attack roll against you has Advantage within 5 feet, otherwise disadvantage."
+    }
+  },
+  "restrained": {
+    "2014": {
+      "ru": "Скорость опутанного существа становится 0. Броски атаки по этому существу совершаются с преимуществом, а броски атаки этого существа совершаются с помехой. Существо совершает с помехой спасброски Ловкости.",
+      "en": "A restrained creature's speed becomes 0. Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage. The creature has disadvantage on Dexterity saving throws."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Опутанный», вы испытываете следующие эффекты.\n\n**_Скорость 0._** Ваша скорость равна 0 и не может увеличиваться.\n\n**_Атаки затронуты._** Броски атаки против вас совершаются с преимуществом, а ваши броски атаки совершаются с помехой.\n\n**_Спасброски затронуты._** Вы совершаете с помехой спасброски Ловкости.",
+      "en": "While you have the Restrained condition, you experience the following effects.\n\n**_Speed 0._** Your Speed is 0 and can't increase.\n\n**_Attacks Affected._** Attack rolls against you have Advantage, and your attack rolls have Disadvantage. Saving Throws Affected. You have Disadvantage on Dexterity saving throws."
+    }
+  },
+  "stunned": {
+    "2014": {
+      "ru": "Ошеломлённое существо недееспособно, не может двигаться и может говорить лишь запинаясь. Существо автоматически проваливает спасброски Силы и Ловкости. Броски атаки по этому существу совершаются с преимуществом.",
+      "en": "A stunned creature is incapacitated, can't move, and can speak only falteringly. The creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Ошеломлённый», вы испытываете следующие эффекты.\n\n**_Недееспособный._** Вы находитесь в состоянии «Недееспособный».\n\n**_Спасброски затронуты._** Вы автоматически проваливаете спасброски Силы и Ловкости.\n\n**_Атаки затронуты._** Броски атаки против вас совершаются с преимуществом.",
+      "en": "While you have the Stunned condition, you experience the following effects.\n\n**_Incapacitated._** You have the Incapacitated condition. Saving Throws Affected. You automatically fail Strength and Dexterity saving throws. Attacks Affected. Attack rolls against you have Advantage."
+    }
+  },
+  "unconscious": {
+    "2014": {
+      "ru": "Существо без сознания недееспособно, не может двигаться или говорить и не осознаёт окружающее. Существо роняет всё, что держит, и падает ничком. Существо автоматически проваливает спасбороски Силы и Ловкости. Броски атаки по этому существу совершаются с преимуществом. Любая атака попадающая по существу является критическим попаданием в пределах 5 футов.",
+      "en": "An unconscious creature is incapacitated, can't move or speak, and is unaware of its surroundings. The creature drops whatever it's holding and falls prone. The creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage. Any attack that hits the creature is a critical hit within 5 feet."
+    },
+    "2024": {
+      "ru": "Пока вы находитесь в состоянии «Без сознания», вы испытываете следующие эффекты.\n\n**_Инертен._** Вы находитесь в состояниях «Недееспособный» и «Лежащий», и вы роняете всё, что держите.\n\n**_Скорость 0._** Ваша скорость равна 0 и не может увеличиваться.\n\n**_Атаки затронуты._** Броски атаки против вас совершаются с преимуществом.\n\n**_Спасброски затронуты._** Вы автоматически проваливаете спасброски Силы и Ловкости.\n\n**_Автоматические критические попадания._** Любой бросок атаки, попадающий по вам, является критическим попаданием, если атакующий находится в пределах 5 футов от вас.",
+      "en": "While you have the Unconscious condition, you experience the following effects.\n\n**_Inert._** You have the Incapacitated and Prone conditions, and you drop whatever you're holding.\n\n**_Speed 0._** Your Speed is 0 and can't increase.\n\n**_Attacks Affected._** Attack rolls against you have Advantage. Saving Throws Affected. You automatically fail Strength and Dexterity saving throws. Automatic Critical Hits. Any attack roll that hits you is a Critical Hit if the attacker is within 5 feet of you."
+    }
+  }
+}
