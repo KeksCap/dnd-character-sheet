@@ -72,7 +72,9 @@ data class CharacterSaveData(
     val speed: String = "30ft",
     val activeConditions: List<String> = emptyList(), // Список названий активных состояний
     val exhaustionLevel: Int = 0, // Уровень истощения 0-6
-    val use2024Rules: Boolean = false // Использовать правила 2024 года (SRD 5.2)
+    val use2024Rules: Boolean = false, // Использовать правила 2024 года (SRD 5.2)
+    val alignment: String = "",
+    val languages: List<String> = emptyList()
 )
 
 // Кастомное оружие

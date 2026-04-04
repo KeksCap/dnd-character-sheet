@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.Color
  * Утилиты для интерфейса персонажа.
  */
 
-@Composable
 fun trStat(name: String, isEn: Boolean): String {
     if (!isEn) return name
 

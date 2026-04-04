@@ -36,6 +36,10 @@ import com.example.dndhelper.ui.dialogs.MagicItemDetailDialog
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.FilterChip
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.border
+import com.example.dndhelper.R
 
 @Composable
 fun ReferenceTab(
@@ -229,15 +233,54 @@ fun RacesList(
         
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            contentPadding = PaddingValues(bottom = 16.dp)
+        ) {
             items(races, key = { it.nameEn }) { race ->
-                Card(
-                    modifier = Modifier.fillMaxWidth().clickable { raceForDetail = race },
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                val name = if (language == "en" || language == "english") race.nameEn else race.nameRu
+                val iconRes = getRaceIcon(race.nameEn)
+                
+                ElevatedCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { raceForDetail = race },
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp)
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        val name = if (language == "en" || language == "english") race.nameEn else race.nameRu
-                        Text(name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                    Row(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f).padding(start = 4.dp)) {
+                            Text(
+                                text = name,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = tr("Перейти к деталям", "View details"),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+                            )
+                        }
+                        
+                        Box(
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clip(CircleShape)
+                                .border(1.5.dp, MaterialTheme.colorScheme.primaryContainer, CircleShape)
+                                .background(MaterialTheme.colorScheme.surface)
+                        ) {
+                            Image(
+                                painter = painterResource(id = iconRes),
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
                     }
                 }
             }
@@ -249,6 +292,24 @@ fun RacesList(
     }
 }
 
+fun getRaceIcon(nameEn: String): Int {
+    return when (nameEn) {
+        "Aasimar" -> R.drawable.ic_race_aasimar
+        "Dragonborn" -> R.drawable.ic_race_dragonborn
+        "Dwarf" -> R.drawable.ic_race_dwarf
+        "Elf" -> R.drawable.ic_race_elf
+        "Gnome" -> R.drawable.ic_race_gnome
+        "Goliath" -> R.drawable.ic_race_goliath
+        "Half-Elf" -> R.drawable.ic_race_half_elf
+        "Half-Orc" -> R.drawable.ic_race_half_orc
+        "Halfling" -> R.drawable.ic_race_halfling
+        "Human" -> R.drawable.ic_race_human
+        "Orc" -> R.drawable.ic_race_orc
+        "Tiefling" -> R.drawable.ic_race_tiefling
+        else -> R.drawable.ic_launcher_foreground
+    }
+}
+
 @Composable
 fun RaceDetailDialog(race: Race, language: String, onDismiss: () -> Unit) {
     val isEn = language == "en" || language == "english"
@@ -257,9 +318,24 @@ fun RaceDetailDialog(race: Race, language: String, onDismiss: () -> Unit) {
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(name, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary) },
+        title = { Text(name, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.headlineSmall) },
         text = {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                // Лор / Описание расы
+                val lore = if (isEn) race.loreEn else race.loreRu
+                if (!lore.isNullOrEmpty()) {
+                    Text(
+                        text = lore,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                    HorizontalDivider(modifier = Modifier.padding(bottom = 16.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                }
+
+                // Очертания (Traits)
+                Text(tr("Особенности расы", "Traits"), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(8.dp))
+                
                 traits.forEach { trait ->
                     if (trait.name.isNotEmpty()) {
                         Text(trait.name + ".", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
@@ -268,16 +344,54 @@ fun RaceDetailDialog(race: Race, language: String, onDismiss: () -> Unit) {
                     Spacer(Modifier.height(8.dp))
                 }
 
+                // Этнические группы (если есть)
+                val ethnicities = if (isEn) race.ethnicitiesEn else race.ethnicitiesRu
+                if (!ethnicities.isNullOrEmpty()) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                    Text(tr("Этнические группы", "Ethnic Groups"), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.titleMedium)
+                    Spacer(Modifier.height(8.dp))
+                    
+                    ethnicities.forEach { eth ->
+                        Card(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                        ) {
+                            Column(modifier = Modifier.padding(12.dp)) {
+                                Text(eth.name, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
+                                Text(eth.description, style = MaterialTheme.typography.bodySmall)
+                                if (!eth.names.isNullOrEmpty()) {
+                                    Spacer(Modifier.height(4.dp))
+                                    Text(tr("Имена: ", "Names: ") + eth.names, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f))
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Имена (Общие примеры)
+                val names = if (isEn) race.namesEn else race.namesRu
+                if (!names.isNullOrEmpty()) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                    Text(tr("Имена", "Names"), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.titleMedium)
+                    Spacer(Modifier.height(8.dp))
+                    Text(names, style = MaterialTheme.typography.bodyMedium)
+                }
+
+                // Подрасы
                 if (race.subraces.isNotEmpty()) {
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    Text(tr("Подрасы", "Subraces"), fontWeight = FontWeight.Bold, fontSize = 18.sp, color = MaterialTheme.colorScheme.primary)
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                    Text(tr("Подрасы", "Subraces"), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.titleMedium)
                     Spacer(Modifier.height(8.dp))
                     
                     race.subraces.forEach { subrace ->
                         val subName = if (isEn) subrace.nameEn else subrace.nameRu
                         val subTraits = if (isEn) subrace.traitsEn else subrace.traitsRu
+                        val subLore = if (isEn) subrace.loreEn else subrace.loreRu
                         
-                        Text(subName, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.primary)
+                        Text(subName, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.secondary)
+                        if (!subLore.isNullOrEmpty()) {
+                            Text(subLore, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(vertical = 4.dp))
+                        }
                         Spacer(Modifier.height(4.dp))
                         
                         subTraits.forEach { trait ->

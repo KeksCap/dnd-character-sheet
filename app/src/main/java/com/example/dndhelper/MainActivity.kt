@@ -16,6 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.example.dndhelper.ui.components.LanguageSelectionScreen
 import com.example.dndhelper.ui.components.TavernScreen
+import com.example.dndhelper.ui.theme.DnDHelperTheme
+import com.example.dndhelper.ui.theme.AppTheme
 
 // --- ГЛОБАЛЬНЫЕ ИНСТРУМЕНТЫ ЛОКАЛИЗАЦИИ ---
 val LocalAppLanguage = compositionLocalOf { "ru" }
@@ -53,6 +55,13 @@ class MainActivity : ComponentActivity() {
             var selectedCharacter by remember { mutableStateOf<CharacterSaveData?>(null) }
             var selectedLanguage by remember { mutableStateOf<String?>(prefs.getString("language", null)) }
             var selectedRuleset by remember { mutableStateOf(prefs.getString("ruleset", "2024") ?: "2024") }
+            
+            // --- ТЕМА ОФОРМЛЕНИЯ ---
+            var selectedTheme by remember { 
+                val themeName = prefs.getString("app_theme", AppTheme.DEFAULT.name)
+                mutableStateOf(AppTheme.entries.find { it.name == themeName } ?: AppTheme.DEFAULT)
+            }
+
             val raceList = if (selectedRuleset == "2024") raceList2024 else raceList2014
             val classList = if (selectedRuleset == "2024") classList2024 else classList2014
 
@@ -90,7 +99,7 @@ class MainActivity : ComponentActivity() {
                     magicItemList = loadedMagicItems
                 }
             }
-            MaterialTheme {
+            DnDHelperTheme(appTheme = selectedTheme) {
                 CompositionLocalProvider(LocalAppLanguage provides (selectedLanguage ?: "ru")) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
@@ -98,40 +107,45 @@ class MainActivity : ComponentActivity() {
                     ) {
                         if (selectedLanguage == null) {
                             LanguageSelectionScreen { lang ->
-                            prefs.edit().putString("language", lang).apply()
-                            selectedLanguage = lang
-                        }
-                    } else if (selectedCharacter == null) {
-                        TavernScreen(
-                            storage = storage,
-                            onCharacterSelected = { char -> selectedCharacter = char }
-                        )
-                    } else {
-                        MainGameContent(
-                            spells = spellList,
-                            classSpells = classSpells,
-                            races = raceList,
-                            classes = classList,
-                            language = selectedLanguage!!,
-                            character = selectedCharacter!!,
-                            storage = storage,
-                            bestiaryList = bestiaryList,
-                            bestiaryViewModel = bestiaryViewModel,
-                            // Передача параметров редакции правил
-                            currentRuleset = selectedRuleset,
-                            onRulesetChange = { newRuleset ->
-                                prefs.edit().putString("ruleset", newRuleset).apply()
-                                selectedRuleset = newRuleset
-                            },
-                            onCharacterChange = { updatedChar ->
-                                storage.saveCharacter(updatedChar)
-                                selectedCharacter = updatedChar
-                            },
-                            onBackToTavern = { selectedCharacter = null },
-                                    onLanguageChange = { newLang ->
+                                prefs.edit().putString("language", lang).apply()
+                                selectedLanguage = lang
+                            }
+                        } else if (selectedCharacter == null) {
+                            TavernScreen(
+                                storage = storage,
+                                onCharacterSelected = { char -> selectedCharacter = char }
+                                // Сюда тоже можно добавить шестеренку позже, если понадобится
+                            )
+                        } else {
+                            MainGameContent(
+                                spells = spellList,
+                                classSpells = classSpells,
+                                races = raceList,
+                                classes = classList,
+                                language = selectedLanguage!!,
+                                character = selectedCharacter!!,
+                                storage = storage,
+                                bestiaryList = bestiaryList,
+                                bestiaryViewModel = bestiaryViewModel,
+                                currentRuleset = selectedRuleset,
+                                onRulesetChange = { newRuleset ->
+                                    prefs.edit().putString("ruleset", newRuleset).apply()
+                                    selectedRuleset = newRuleset
+                                },
+                                onCharacterChange = { updatedChar ->
+                                    storage.saveCharacter(updatedChar)
+                                    selectedCharacter = updatedChar
+                                },
+                                onBackToTavern = { selectedCharacter = null },
+                                onLanguageChange = { newLang ->
                                     prefs.edit().putString("language", newLang).apply()
                                     selectedLanguage = newLang
                                 },
+                                onThemeChange = { newTheme ->
+                                    prefs.edit().putString("app_theme", newTheme.name).apply()
+                                    selectedTheme = newTheme
+                                },
+                                selectedTheme = selectedTheme,
                                 magicItems = magicItemList
                             )
                         }

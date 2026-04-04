@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.example.dndhelper.data.*
 import com.example.dndhelper.ui.tabs.*
 import com.example.dndhelper.ui.components.*
+import com.example.dndhelper.ui.theme.AppTheme
 
 @Composable
 fun MainGameContent(
@@ -33,6 +34,8 @@ fun MainGameContent(
     currentRuleset: String,
     onRulesetChange: (String) -> Unit,
     onLanguageChange: (String) -> Unit,
+    onThemeChange: (AppTheme) -> Unit,
+    selectedTheme: AppTheme,
     magicItems: List<MagicItem>
 ) {
     var activeTab by remember { mutableIntStateOf(0) }
@@ -78,18 +81,42 @@ fun MainGameContent(
                 title = { Text(tr("Настройки", "Settings"), fontWeight = FontWeight.Bold) },
                 text = {
                     Column {
-                        Text(tr("Язык базы данных и заклинаний:", "Database and spell language:"))
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(tr("Язык базы данных и заклинаний:", "Database and spell language:"), fontWeight = FontWeight.Bold)
+                        Spacer(modifier = Modifier.height(8.dp))
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                             Button(
-                                onClick = { onLanguageChange("ru"); showSettingsDialog = false },
+                                onClick = { onLanguageChange("ru") },
                                 colors = ButtonDefaults.buttonColors(containerColor = if (language == "ru") MaterialTheme.colorScheme.primary else Color.Gray)
                             ) { Text(tr("Русский", "Russian")) }
 
                             Button(
-                                onClick = { onLanguageChange("en"); showSettingsDialog = false },
+                                onClick = { onLanguageChange("en") },
                                 colors = ButtonDefaults.buttonColors(containerColor = if (language == "en") MaterialTheme.colorScheme.primary else Color.Gray)
                             ) { Text(tr("English", "English")) }
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Text(tr("Тема оформления:", "App Theme:"), fontWeight = FontWeight.Bold)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Button(
+                                onClick = { onThemeChange(AppTheme.DEFAULT) },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(containerColor = if (selectedTheme == AppTheme.DEFAULT) MaterialTheme.colorScheme.primary else Color.Gray)
+                            ) { Text(tr("Стандартная", "Default")) }
+
+                            Button(
+                                onClick = { onThemeChange(AppTheme.PARCHMENT) },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(containerColor = if (selectedTheme == AppTheme.PARCHMENT) MaterialTheme.colorScheme.primary else Color.Gray)
+                            ) { Text(tr("Пергамент", "Parchment")) }
+
+                            Button(
+                                onClick = { onThemeChange(AppTheme.INFERNAL) },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(containerColor = if (selectedTheme == AppTheme.INFERNAL) MaterialTheme.colorScheme.primary else Color.Gray)
+                            ) { Text(tr("Адская", "Infernal")) }
                         }
                     }
                 },

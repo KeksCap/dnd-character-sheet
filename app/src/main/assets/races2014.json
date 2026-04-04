@@ -2,519 +2,179 @@
   {
     "nameEn": "Dragonborn",
     "nameRu": "Драконорождённый",
+    "loreEn": "Dragonborn are a proud and dedicated people whose appearance resembles upright dragons. They lack wings or a tail in the classic sense, but their bodies are covered in thick scales, the hues of which range from gold to bright scarlet. The primary value of the dragonborn is their clan, devotion to which stands above their own life. They strive for perfection in any endeavor, whether it be the martial arts or a craft, and respect those who show the same commitment. They rarely accept help from outside, preferring to rely on their own strength and the wisdom of their kind.",
+    "loreRu": "Драконорождённые — гордый и самоотверженный народ, чей облик напоминает прямоходящих драконов. У них нет крыльев или хвоста (в классическом понимании), но их тело покрыто густой чешуей, оттенки которой варьируются от золотого до ярко-алого. Главная ценность драконорождённых — их клан, преданность которому стоит выше собственной жизни. Они стремятся к совершенству в любом деле, будь то воинское искусство или ремесло, и уважают тех, кто проявляет такую же целеустремленность. Помощь со стороны они принимают редко, предпочитая полагаться на собственные силы и мудрость своего рода.",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "Your draconic heritage manifests in a variety of traits you share with other dragonborn."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your Strength score increases by 2, and your Charisma score increases by 1."
-      },
-      {
-        "name": "Age",
-        "desc": "Young dragonborn grow quickly. They walk hours after hatching, attain the size and development of a 10-year-old human child by the age of 3, and reach adulthood by 15. They live to be around 80."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Dragonborn tend to extremes, making a conscious choice for one side or the other in the cosmic war between good and evil. Most dragonborn are good, but those who side with evil can be terrible villains."
-      },
-      {
-        "name": "Size",
-        "desc": "Dragonborn are taller and heavier than humans, standing well over 6 feet tall and averaging almost 250 pounds. Your size is Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet. \nTable: Draconic Ancestry \n| Dragon | Damage Type | Breath Weapon                | |---|---|---| | Black  | Acid        | 5 by 30 ft. line (Dex. save) | | Blue   | Lightning   | 5 by 30 ft. line (Dex. save) | | Brass  | Fire        | 5 by 30 ft. line (Dex. save) | | Bronze | Lightning   | 5 by 30 ft. line (Dex. save) | | Copper | Acid        | 5 by 30 ft. line (Dex. save) | | Gold   | Fire        | 15 ft. cone (Dex. save)      | | Green  | Poison      | 15 ft. cone (Con. save)      | | Red    | Fire        | 15 ft. cone (Dex. save)      | | Silver | Cold        | 15 ft. cone (Con. save)      | | White  | Cold        | 15 ft. cone (Con. save)      |"
-      },
-      {
-        "name": "Draconic Ancestry",
-        "desc": "You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."
-      },
-      {
-        "name": "Breath Weapon",
-        "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. \nWhen you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. \nAfter you use your breath weapon, you can't use it again until you complete a short or long rest."
-      },
-      {
-        "name": "Damage Resistance",
-        "desc": "You have resistance to the damage type associated with your draconic ancestry."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common and Draconic. Draconic is thought to be one of the oldest languages and is often used in the study of magic. The language sounds harsh to most other creatures and includes numerous hard consonants and sibilants."
-      }
+      { "name": "Ability Score Increase", "desc": "Strength +2, Charisma +1." },
+      { "name": "Age", "desc": "Dragonborn grow faster than humans. They can walk within an hour of hatching, look like 10-year-old humans by age 3, and reach adulthood at 15. They live for about 80 years." },
+      { "name": "Alignment", "desc": "Tend toward extremes, mostly Good." },
+      { "name": "Size", "desc": "Medium, over 6 feet tall, around 250 lbs." },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Draconic Ancestry", "desc": "Determines Breath Weapon shape and Damage Resistance:\n• Black/Copper (Acid, Line, DEX)\n• Blue/Bronze (Lightning, Line, DEX)\n• Brass (Fire, Line, DEX)\n• Gold/Red (Fire, Cone, DEX)\n• Green (Poison, Cone, CON)\n• Silver/White (Cold, Cone, CON)" },
+      { "name": "Breath Weapon", "desc": "Action to exhale energy. DC 8 + CON + PB. Damage scaling:\n• 1st: 2d6\n• 6th: 3d6\n• 11th: 4d6\n• 16th: 5d6\nShort/Long Rest." },
+      { "name": "Damage Resistance", "desc": "Resistance based on Ancestry." },
+      { "name": "Languages", "desc": "Common and Draconic. Draconic sounds harsh to others and includes many hard consonants and sibilants." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Ваше драконье наследие проявляется в различных особенностях, которые вы разделяете с другими драконорождёнными."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Ваше значение Силы увеличивается на 2, а значение Харизмы - на 1."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Молодые драконорождённые растут быстро. Они начинают ходить через несколько часов после вылупления, достигают размера и развития 10-летнего человеческого ребёнка к 3 годам и становятся взрослыми к 15. Они живут около 80 лет."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Драконорождённые склонны к крайностям, делая осознанный выбор одной или другой стороны в космической войне между добром и злом. Большинство драконорождённых добры, но те, кто выбирает зло, могут быть ужасными злодеями."
-      },
-      {
-        "name": "Размер",
-        "desc": "Драконорождённые выше и тяжелее людей, значительно превышая 6 футов роста и весят в среднем около 250 фунтов. Ваш размер - Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 30 футов. \nТаблица: Драконье наследие \n| Дракон    | Тип урона     | Оружие дыхания                    | |---|---|---| | Чёрный    | Кислота       | Линия 5 × 30 фт. (спасбросок Лов.)| | Синий     | Электричество | Линия 5 × 30 фт. (спасбросок Лов.)| | Латунный  | Огонь         | Линия 5 × 30 фт. (спасбросок Лов.)| | Бронзовый | Электричество | Линия 5 × 30 фт. (спасбросок Лов.)| | Медный    | Кислота       | Линия 5 × 30 фт. (спасбросок Лов.)| | Золотой   | Огонь         | Конус 15 фт. (спасбросок Лов.)     | | Зелёный   | Яд            | Конус 15 фт. (спасбросок Тел.)     | | Красный   | Огонь         | Конус 15 фт. (спасбросок Лов.)     | | Серебряный| Холод         | Конус 15 фт. (спасбросок Тел.)     | | Белый     | Холод         | Конус 15 фт. (спасбросок Тел.)     |"
-      },
-      {
-        "name": "Драконье наследие",
-        "desc": "У вас есть драконье наследие. Выберите один тип дракона из таблицы «Драконье наследие». Ваше оружие дыхания и сопротивление урону определяются типом дракона, как показано в таблице."
-      },
-      {
-        "name": "Оружие дыхания",
-        "desc": "Вы можете действием выдохнуть разрушительную энергию. Ваше драконье наследие определяет размер, форму и тип урона выдоха. \nКогда вы используете оружие дыхания, каждое существо в области выдоха должно совершить спасбросок, тип которого определяется вашим драконьим наследием. СЛ этого спасброска равна 8 + ваш модификатор Телосложения + ваш бонус мастерства. Существо получает 2d6 урона при провале или половину при успехе. Урон увеличивается до 3d6 на 6-м уровне, 4d6 на 11-м уровне и 5d6 на 16-м уровне. \nИспользовав оружие дыхания, вы не можете использовать его снова, пока не завершите короткий или продолжительный отдых."
-      },
-      {
-        "name": "Сопротивление урону",
-        "desc": "Вы имеете сопротивление к типу урона, связанному с вашим драконьим наследием."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем и Драконьем. Драконий считается одним из старейших языков и часто используется при изучении магии. Язык звучит резко для большинства других существ и включает множество твёрдых согласных и шипящих."
-      }
+      { "name": "Увеличение характеристик", "desc": "Сила +2, Харизма +1." },
+      { "name": "Возраст", "desc": "Драконорождённые растут быстрее людей. Они могут ходить через час после рождения, в 3 года выглядят как 10-летние дети, а к 15 годам становятся взрослыми. Живут они около 80 лет." },
+      { "name": "Мировоззрение", "desc": "Склонны к крайностям, чаще Добрые." },
+      { "name": "Размер", "desc": "Средний, выше 6 футов, вес около 250 фунтов." },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Драконье наследие", "desc": "Определяет форму выдоха и тип Сопротивления:\n• Чёрный/Медный (Кислота, Линия, ЛОВ)\n• Синий/Бронзовый (Молния, Линия, ЛОВ)\n• Латунный (Огонь, Линия, ЛОВ)\n• Золотой/Красный (Огонь, Конус, ЛОВ)\n• Зелёный (Яд, Конус, ТЕЛ)\n• Серебряный/Белый (Холод, Конус, ТЕЛ)" },
+      { "name": "Оружие дыхания", "desc": "Действие: выдох энергии. Сл 8 + ТЕЛ + БМ. Прогрессия урона:\n• 1 ур: 2к6\n• 6 ур: 3к6\n• 11 ур: 4к6\n• 16 ур: 5к6\nРаз за короткий/долгий отдых." },
+      { "name": "Сопротивление урону", "desc": "Сопротивление на основе наследия." },
+      { "name": "Языки", "desc": "Вы говорите, читаете и пишете на Общем и Драконьем языках. Драконий звучит резко, со множеством твёрдых согласных и шипящих." }
     ],
+    "namesEn": "Clan names (put first): Versisathurgiesh, Daardendrian, Kimbatuul, Myastan, Nemmonis.\nMale names: Arjhan, Balasar, Donnar, Ghetpesh, Pandjed.\nFemale names: Akra, Biri, Daari, Farideh, Havilar.\nChild names: Brave, Brainy, Sticky.",
+    "namesRu": "Названия кланов (идут первыми): Версисатургиеш, Дардендриан, Кимбатуул, Мьястан, Неммонис.\nМужские имена: Арджан, Баласар, Доннар, Гетпеш, Панджед.\nЖенские имена: Акра, Бири, Даари, Фариде, Хавилар.\nДетские имена: Смельчак, Умник, Прилипала.",
     "subraces": []
   },
   {
     "nameEn": "Dwarf",
     "nameRu": "Дварф",
+    "loreEn": "Dwarves are masters of smithing and stonework, whose lives are inextricably linked to the mountains and the depths of the earth. They are a hardy and proud people who value clan loyalty, craftsmanship, and the traditions of their ancestors above all else. Dwarves have long memories and can remember both a kind deed and a slight for centuries. Their subterranean kingdoms are architectural wonders carved into the very heart of the mountains.",
+    "loreRu": "Дварфы — мастера кузнечного дела и камнерезы, чья жизнь неразрывно связана с горами и глубинами земли. Это выносливый и гордый народ, превыше всего ценящий верность клану, мастерство и традиции своих предков. Дварфы обладают долгой памятью и могут веками помнить как доброе дело, так и нанесенную обиду. Их подземные королевства — это чудеса архитектуры, высеченные в самом сердце гор.",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "Your dwarf character has an assortment of inborn abilities, part and parcel of dwarven nature."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your Constitution score increases by 2."
-      },
-      {
-        "name": "Age",
-        "desc": "Dwarves mature at the same rate as humans, but they're considered young until they reach the age of 50. On average, they live about 350 years."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Most dwarves are lawful, believing firmly in the benefits of a well-ordered society. They tend toward good as well, with a strong sense of fair play and a belief that everyone deserves to share in the benefits of a just order."
-      },
-      {
-        "name": "Size",
-        "desc": "Dwarves stand between 4 and 5 feet tall and average about 150 pounds. Your size is Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 25 feet. Your speed is not reduced by wearing heavy armor."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "Accustomed to life underground, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray."
-      },
-      {
-        "name": "Dwarven Resilience",
-        "desc": "You have advantage on saving throws against poison, and you have resistance against poison damage."
-      },
-      {
-        "name": "Dwarven Combat Training",
-        "desc": "You have proficiency with the battleaxe, handaxe, light hammer, and warhammer."
-      },
-      {
-        "name": "Tool Proficiency",
-        "desc": "You gain proficiency with the artisan's tools of your choice: smith's tools, brewer's supplies, or mason's tools."
-      },
-      {
-        "name": "Stonecunning",
-        "desc": "Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check, instead of your normal proficiency bonus."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common and Dwarvish. Dwarvish is full of hard consonants and guttural sounds, and those characteristics spill over into whatever other language a dwarf might speak."
-      }
+      { "name": "Ability Score Increase", "desc": "Constitution +2." },
+      { "name": "Age", "desc": "Adults at 50, live up to 350." },
+      { "name": "Size", "desc": "Medium, 4–5 feet tall, around 150 lbs." },
+      { "name": "Speed", "desc": "25 feet. Not reduced by heavy armor." },
+      { "name": "Darkvision", "desc": "60 feet." },
+      { "name": "Dwarven Resilience", "desc": "Advantage vs Poison, Resistance to Poison." },
+      { "name": "Dwarven Combat Training", "desc": "Proficiency with axes and hammers." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Ваш персонаж-дварф обладает набором врождённых способностей, неотъемлемой частью дварфийской природы."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Ваше значение Телосложения увеличивается на 2."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Дварфы взрослеют с той же скоростью, что и люди, но считаются молодыми до достижения 50 лет. В среднем они живут около 350 лет."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Большинство дварфов принципиальны, твёрдо веря в преимущества хорошо организованного общества. Они также склонны к добру, с сильным чувством справедливости и верой в то, что каждый заслуживает доли благ справедливого порядка."
-      },
-      {
-        "name": "Размер",
-        "desc": "Дварфы имеют рост от 4 до 5 футов и весят в среднем около 150 фунтов. Ваш размер - Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 25 футов. Ваша скорость не снижается при ношении тяжёлого доспеха."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Привыкшие к подземной жизни, вы обладаете превосходным зрением в темноте и при тусклом свете. Вы видите при тусклом свете в пределах 60 футов, как при ярком свете, а в темноте - как при тусклом свете. Вы не различаете цветов в темноте, только оттенки серого."
-      },
-      {
-        "name": "Дварфийская стойкость",
-        "desc": "Вы совершаете с преимуществом спасброски против яда и имеете сопротивление к урону ядом."
-      },
-      {
-        "name": "Дварфийская боевая подготовка",
-        "desc": "Вы владеете боевым топором, ручным топором, лёгким молотом и боевым молотом."
-      },
-      {
-        "name": "Владение инструментами",
-        "desc": "Вы получаете владение ремесленными инструментами на выбор: инструменты кузнеца, пивоваренные принадлежности или инструменты каменщика."
-      },
-      {
-        "name": "Знание камня",
-        "desc": "Каждый раз, когда вы совершаете проверку Интеллекта (История), связанную с происхождением каменной кладки, вы считаетесь владеющим навыком История и добавляете удвоенный бонус мастерства к проверке вместо обычного."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем и Дварфийском. Дварфийский полон твёрдых согласных и гортанных звуков, и эти особенности переносятся на любой другой язык, на котором дварф может говорить."
-      }
+      { "name": "Увеличение характеристик", "desc": "Телосложение +2." },
+      { "name": "Возраст", "desc": "Взрослые в 50 лет, живут до 350." },
+      { "name": "Размер", "desc": "Средний, 4–5 футов, вес около 150 фунтов." },
+      { "name": "Скорость", "desc": "25 футов. Не снижается тяжелым доспехом." },
+      { "name": "Тёмное зрение", "desc": "60 футов." },
+      { "name": "Дварфийская стойкость", "desc": "Преимущество от яда, Сопротивление яду." },
+      { "name": "Дварфийская боевая подготовка", "desc": "Владение топорами и молотами." }
     ],
+    "namesEn": "Male: Adrik, Alberich, Baern, Barendd, Brottor, Bruenor, Dain, Darrak, Delg, Flint, Gardain, Harbek, Oskar, Rangrim, Rurik, Thorin, Ulfgar.\nFemale: Artin, Bardryn, Diesa, Eldeth, Falkrunn, Helja, Hlin, Kathra, Kristryd, Mardred, Riswynn, Vistra.\nClan: Battlehammer, Ironfist, Fireforge, Stonefist, Icebeard, Strakeln, Holderhek, Loderr.",
+    "namesRu": "Мужские: Адрик, Альберих, Баэрн, Броттор, Даин, Даррак, Делг, Флинт, Гардайн, Харбек, Оскар, Торн, Ульфгар.\nЖенские: Артин, Бардрин, Диза, Эльдет, Хелья, Катра, Кристид, Мардред, Вистра.\nКланы: Боевой Молот (Battlehammer), Железный Кулак (Ironfist), Огненный Горн (Fireforge), Каменный Кулак (Stonefist), Ледяная Борода (Icebeard), Холдерхек (Holderhek).",
     "subraces": [
-      {
-        "nameEn": "Hill Dwarf",
-        "nameRu": "Холмовой дварф",
-        "traitsEn": [
-          {
-            "name": "",
-            "desc": "As a hill dwarf, you have keen senses, deep intuition, and remarkable resilience."
-          },
-          {
-            "name": "Ability Score Increase",
-            "desc": "Your Wisdom score increases by 1."
-          },
-          {
-            "name": "Dwarven Toughness",
-            "desc": "Your hit point maximum increases by 1, and it increases by 1 every time you gain a level."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "",
-            "desc": "Как холмовой дварф, вы обладаете острыми чувствами, глубокой интуицией и замечательной стойкостью."
-          },
-          {
-            "name": "Увеличение характеристик",
-            "desc": "Ваше значение Мудрости увеличивается на 1."
-          },
-          {
-            "name": "Дварфийская выносливость",
-            "desc": "Ваш максимум хитов увеличивается на 1, и увеличивается на 1 каждый раз при получении уровня."
-          }
-        ]
+      { 
+        "nameEn": "Hill Dwarf", 
+        "nameRu": "Холмовой дварф", 
+        "loreEn": "Possess heightened senses and exceptional intuition. They are physically tougher than most and often live in rolling hills or near the surface.",
+        "loreRu": "Обладают обостренными чувствами и исключительной интуицией. Они физически более выносливы и часто живут в холмистых местностях или ближе к поверхности.",
+        "traitsEn": [{"name": "Wisdom +1", "desc": "Dwarven Toughness: HP max +1 each level."}], 
+        "traitsRu": [{"name": "Мудрость +1", "desc": "Дварфийская выносливость: +1 хит за уровень."}] 
+      },
+      { 
+        "nameEn": "Mountain Dwarf", 
+        "nameRu": "Горный дварф", 
+        "loreEn": "Stronger and more accustomed to life in the deep rock. They are the quintessential guardians of the mountain halls, often trained in the use of armor from a young age.",
+        "loreRu": "Сильнее и привычнее к жизни в глубоком камне. Они исконные защитники горных залов, которых с детства обучают носить доспехи.",
+        "traitsEn": [{"name": "Strength +2", "desc": "Dwarven Armor Training: Proficiency with light and medium armor."}], 
+        "traitsRu": [{"name": "Сила +2", "desc": "Боевая подготовка дварфов: Владение легкими и средними доспехами."}] 
       }
     ]
   },
   {
     "nameEn": "Elf",
     "nameRu": "Эльф",
+    "loreEn": "Elves are a graceful and long-lived people whose origins are rooted in the Feywild. They live in harmony with nature and magic, possessing sharpened senses and a deep connection to the world. Instead of normal sleep, elves enter a meditative trance, recovering their strength in just a few hours. Their art, music, and craftsmanship are renowned for their refinement and durability.",
+    "loreRu": "Эльфы — это грациозный и долгоживущий народ, чье происхождение уходит корнями в измерение Фей. Они живут в гармонии с природой и магией, обладая обостренными чувствами и глубокой связью с миром. Вместо обычного сна эльфы погружаются в медитативный транс, восстанавливая силы всего за несколько часов. Их искусство, музыка и кузнечное дело славятся своей изысканностью и долговечностью.",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "Your elf character has a variety of natural abilities, the result of thousands of years of elven refinement."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your Dexterity score increases by 2."
-      },
-      {
-        "name": "Age",
-        "desc": "Although elves reach physical maturity at about the same age as humans, the elven understanding of adulthood goes beyond physical growth to encompass worldly experience. An elf typically claims adulthood and an adult name around the age of 100 and can live to be 750 years old."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Elves love freedom, variety, and self-expression, so they lean strongly toward the gentler aspects of chaos. They value and protect others' freedom as well as their own, and they are more often good than not. The drow are an exception; their exile has made them vicious and dangerous. Drow are more often evil than not."
-      },
-      {
-        "name": "Size",
-        "desc": "Elves range from under 5 to over 6 feet tall and have slender builds. Your size is Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "Accustomed to twilit forests and the night sky, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray."
-      },
-      {
-        "name": "Keen Senses",
-        "desc": "You have proficiency in the Perception skill."
-      },
-      {
-        "name": "Fey Ancestry",
-        "desc": "You have advantage on saving throws against being charmed, and magic can't put you to sleep."
-      },
-      {
-        "name": "Trance",
-        "desc": "Elves don't need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is \"trance.\") While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. \nAfter resting in this way, you gain the same benefit that a human does from 8 hours of sleep."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common and Elvish. Elvish is fluid, with subtle intonations and intricate grammar. Elven literature is rich and varied, and their songs and poems are famous among other races. Many bards learn their language so they can add Elvish ballads to their repertoires."
-      }
+      { "name": "Ability Score Increase", "desc": "Dexterity +2." },
+      { "name": "Age", "desc": "Adults at 100, live up to 750." },
+      { "name": "Size", "desc": "Medium, 5–6 feet, slender." },
+      { "name": "Speed", "desc": "30 feet." },
+      { "name": "Darkvision", "desc": "60 feet." },
+      { "name": "Keen Senses", "desc": "Proficiency in Perception." },
+      { "name": "Fey Ancestry", "desc": "Advantage vs Charmed, magic can't sleep you." },
+      { "name": "Trance", "desc": "4-hour meditation instead of sleep." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Ваш персонаж-эльф обладает разнообразными природными способностями - результат тысячелетий эльфийского совершенствования."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Ваше значение Ловкости увеличивается на 2."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Хотя эльфы достигают физической зрелости примерно в том же возрасте, что и люди, эльфийское понимание взрослости выходит за пределы физического роста и охватывает жизненный опыт. Эльф обычно объявляет себя взрослым и берёт взрослое имя в возрасте около 100 лет и может прожить до 750 лет."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Эльфы любят свободу, разнообразие и самовыражение, поэтому они сильно склоняются к мягким проявлениям хаоса. Они ценят и защищают свободу других, как и свою собственную, и чаще бывают добрыми, чем нет. Дроу являются исключением; их изгнание сделало их жестокими и опасными. Дроу чаще бывают злыми."
-      },
-      {
-        "name": "Размер",
-        "desc": "Эльфы имеют рост от менее 5 до более 6 футов и стройное телосложение. Ваш размер - Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 30 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Привыкшие к сумеречным лесам и ночному небу, вы обладаете превосходным зрением в темноте и при тусклом свете. Вы видите при тусклом свете в пределах 60 футов, как при ярком свете, а в темноте - как при тусклом свете. Вы не различаете цветов в темноте, только оттенки серого."
-      },
-      {
-        "name": "Острые чувства",
-        "desc": "Вы владеете навыком Внимательность."
-      },
-      {
-        "name": "Наследие фей",
-        "desc": "Вы совершаете с преимуществом спасброски против очарования, и магия не может усыпить вас."
-      },
-      {
-        "name": "Транс",
-        "desc": "Эльфам не нужен сон. Вместо этого они глубоко медитируют, оставаясь в полусознании, по 4 часа в день. (Общее слово для такой медитации - «транс».) Во время медитации вы можете видеть подобие снов; на самом деле это ментальные упражнения, ставшие рефлекторными за годы практики. \nОтдохнув таким образом, вы получаете ту же пользу, что и человек от 8 часов сна."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем и Эльфийском. Эльфийский - текучий язык с тонкими интонациями и сложной грамматикой. Эльфийская литература богата и разнообразна, а их песни и стихи знамениты среди других рас. Многие барды изучают их язык, чтобы добавить эльфийские баллады в свой репертуар."
-      }
+      { "name": "Увеличение характеристик", "desc": "Ловкость +2." },
+      { "name": "Возраст", "desc": "Взрослые в 100 лет, живут до 750." },
+      { "name": "Размер", "desc": "Средний, 5–6 футов, стройные." },
+      { "name": "Скорость", "desc": "30 футов." },
+      { "name": "Тёмное зрение", "desc": "60 футов." },
+      { "name": "Острые чувства", "desc": "Владение навыком Внимательность." },
+      { "name": "Наследие фей", "desc": "Преимущество от очарования, иммунитет к магическому сну." },
+      { "name": "Транс", "desc": "Медитация 4 часа вместо сна." }
     ],
+    "namesEn": "Child: Ara, Bryn, Del, Eryn, Faen, Innil, Lael, Mella, Naill, Naeris, Phann, Rae, Rinn, Sai, Sillin, Tia, Vall.\nMale: Adran, Aramil, Arannis, Aust, Beiro, Berrian, Carric, Enialis, Erdan, Erevan, Galinndan, Hadarai, Heian, Himo, Immeral, Ivellios, Laucian, Mindartis, Paelias, Peren, Quarion, Riardon, Rolen, Soveliss, Thamior, Tharivol, Theren, Varis.\nFemale: Adrie, Althaea, Anastrianna, Andraste, Antinua, Bethrynna, Birel, Caelynn, Drusilia, Enna, Felosial, Ielenia, Jelenneth, Keyleth, Leshanna, Lia, Meriele, Mialee, Naivara, Quelenna, Quillathe, Sariel, Shanairra, Shava, Silaqui, Theirastra, Thia, Vadania, Valanthe, Xanaphia.\nFamily: Amakiir (Gemflower), Amastacia (Starflower), Galanodel (Moonwhisper), Holimion (Diamonddew), Ilphelkiir (Gemblossom), Liadon (Silverfrond), Meliamne (Oakenheel), Nailo (Nightbreeze), Siannodel (Moonbrook), Xiloscient (Goldpetal).",
+    "namesRu": "Детские: Ара, Бринн, Дел, Эрин, Фаэн, Иннил, Лаэль, Мелла, Найл, Наэрис, Фанн, Рэй, Ринн, Сай, Силлин, Тиа.\nМужские: Адран, Арамиль, Араннис, Ост, Бейро, Берриан, Каррик, Эниалис, Эрддан, Эреван, Галинндан, Хадарай, Хэйан, Химо, Иммераль, Ивеллиос, Лауциан, Миндартис, Паэлиас, Перен, Кварион, Риардон, Ролен, Совелисс, Тамиор, Таривол, Терен, Варис.\nЖенские: Адриэ, Алтея, Анастарианна, Андрасте, Антинуа, Бетринна, Бирель, Кейлинн, Друзилия, Энна, Фелосиаль, Илениа, Йеленнет, Кейлет, Лешанна, Лиа, Мериэль, Миали, Найвара, Квеленна, Квиллате, Сариэль, Шанайрра, Шава, Силаки, Тейрастра, Тиа, Вадания, Валанте, Ксанафия.\nФамильные: Амакиир (Цветок Самоцвета), Амастация (Звездный Цветок), Галанодель (Лунный Шепот), Холимион (Алмазная Роса), Илфелкиир (Бутон Самоцвета), Лиадон (Серебряный Лист), Мелиамне (Дубовая Пята), Найло (Ночной Бриз), Сианнодель (Лунный Ручей), Ксилосцент (Золотой Лепесток).",
     "subraces": [
-      {
-        "nameEn": "High Elf",
-        "nameRu": "Высший эльф",
-        "traitsEn": [
-          {
-            "name": "",
-            "desc": "As a high elf, you have a keen mind and a mastery of at least the basics of magic. In many fantasy gaming worlds, there are two kinds of high elves. One type is haughty and reclusive, believing themselves to be superior to non-elves and even other elves. The other type is more common and more friendly, and often encountered among humans and other races."
-          },
-          {
-            "name": "Ability Score Increase",
-            "desc": "Your Intelligence score increases by 1."
-          },
-          {
-            "name": "Elf Weapon Training",
-            "desc": "You have proficiency with the longsword, shortsword, shortbow, and longbow."
-          },
-          {
-            "name": "Cantrip",
-            "desc": "You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it."
-          },
-          {
-            "name": "Extra Language",
-            "desc": "You can speak, read, and write one extra language of your choice."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "",
-            "desc": "Как высший эльф, вы обладаете острым умом и владеете хотя бы основами магии. Во многих мирах фэнтезийных игр существует два вида высших эльфов. Один тип надменен и замкнут, считая себя выше неэльфов и даже других эльфов. Другой тип более распространён и дружелюбен, часто встречается среди людей и других рас."
-          },
-          {
-            "name": "Увеличение характеристик",
-            "desc": "Ваше значение Интеллекта увеличивается на 1."
-          },
-          {
-            "name": "Эльфийская боевая подготовка",
-            "desc": "Вы владеете длинным мечом, коротким мечом, коротким луком и длинным луком."
-          },
-          {
-            "name": "Заговор",
-            "desc": "Вы знаете один заговор на выбор из списка заклинаний волшебника. Интеллект является вашей базовой характеристикой для его сотворения."
-          },
-          {
-            "name": "Дополнительный язык",
-            "desc": "Вы можете говорить, читать и писать на одном дополнительном языке на ваш выбор."
-          }
-        ]
+      { 
+        "nameEn": "High Elf", 
+        "nameRu": "Высший эльф", 
+        "loreEn": "Heirs to ancient magical traditions who value intellect and art. Often live in majestic cities where magic permeates every stone.",
+        "loreRu": "Наследники древних магических традиций, ценящие интеллект и искусство. Часто живут в величественных городах, где магия пронизывает каждый камень.",
+        "traitsEn": [{"name": "Intelligence +1", "desc": "Wizard Cantrip, Extra Language."}], 
+        "traitsRu": [{"name": "Интеллект +1", "desc": "Заговор волшебника, Доп. язык."}] 
+      },
+      { 
+        "nameEn": "Wood Elf", 
+        "nameRu": "Лесной эльф", 
+        "loreEn": "Masters of stealth and survival in the wild. Possess incredible speed and the ability to blend in with the forest thicket.",
+        "loreRu": "Мастера скрытности и выживания в дикой природе. Обладают невероятной скоростью и умением сливаться с лесной чащей.",
+        "traitsEn": [{"name": "Wisdom +1", "desc": "Fleet of Foot (35ft), Mask of the Wild."}], 
+        "traitsRu": [{"name": "Мудрость +1", "desc": "Быстроногий (35фт), Маскировка в дикой природе."}] 
+      },
+      { 
+        "nameEn": "Dark Elf (Drow)", 
+        "nameRu": "Тёмный эльф (Дроу)", 
+        "loreEn": "Dwellers of deep caverns, possessing unique magic and the ability to see in absolute darkness. Their society is shrouded in mystery and ancient legends.",
+        "loreRu": "Обитатели глубоких подземелий, обладающие уникальной магией и способностью видеть в абсолютной темноте. Их общество окутано тайнами и древними легендами.",
+        "traitsEn": [{"name": "Charisma +1", "desc": "Superior Darkvision (120ft), Drow Magic (Dancing Lights, Faerie Fire at lv3, Darkness at lv5)."}], 
+        "traitsRu": [{"name": "Харизма +1", "desc": "Улучшенное тёмное зрение (120фт), Магия Дроу (Пляшущие огоньки, Огонь фей на 3ур, Тьма на 5ур)."}] 
       }
     ]
   },
   {
     "nameEn": "Gnome",
     "nameRu": "Гном",
+    "loreEn": "Gnomes are a small but incredibly energetic people whose enthusiasm and curiosity know no bounds. They live in cozy, light-filled underground dwellings, skillfully hidden from prying eyes. Gnomes value the joy of discovery, whether it's inventing a new mechanism or finding a rare gemstone. Despite their love for jokes and fun, they show striking seriousness and focus in matters related to engineering, alchemy, or art.",
+    "loreRu": "Гномы — это маленький, но невероятно энергичный народ, чей энтузиазм и любопытство не знают границ. Они живут в уютных, залитых светом подземных жилищах, искусно скрытых от посторонних глаз. Гномы ценят радость открытий, будь то изобретение нового механизма или нахождение редкого драгоценного камня. Несмотря на свою любовь к шуткам и веселью, они проявляют поразительную серьезность и сосредоточенность в делах, связанных с инженерией, алхимией или искусством.",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "Your gnome character has certain characteristics in common with all other gnomes."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your Intelligence score increases by 2."
-      },
-      {
-        "name": "Age",
-        "desc": "Gnomes mature at the same rate humans do, and most are expected to settle down into an adult life by around age 40. They can live 350 to almost 500 years."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Gnomes are most often good. Those who tend toward law are sages, engineers, researchers, scholars, investigators, or inventors. Those who tend toward chaos are minstrels, tricksters, wanderers, or fanciful jewelers. Gnomes are good-hearted, and even the tricksters among them are more playful than vicious."
-      },
-      {
-        "name": "Size",
-        "desc": "Gnomes are between 3 and 4 feet tall and average about 40 pounds. Your size is Small."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 25 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "Accustomed to life underground, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray."
-      },
-      {
-        "name": "Gnome Cunning",
-        "desc": "You have advantage on all Intelligence, Wisdom, and Charisma saving throws against magic."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common and Gnomish. The Gnomish language, which uses the Dwarvish script, is renowned for its technical treatises and its catalogs of knowledge about the natural world."
-      }
+      { "name": "Ability Score Increase", "desc": "Intelligence +2." },
+      { "name": "Age", "desc": "Adults at 40, live up to 500." },
+      { "name": "Size", "desc": "Small, 3–4 feet, around 40 lbs." },
+      { "name": "Speed", "desc": "25 feet." },
+      { "name": "Darkvision", "desc": "60 feet." },
+      { "name": "Gnome Cunning", "desc": "Advantage on Int, Wis, and Cha saves vs magic." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Ваш персонаж-гном обладает определёнными чертами, общими для всех гномов."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Ваше значение Интеллекта увеличивается на 2."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Гномы взрослеют с той же скоростью, что и люди, и от большинства ожидается, что они вступят во взрослую жизнь примерно к 40 годам. Они могут прожить от 350 до почти 500 лет."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Гномы чаще всего добры. Те, кто склоняется к принципиальности, - мудрецы, инженеры, исследователи, учёные, сыщики или изобретатели. Те, кто склоняется к хаосу, - менестрели, шутники, странники или причудливые ювелиры. Гномы добросердечны, и даже шутники среди них скорее игривы, чем жестоки."
-      },
-      {
-        "name": "Размер",
-        "desc": "Рост гномов от 3 до 4 футов, вес в среднем около 40 фунтов. Ваш размер - Маленький."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 25 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Привыкшие к подземной жизни, вы обладаете превосходным зрением в темноте и при тусклом свете. Вы видите при тусклом свете в пределах 60 футов, как при ярком свете, а в темноте - как при тусклом свете. Вы не различаете цветов в темноте, только оттенки серого."
-      },
-      {
-        "name": "Гномья хитрость",
-        "desc": "Вы совершаете с преимуществом все спасброски Интеллекта, Мудрости и Харизмы против магии."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем и Гномьем. Гномий язык, использующий Дварфийское письмо, известен своими техническими трактатами и каталогами знаний о мире природы."
-      }
+      { "name": "Увеличение характеристик", "desc": "Интеллект +2." },
+      { "name": "Возраст", "desc": "Взрослые в 40 лет, живут до 500." },
+      { "name": "Размер", "desc": "Маленький, 3–4 фута, около 40 фунтов." },
+      { "name": "Скорость", "desc": "25 футов." },
+      { "name": "Тёмное зрение", "desc": "60 футов." },
+      { "name": "Гномья хитрость", "desc": "Преимущество при спасбросках Инт, Мдр, Хрз против магии." }
     ],
+    "namesEn": "Birth names: Boddynock, Dimble, Fonkin, Gellan, Gerbo, Namfoodle, Pok, Seebo, Spinnbog, Wrenn.\nNicknames: Beer-Glugger, Cog, Jump-Jump, Mouse, Brainy.\nClan names: Beren, Daergel, Folkor, Garrick, Nackle, Murnig.",
+    "namesRu": "Имена при рождении: Боддинок, Димбл, Геллан, Пок, Спиннбогг, Вренн.\nПрозвища: Пивохлёб, Шестерёнка, Прыг-Скок, Умник.\nНазвания кланов: Берен, Даергель, Фолькор, Гаррик, Мурниг.",
     "subraces": [
-      {
-        "nameEn": "Rock Gnome",
-        "nameRu": "Скальный гном",
-        "traitsEn": [
-          {
-            "name": "",
-            "desc": "As a rock gnome, you have a natural inventiveness and hardiness beyond that of other gnomes."
-          },
-          {
-            "name": "Ability Score Increase",
-            "desc": "Your Constitution score increases by 1."
-          },
-          {
-            "name": "Artificer's Lore",
-            "desc": "Whenever you make an Intelligence (History) check related to magic items, alchemical objects, or technological devices, you can add twice your proficiency bonus, instead of any proficiency bonus you normally apply."
-          },
-          {
-            "name": "Tinker",
-            "desc": "You have proficiency with artisan's tools (tinker's tools). Using those tools, you can spend 1 hour and 10 gp worth of materials to construct a Tiny clockwork device (AC 5, 1 hp). The device ceases to function after 24 hours (unless you spend 1 hour repairing it to keep the device functioning), or when you use your action to dismantle it; at that time, you can reclaim the materials used to create it. You can have up to three such devices active at a time. \nWhen you create a device, choose one of the following options:"
-          },
-          {
-            "name": "Clockwork Toy",
-            "desc": "This toy is a clockwork animal, monster, or person, such as a frog, mouse, bird, dragon, or soldier. When placed on the ground, the toy moves 5 feet across the ground on each of your turns in a random direction. It makes noises as appropriate to the creature it represents."
-          },
-          {
-            "name": "Fire Starter",
-            "desc": "The device produces a miniature flame, which you can use to light a candle, torch, or campfire. Using the device requires your action."
-          },
-          {
-            "name": "Music Box",
-            "desc": "When opened, this music box plays a single song at a moderate volume. The box stops playing when it reaches the song's end or when it is closed."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "",
-            "desc": "Как скальный гном, вы обладаете природной изобретательностью и выносливостью, превышающими таковые у других гномов."
-          },
-          {
-            "name": "Увеличение характеристик",
-            "desc": "Ваше значение Телосложения увеличивается на 1."
-          },
-          {
-            "name": "Знание ремесленника",
-            "desc": "Каждый раз, когда вы совершаете проверку Интеллекта (История), связанную с магическими предметами, алхимическими объектами или технологическими устройствами, вы можете добавить удвоенный бонус мастерства вместо обычного."
-          },
-          {
-            "name": "Мастер на все руки",
-            "desc": "Вы владеете ремесленными инструментами (инструменты ремонтника). Используя эти инструменты, вы можете потратить 1 час и материалы стоимостью 10 зм для создания Крошечного заводного устройства (КД 5, 1 хит). Устройство перестаёт работать через 24 часа (если вы не потратите 1 час на его починку), или когда вы действием его разберёте; в этот момент вы можете вернуть материалы, использованные для его создания. У вас может быть до трёх таких активных устройств одновременно. \nСоздавая устройство, выберите один из следующих вариантов:"
-          },
-          {
-            "name": "Заводная игрушка",
-            "desc": "Эта игрушка - заводное животное, монстр или человечек, такой как лягушка, мышь, птица, дракон или солдатик. Когда её ставят на землю, игрушка перемещается на 5 футов по земле в каждый ваш ход в случайном направлении. Она издаёт звуки, соответствующие изображаемому существу."
-          },
-          {
-            "name": "Огниво",
-            "desc": "Устройство производит миниатюрное пламя, которым можно зажечь свечу, факел или костёр. Использование устройства требует действия."
-          },
-          {
-            "name": "Музыкальная шкатулка",
-            "desc": "При открытии эта музыкальная шкатулка играет одну мелодию на умеренной громкости. Шкатулка прекращает играть, когда мелодия заканчивается или когда её закрывают."
-          }
-        ]
+      { 
+        "nameEn": "Forest Gnome", 
+        "nameRu": "Лесной гном", 
+        "loreEn": "Masters of stealth and natural illusion magic, living in secret forest settlements. They possess a rare gift for communicating with small inhabitants of the forest.",
+        "loreRu": "Мастера скрытности и природной магии иллюзий, живущие в тайных лесных поселениях. Они обладают редким даром общения с мелкими обитателями леса.",
+        "traitsEn": [{"name": "Minor Illusion", "desc": "Natural Illusionist cantrip."}, {"name": "Speak with Small Beasts", "desc": "Communication with small forest animals."}], 
+        "traitsRu": [{"name": "Малая иллюзия", "desc": "Природный иллюзионизм (заговор)."}, {"name": "Общение с малыми зверями", "desc": "Коммуникация с мелкими лесными зверьками."}] 
+      },
+      { 
+        "nameEn": "Rock Gnome", 
+        "nameRu": "Скальный гном", 
+        "loreEn": "Possess a natural inclination for invention and the study of mechanisms. They are the most famous engineers and jewelers in the world of gnomes.",
+        "loreRu": "Обладают природной склонностью к изобретательству и изучению механизмов. Это самые известные инженеры и ювелиры в мире гномов.",
+        "traitsEn": [{"name": "Artificer's Lore", "desc": "Expertise in history related to magical items or mechanisms."}, {"name": "Tinker", "desc": "Creation of small mechanical devices."}], 
+        "traitsRu": [{"name": "Гномья смекалка", "desc": "Компетентность в истории магических предметов и механизмов."}, {"name": "Мастер на все руки", "desc": "Создание небольших механических устройств."}] 
+      },
+      { 
+        "nameEn": "Deep Gnome", 
+        "nameRu": "Глубинный гном", 
+        "loreEn": "A hardy and cautious branch of the gnome people, adapted to life in the dangerous depths of the Underdark. Masters of stealth and the mining of rare rubies.",
+        "loreRu": "Суровая и осторожная ветвь народа гномов, приспособленная к жизни в опасных глубинах Подземья. Мастера скрытности и добычи редких рубинов.",
+        "traitsEn": [{"name": "Superior Darkvision", "desc": "120 feet."}, {"name": "Stone Camouflage", "desc": "Advantage on stealth in rocky terrain."}], 
+        "traitsRu": [{"name": "Улучшенное тёмное зрение", "desc": "120 футов."}, {"name": "Каменный камуфляж", "desc": "Преимущество при скрытности в каменистой местности."}] 
       }
     ]
   },
@@ -522,88 +182,20 @@
     "nameEn": "Half-Elf",
     "nameRu": "Полуэльф",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "Your half-elf character has some qualities in common with elves and some that are unique to half-elves."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your Charisma score increases by 2, and two other ability scores of your choice increase by 1."
-      },
-      {
-        "name": "Age",
-        "desc": "Half-elves mature at the same rate humans do and reach adulthood around the age of 20. They live much longer than humans, however, often exceeding 180 years."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Half-elves share the chaotic bent of their elven heritage. They value both personal freedom and creative expression, demonstrating neither love of leaders nor desire for followers. They chafe at rules, resent others' demands, and sometimes prove unreliable, or at least unpredictable."
-      },
-      {
-        "name": "Size",
-        "desc": "Half-elves are about the same size as humans, ranging from 5 to 6 feet tall. Your size is Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "Thanks to your elf blood, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray."
-      },
-      {
-        "name": "Fey Ancestry",
-        "desc": "You have advantage on saving throws against being charmed, and magic can't put you to sleep."
-      },
-      {
-        "name": "Skill Versatility",
-        "desc": "You gain proficiency in two skills of your choice."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common, Elvish, and one extra language of your choice."
-      }
+      { "name": "Ability Score Increase", "desc": "Charisma +2, two others +1." },
+      { "name": "Size", "desc": "Medium, 5–6 feet tall." },
+      { "name": "Speed", "desc": "30 feet." },
+      { "name": "Darkvision", "desc": "60 feet." },
+      { "name": "Fey Ancestry", "desc": "Advantage vs Charmed, magic can't sleep you." },
+      { "name": "Skill Versatility", "desc": "Proficiency in two skills of choice." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Ваш персонаж-полуэльф обладает некоторыми качествами, общими с эльфами, и некоторыми уникальными для полуэльфов."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Ваше значение Харизмы увеличивается на 2, и два других значения характеристик на ваш выбор увеличиваются на 1."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Полуэльфы взрослеют с той же скоростью, что и люди, и достигают зрелости примерно к 20 годам. Однако они живут значительно дольше людей, часто превышая 180 лет."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Полуэльфы разделяют хаотичную склонность своего эльфийского наследия. Они ценят как личную свободу, так и творческое самовыражение, не испытывая ни любви к лидерам, ни желания иметь последователей. Они тяготятся правилами, возмущаются чужими требованиями и иногда бывают ненадёжными, или по крайней мере непредсказуемыми."
-      },
-      {
-        "name": "Размер",
-        "desc": "Полуэльфы примерно такого же размера, как люди, ростом от 5 до 6 футов. Ваш размер - Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 30 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Благодаря эльфийской крови вы обладаете превосходным зрением в темноте и при тусклом свете. Вы видите при тусклом свете в пределах 60 футов, как при ярком свете, а в темноте - как при тусклом свете. Вы не различаете цветов в темноте, только оттенки серого."
-      },
-      {
-        "name": "Наследие фей",
-        "desc": "Вы совершаете с преимуществом спасброски против очарования, и магия не может усыпить вас."
-      },
-      {
-        "name": "Универсальность навыков",
-        "desc": "Вы получаете владение двумя навыками на ваш выбор."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем, Эльфийском и одном дополнительном языке на ваш выбор."
-      }
+      { "name": "Увеличение характеристик", "desc": "Харизма +2, две другие на +1." },
+      { "name": "Размер", "desc": "Средний, 5–6 футов." },
+      { "name": "Скорость", "desc": "30 футов." },
+      { "name": "Тёмное зрение", "desc": "60 футов." },
+      { "name": "Наследие фей", "desc": "Преимущество от очарования, иммунитет к магическому сну." },
+      { "name": "Универсальность навыков", "desc": "Владение двумя навыками на выбор." }
     ],
     "subraces": []
   },
@@ -611,96 +203,22 @@
     "nameEn": "Half-Orc",
     "nameRu": "Полуорк",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "Your half-orc character has certain traits deriving from your orc ancestry."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your Strength score increases by 2, and your Constitution score increases by 1."
-      },
-      {
-        "name": "Age",
-        "desc": "Half-orcs mature a little faster than humans, reaching adulthood around age 14. They age noticeably faster and rarely live longer than 75 years."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Half-orcs inherit a tendency toward chaos from their orc parents and are not strongly inclined toward good. Half-orcs raised among orcs and willing to live out their lives among them are usually evil."
-      },
-      {
-        "name": "Size",
-        "desc": "Half-orcs are somewhat larger and bulkier than humans, and they range from 5 to well over 6 feet tall. Your size is Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "Thanks to your orc blood, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray."
-      },
-      {
-        "name": "Menacing",
-        "desc": "You gain proficiency in the Intimidation skill."
-      },
-      {
-        "name": "Relentless Endurance",
-        "desc": "When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You can't use this feature again until you finish a long rest."
-      },
-      {
-        "name": "Savage Attacks",
-        "desc": "When you score a critical hit with a melee weapon attack, you can roll one of the weapon's damage dice one additional time and add it to the extra damage of the critical hit."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common and Orc. Orc is a harsh, grating language with hard consonants. It has no script of its own but is written in the Dwarvish script."
-      }
+      { "name": "Ability Score Increase", "desc": "Strength +2, Constitution +1." },
+      { "name": "Size", "desc": "Medium, over 6 feet, bulky." },
+      { "name": "Speed", "desc": "30 feet." },
+      { "name": "Darkvision", "desc": "60 feet." },
+      { "name": "Menacing", "desc": "Proficiency in Intimidation." },
+      { "name": "Relentless Endurance", "desc": "Drop to 1 HP instead of 0 once per Long Rest." },
+      { "name": "Savage Attacks", "desc": "Extra crit damage die." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Ваш персонаж-полуорк обладает определёнными особенностями, происходящими от вашего орочьего наследия."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Ваше значение Силы увеличивается на 2, а значение Телосложения - на 1."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Полуорки взрослеют немного быстрее людей, достигая зрелости примерно к 14 годам. Они заметно быстрее стареют и редко живут дольше 75 лет."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Полуорки наследуют склонность к хаосу от своих орочьих родителей и не имеют сильной склонности к добру. Полуорки, выросшие среди орков и готовые прожить жизнь среди них, обычно злые."
-      },
-      {
-        "name": "Размер",
-        "desc": "Полуорки несколько крупнее и массивнее людей, ростом от 5 до значительно более 6 футов. Ваш размер - Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 30 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Благодаря орочьей крови вы обладаете превосходным зрением в темноте и при тусклом свете. Вы видите при тусклом свете в пределах 60 футов, как при ярком свете, а в темноте - как при тусклом свете. Вы не различаете цветов в темноте, только оттенки серого."
-      },
-      {
-        "name": "Угрожающий",
-        "desc": "Вы получаете владение навыком Запугивание."
-      },
-      {
-        "name": "Неукротимая выносливость",
-        "desc": "Когда ваши хиты падают до 0, но вы не убиты наповал, вы можете вместо этого упасть до 1 хита. Вы не можете использовать эту способность снова, пока не завершите продолжительный отдых."
-      },
-      {
-        "name": "Дикие атаки",
-        "desc": "Когда вы совершаете критическое попадание рукопашной атакой оружием, вы можете бросить одну из костей урона оружия ещё один раз и добавить результат к дополнительному урону критического попадания."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем и Орочьем. Орочий - грубый, скрипучий язык с твёрдыми согласными. У него нет собственного письма, но он записывается Дварфийским письмом."
-      }
+      { "name": "Увеличение характеристик", "desc": "Сила +2, Телосложение +1." },
+      { "name": "Размер", "desc": "Средний, выше 6 футов, массивные." },
+      { "name": "Скорость", "desc": "30 футов." },
+      { "name": "Тёмное зрение", "desc": "60 футов." },
+      { "name": "Угрожающий", "desc": "Владение навыком Запугивание." },
+      { "name": "Неукротимая выносливость", "desc": "Вместо 0 хитов остается 1. Раз за долгий отдых." },
+      { "name": "Дикие атаки", "desc": "Доп. кость урона при крите." }
     ],
     "subraces": []
   },
@@ -708,186 +226,63 @@
     "nameEn": "Halfling",
     "nameRu": "Полурослик",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "Your halfling character has a number of traits in common with all other halflings."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your Dexterity score increases by 2."
-      },
-      {
-        "name": "Age",
-        "desc": "A halfling reaches adulthood at the age of 20 and generally lives into the middle of his or her second century."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Most halflings are lawful good. As a rule, they are good-hearted and kind, hate to see others in pain, and have no tolerance for oppression. They are also very orderly and traditional, leaning heavily on the support of their community and the comfort of their old ways."
-      },
-      {
-        "name": "Size",
-        "desc": "Halflings average about 3 feet tall and weigh about 40 pounds. Your size is Small."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 25 feet."
-      },
-      {
-        "name": "Lucky",
-        "desc": "When you roll a 1 on the d20 for an attack roll, ability check, or saving throw, you can reroll the die and must use the new roll."
-      },
-      {
-        "name": "Brave",
-        "desc": "You have advantage on saving throws against being frightened."
-      },
-      {
-        "name": "Halfling Nimbleness",
-        "desc": "You can move through the space of any creature that is of a size larger than yours."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common and Halfling. The Halfling language isn't secret, but halflings are loath to share it with others. They write very little, so they don't have a rich body of literature. Their oral tradition, however, is very strong. Almost all halflings speak Common to converse with the people in whose lands they dwell or through which they are traveling."
-      }
+      { "name": "Ability Score Increase", "desc": "Dexterity +2." },
+      { "name": "Size", "desc": "Small, 3 feet, 40 lbs." },
+      { "name": "Speed", "desc": "25 feet." },
+      { "name": "Lucky", "desc": "Reroll 1s on D20." },
+      { "name": "Brave", "desc": "Advantage vs Frightened." },
+      { "name": "Halfling Nimbleness", "desc": "Move through spaces of larger creatures." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Ваш персонаж-полурослик обладает рядом особенностей, общих для всех полуросликов."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Ваше значение Ловкости увеличивается на 2."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Полурослик достигает зрелости к 20 годам и обычно живёт до середины второго столетия."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Большинство полуросликов принципиально-добрые. Как правило, они добросердечны и добры, не выносят чужих страданий и нетерпимы к угнетению. Они также очень упорядочены и привержены традициям, опираясь на поддержку общины и утешение старых обычаев."
-      },
-      {
-        "name": "Размер",
-        "desc": "Рост полуросликов в среднем около 3 футов, вес - около 40 фунтов. Ваш размер - Маленький."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 25 футов."
-      },
-      {
-        "name": "Везучий",
-        "desc": "Когда вы выбрасываете 1 на d20 при броске атаки, проверке характеристики или спасброске, вы можете перебросить кость и должны использовать новый результат."
-      },
-      {
-        "name": "Храбрый",
-        "desc": "Вы совершаете с преимуществом спасброски против испуга."
-      },
-      {
-        "name": "Проворство полурослика",
-        "desc": "Вы можете пройти через пространство любого существа, которое на один размер больше вас."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем и Полуросличьем. Язык полуросликов не является тайным, но полурослики неохотно делятся им с другими. Они мало пишут, поэтому у них нет богатой письменной литературы. Однако их устная традиция очень сильна. Почти все полурослики говорят на Общем, чтобы общаться с народами земель, в которых живут или через которые путешествуют."
-      }
+      { "name": "Увеличение характеристик", "desc": "Ловкость +2." },
+      { "name": "Размер", "desc": "Маленький, 3 фута, 40 фунтов." },
+      { "name": "Скорость", "desc": "25 футов." },
+      { "name": "Везучий", "desc": "Переброс '1' при проверках." },
+      { "name": "Храбрый", "desc": "Преимущество от Испуга." },
+      { "name": "Проворство полурослика", "desc": "Проход сквозь клетки существ крупнее вас." }
     ],
     "subraces": [
-      {
-        "nameEn": "Lightfoot",
-        "nameRu": "Легконогий",
-        "traitsEn": [
-          {
-            "name": "",
-            "desc": "As a lightfoot halfling, you can easily hide from notice, even using other people as cover. You're inclined to be affable and get along well with others. \nLightfoots are more prone to wanderlust than other halflings, and often dwell alongside other races or take up a nomadic life."
-          },
-          {
-            "name": "Ability Score Increase",
-            "desc": "Your Charisma score increases by 1."
-          },
-          {
-            "name": "Naturally Stealthy",
-            "desc": "You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "",
-            "desc": "Как легконогий полурослик, вы легко прячетесь от посторонних глаз, используя даже других людей как укрытие. Вы склонны к общительности и хорошо ладите с другими. \nЛегконогие более склонны к странствиям, чем другие полурослики, и часто живут бок о бок с другими расами или ведут кочевую жизнь."
-          },
-          {
-            "name": "Увеличение характеристик",
-            "desc": "Ваше значение Харизмы увеличивается на 1."
-          },
-          {
-            "name": "Природная скрытность",
-            "desc": "Вы можете попытаться спрятаться, даже если вас заслоняет только существо как минимум на один размер больше вас."
-          }
-        ]
-      }
+      { "nameEn": "Lightfoot", "nameRu": "Легконогий", "traitsEn": [{"name": "Charisma +1", "desc": "Naturally Stealthy."}], "traitsRu": [{"name": "Харизма +1", "desc": "Природная скрытность."}] }
     ]
   },
   {
     "nameEn": "Human",
     "nameRu": "Человек",
+    "loreEn": "Humans are the most adaptable and diverse among the common races. Driven by their relatively short lifespans, they strive to achieve as much as possible in the time given to them. This makes them great pioneers, conquerors, and builders of empires. There is no 'typical' human; they range from noble knights to cunning rogues, from reclusive mages to mighty barbarians.",
+    "loreRu": "Люди — самая амбициозная и разнообразная из всех рас. Движимые сравнительно короткой продолжительностью жизни, они стремятся достичь как можно большего за отведенный им срок. Это делает их величайшими первооткрывателями, завоевателями и строителями империй. Среди людей нет «типичного» представителя: они варьируются от благородных рыцарей до коварных воров, от отшельников-магов до могучих варваров.",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "It's hard to make generalizations about humans, but your human character has these traits."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your ability scores each increase by 1."
-      },
-      {
-        "name": "Age",
-        "desc": "Humans reach adulthood in their late teens and live less than a century."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Humans tend toward no particular alignment. The best and the worst are found among them."
-      },
-      {
-        "name": "Size",
-        "desc": "Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on."
-      }
+      { "name": "Ability Score Increase", "desc": "All scores +1." },
+      { "name": "Age", "desc": "Adults in late teens, live under 100." },
+      { "name": "Speed", "desc": "30 feet." },
+      { "name": "Languages", "desc": "Common and one extra." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Трудно делать обобщения о людях, но ваш персонаж-человек обладает этими особенностями."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Каждое ваше значение характеристики увеличивается на 1."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Люди достигают зрелости к концу подросткового возраста и живут менее столетия."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Люди не склоняются к какому-либо определённому мировоззрению. Лучшие и худшие встречаются среди них."
-      },
-      {
-        "name": "Размер",
-        "desc": "Люди сильно различаются по росту и телосложению, от едва 5 футов до значительно более 6 футов. Независимо от вашего положения в этом диапазоне, ваш размер - Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 30 футов."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем и одном дополнительном языке на ваш выбор. Люди обычно изучают языки других народов, с которыми имеют дело, включая малоизвестные диалекты. Они любят приправлять свою речь словами, заимствованными из других языков: орочьими ругательствами, эльфийскими музыкальными выражениями, дварфийскими военными фразами и так далее."
-      }
+      { "name": "Увеличение характеристик", "desc": "Все способности +1." },
+      { "name": "Возраст", "desc": "Взрослые к 18-20 годам, живут до 100 лет." },
+      { "name": "Скорость", "desc": "30 футов." },
+      { "name": "Языки", "desc": "Общий и один на выбор." }
+    ],
+    "namesEn": "Male: Bor, Darvin, Aseir, Anton, Chen, Fodel, Jandar.\nFemale: Alethra, Arveene, Atala, Balama, Jia, Katriana.\nFamily: Bersk, Chernin, Amblecrown, Buckman, Wan (comes first).",
+    "namesRu": "Мужские: Бор, Дарвин, Асеир, Антон, Чен, Фодель, Джандар.\nЖенские: Алетра, Арвин, Атала, Балама, Цзя, Катриана.\nФамилии: Берск, Чернин, Амберкраун, Бакман, Ван (фамилия ставится перед именем).",
+    "ethnicitiesRu": [
+      { "name": "Пустынные странники", "description": "Смуглая кожа, темные волосы. Жители жарких южных пустынь, мастера торговли и выживания.", "names": "Асеир, Бардейд (М); Атала, Цеймей (Ж)" },
+      { "name": "Прибрежные торговцы", "description": "Светлая кожа, каштановые волосы, зеленые или карие глаза. Предприимчивые исследователи.", "names": "Дарвин, Дорн (М); Арвин, Эсвель (Ж)" },
+      { "name": "Северные горцы", "description": "Крепкое телосложение, суровый взгляд. Жители северных широт, привыкшие к тяжелому труду.", "names": "Бор, Фодель (М); Алетра, Кара (Ж)" },
+      { "name": "Морские воины севера", "description": "Высокие, часто светловолосые или рыжие. Опытные мореходы и бесстрашные воины.", "names": "Андер, Бран (М); Амафри, Бета (Ж)" },
+      { "name": "Наследники империй", "description": "Высокие и стройные, часто с аристократическими чертами. Члены древних цивилизаций.", "names": "Аот, Барерис (М); Аризима, Чати (Ж)" },
+      { "name": "Лесные стражи", "description": "Невысокие, мускулистые, с густыми темными волосами. Жители диких земель.", "names": "Боривик, Джандар (М); Файла, Катриана (Ж)" },
+      { "name": "Восточные мастера", "description": "Жители далекого востока с золотистой кожей и черными глазами.", "names": "Ан, Чен (М); Бай, Цзя (Ж)" },
+      { "name": "Южные дипломаты", "description": "Высокие, с кожей цвета красного дерева. Мастера переговоров и морской навигации.", "names": "Антона, Диеро (М); Балама, Дона (Ж)" }
+    ],
+    "ethnicitiesEn": [
+      { "name": "Desert Wanderers", "description": "Dusky skin, dark hair. Inhabitants of arid lands, known for trade and ancient traditions.", "names": "Aseir, Bardeid (M); Atala, Ceimei (F)" },
+      { "name": "Coastal Traders", "description": "Fair skin, brown hair, green or hazel eyes. Enterprising explorers from temperate regions.", "names": "Darvin, Dorn (M); Arveene, Esvele (F)" },
+      { "name": "Northern Highlanders", "description": "Sturdy build, stern look. Inhabitants of cold foothills, accustomed to heavy labor.", "names": "Bor, Fodel (M); Alethra, Kara (F)" },
+      { "name": "Northern Sea Raiders", "description": "Tall, often light-haired or red-headed. Experienced seafaring warriors from the frozen north.", "names": "Ander, Bran (M); Amafrey, Betha (F)" },
+      { "name": "Empire Heirs", "description": "Tall and slender, with aristocratic features. Members of ancient magical civilizations.", "names": "Aoth, Bareris (M); Arizima, Chathi (F)" },
+      { "name": "Wildland Protectors", "description": "Sturdy build, thick dark hair. Tough people living in harmony with wild nature.", "names": "Borivik, Jandar (M); Faila, Katriana (F)" },
+      { "name": "Eastern Sages", "description": "Inhabitants of the distant east with golden skin and distinct arts.", "names": "An, Chen (M); Bai, Jia (F)" },
+      { "name": "Southern Diplomats", "description": "Tall, with rich mahogany skin. Skilled masters of diplomacy and navigation.", "names": "Antona, Diero (M); Balama, Dona (F)" }
     ],
     "subraces": []
   },
@@ -895,88 +290,20 @@
     "nameEn": "Tiefling",
     "nameRu": "Тифлинг",
     "traitsEn": [
-      {
-        "name": "",
-        "desc": "Tieflings share certain racial traits as a result of their infernal descent."
-      },
-      {
-        "name": "Ability Score Increase",
-        "desc": "Your Intelligence score increases by 1, and your Charisma score increases by 2."
-      },
-      {
-        "name": "Age",
-        "desc": "Tieflings mature at the same rate as humans but live a few years longer."
-      },
-      {
-        "name": "Alignment",
-        "desc": "Tieflings might not have an innate tendency toward evil, but many of them end up there. Evil or not, an independent nature inclines many tieflings toward a chaotic alignment."
-      },
-      {
-        "name": "Size",
-        "desc": "Tieflings are about the same size and build as humans. Your size is Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "Thanks to your infernal heritage, you have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray."
-      },
-      {
-        "name": "Hellish Resistance",
-        "desc": "You have resistance to fire damage."
-      },
-      {
-        "name": "Infernal Legacy",
-        "desc": "You know the *thaumaturgy* cantrip. When you reach 3rd level, you can cast the *hellish rebuke* spell as a 2nd-level spell once with this trait and regain the ability to do so when you finish a long rest. When you reach 5th level, you can cast the *darkness* spell once with this trait and regain the ability to do so when you finish a long rest. Charisma is your spellcasting ability for these spells."
-      },
-      {
-        "name": "Languages",
-        "desc": "You can speak, read, and write Common and Infernal."
-      }
+      { "name": "Ability Score Increase", "desc": "Charisma +2, Intelligence +1." },
+      { "name": "Size", "desc": "Medium, human-like." },
+      { "name": "Speed", "desc": "30 feet." },
+      { "name": "Darkvision", "desc": "60 feet." },
+      { "name": "Hellish Resistance", "desc": "Resistance to Fire damage." },
+      { "name": "Infernal Legacy", "desc": "Thaumaturgy, Hellish Rebuke (lv3), Darkness (lv5)." }
     ],
     "traitsRu": [
-      {
-        "name": "",
-        "desc": "Тифлинги разделяют определённые расовые особенности как результат их инфернального происхождения."
-      },
-      {
-        "name": "Увеличение характеристик",
-        "desc": "Ваше значение Интеллекта увеличивается на 1, а значение Харизмы - на 2."
-      },
-      {
-        "name": "Возраст",
-        "desc": "Тифлинги взрослеют с той же скоростью, что и люди, но живут на несколько лет дольше."
-      },
-      {
-        "name": "Мировоззрение",
-        "desc": "Тифлинги могут не иметь врождённой склонности ко злу, но многие из них приходят к нему. Злые или нет, независимая натура склоняет многих тифлингов к хаотичному мировоззрению."
-      },
-      {
-        "name": "Размер",
-        "desc": "Тифлинги примерно такого же размера и телосложения, как люди. Ваш размер - Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость ходьбы - 30 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Благодаря инфернальному наследию вы обладаете превосходным зрением в темноте и при тусклом свете. Вы видите при тусклом свете в пределах 60 футов, как при ярком свете, а в темноте - как при тусклом свете. Вы не различаете цветов в темноте, только оттенки серого."
-      },
-      {
-        "name": "Адское сопротивление",
-        "desc": "Вы имеете сопротивление к урону огнём."
-      },
-      {
-        "name": "Инфернальное наследие",
-        "desc": "Вы знаете заговор *тауматургия*. Достигнув 3-го уровня, вы можете сотворить заклинание *адское возмездие* как заклинание 2-го уровня один раз с помощью этой особенности и восстанавливаете способность сделать это после завершения продолжительного отдыха. Достигнув 5-го уровня, вы можете сотворить заклинание *тьма* один раз с помощью этой особенности и восстанавливаете способность сделать это после завершения продолжительного отдыха. Харизма является вашей базовой характеристикой для этих заклинаний."
-      },
-      {
-        "name": "Языки",
-        "desc": "Вы можете говорить, читать и писать на Общем и Инфернальном."
-      }
+      { "name": "Увеличение характеристик", "desc": "Харизма +2, Интеллект +1." },
+      { "name": "Размер", "desc": "Средний, человекоподобный." },
+      { "name": "Скорость", "desc": "30 футов." },
+      { "name": "Тёмное зрение", "desc": "60 футов." },
+      { "name": "Адское сопротивление", "desc": "Сопротивление Огню." },
+      { "name": "Инфернальное наследие", "desc": "Чудотворство, Адское возмездие (3ур), Тьма (5ур)." }
     ],
     "subraces": []
   }

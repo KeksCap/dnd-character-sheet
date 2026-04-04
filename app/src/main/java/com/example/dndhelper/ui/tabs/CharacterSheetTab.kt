@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.example.dndhelper.data.*
 import com.example.dndhelper.ui.components.*
 import com.example.dndhelper.ui.models.AbilityScore
+import com.example.dndhelper.ui.models.DiceRollData
 import com.example.dndhelper.utils.getProficiencyBonus
 import com.example.dndhelper.utils.getStatMod
 
@@ -60,6 +61,8 @@ fun CharacterSheetTab(
     }
     val armorClass = selectedArmor.baseAc + dexBonus + (if (character.shieldEquipped) 2 else 0) + character.magicBonus
 
+    var activeRollData by remember { mutableStateOf<DiceRollData?>(null) }
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState())) {
         HeaderInfoBlock(
             character = character,
@@ -85,7 +88,8 @@ fun CharacterSheetTab(
             armorClass = armorClass,
             initiativeText = initiativeText,
             isEn = isEn,
-            armorList = armorList
+            armorList = armorList,
+            onRollRequest = { activeRollData = it }
         )
 
         val hasDisadvantageOnChecks = character.activeConditions.any { 
@@ -98,7 +102,8 @@ fun CharacterSheetTab(
             isEn = isEn,
             profBonus = profBonus,
             hasDisadvantageOnChecks = hasDisadvantageOnChecks,
-            onStatsChange = { stats = it }
+            onStatsChange = { stats = it },
+            onRollRequest = { activeRollData = it }
         )
 
         val hasDisadvantageOnAttacks = character.activeConditions.any { 
@@ -116,7 +121,8 @@ fun CharacterSheetTab(
             dexMod = dexMod,
             strMod = strMod,
             profBonus = profBonus,
-            hasDisadvantageOnAttacks = hasDisadvantageOnAttacks
+            hasDisadvantageOnAttacks = hasDisadvantageOnAttacks,
+            onRollRequest = { activeRollData = it }
         )
 
         MagicItemsBlock(
@@ -143,4 +149,12 @@ fun CharacterSheetTab(
             onCharacterChange = onCharacterChange
         )
     }
+
+    if (activeRollData != null) {
+        DiceRollBottomSheet(
+            rollData = activeRollData!!,
+            onDismiss = { activeRollData = null }
+        )
+    }
 }
+

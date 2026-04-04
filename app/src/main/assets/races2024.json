@@ -2,423 +2,234 @@
   {
     "nameEn": "Aasimar",
     "nameRu": "Аазимар",
+    "loreEn": "Aasimars are humans in whose veins flows a spark of celestial greatness. Born with the blessing of higher powers, they possess unearthly grace and features that betray their divine heritage: glowing eyes, unusual skin or hair colors with a metallic sheen. Most aasimars feel the weight of a great destiny and are often guided by celestial mentors through dreams. They are a rare and secretive people, striving to be a light for those around them, but often torn between duty and their own desires.",
+    "loreRu": "Аазимары — это люди, в чьих жилах течет искра небесного величия. Рожденные с благословением высших сил, они обладают неземной грацией и чертами, выдающими их божественное наследие: сияющими глазами, необычным цветом кожи или волос с металлическим блеском. Большинство аасимаров чувствуют на себе груз великой судьбы и часто направляются небесными наставниками через сны. Это редкий и скрытный народ, стремящийся быть светом для окружающих, но часто разрывающийся между долгом и собственными желаниями.",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Medium or Small. You choose the size when you select this species."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Celestial Revelation",
-        "desc": "When you reach 3rd level, choose one of the following revelation options: Heavenly Wings (gain a flying speed), Inner Radiance (deal radiant damage in an aura around you), or Necrotic Shroud (frighten enemies and deal necrotic damage). You can use this revelation as an action once per Long Rest."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
-      },
-      {
-        "name": "Healing Hands",
-        "desc": "As a Magic action, you can touch a creature and heal it. The creature regains a number of Hit Points equal to the roll of a number of d4s equal to your Proficiency Bonus. You can't use this trait again until you finish a Long Rest."
-      },
-      {
-        "name": "Celestial Resistance",
-        "desc": "You have Resistance to Necrotic damage and Radiant damage."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Medium (about 4–7 feet tall) or Small (about 2–4 feet tall)." },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Celestial Revelation", "desc": "At 3rd level, Bonus Action: Inner Radiance (light aura), Necrotic Shroud (fear aura), or Heavenly Wings (flight). 1 min, once per Long Rest." },
+      { "name": "Darkvision", "desc": "60 feet" },
+      { "name": "Healing Hands", "desc": "Magic action: Heal d4s equal to PB. Once per Long Rest." },
+      { "name": "Celestial Resistance", "desc": "Resistance to Necrotic and Radiant damage." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Средний или Маленький. Вы выбираете размер при выборе этого вида."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость перемещения — 30 футов."
-      },
-      {
-        "name": "Небесное откровение",
-        "desc": "На 3-м уровне выберите один из следующих вариантов откровения: Небесные крылья (получаете скорость полёта), Внутреннее сияние (наносите сияющий урон в ауре вокруг себя) или Некротический покров (наводите страх на врагов и наносите некротический урон). Использование требует Магического действия. Доступно раз за Продолжительный отдых."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Вы можете видеть при тусклом свете на 60 футов так же, как при ярком, и в темноте так же, как при тусклом."
-      },
-      {
-        "name": "Целительные руки",
-        "desc": "Магическим действием вы можете коснуться существа и исцелить его на количество хитов, равное броску нескольких костей d4 (их число равно вашему Бонусу Мастерства). Доступно один раз до конца Продолжительного отдыха."
-      },
-      {
-        "name": "Небесное сопротивление",
-        "desc": "Вы обладаете Сопротивлением к Некротическому урону и урону Излучением."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Средний (4–7 фт) или Маленький (2–4 фт)." },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Небесное откровение", "desc": "На 3-м уровне Бонусным действием: Внутреннее сияние, Некротический покров или Небесные крылья. Длится 1 мин, раз за отдых." },
+      { "name": "Тёмное зрение", "desc": "60 футов" },
+      { "name": "Целительные руки", "desc": "Магическим действием: Исцеление k4 кол-вом равным БМ. Раз за отдых." },
+      { "name": "Небесное сопротивление", "desc": "Сопротивление к Некротическому и Излучающему урону." }
     ],
-    "subraces": []
+    "namesEn": "Most Aasimars have human names. Their celestial guides, however, carry names like: Tadriel, Mykiel, Seraphina, Valandras.",
+    "namesRu": "Большинство аасимаров носят человеческие имена. Имена их небесных наставников: Тадриэль, Микаэль, Серафина, Валандрас.",
+    "subraces": [
+      { 
+        "nameEn": "Protector Aasimar (Heavenly Wings)", 
+        "nameRu": "Аасимар-защитник (Небесные крылья)", 
+        "loreEn": "Luminous spectral wings sprout from your back. [In the new edition, these abilities became faster to activate (Bonus Action) and more balanced].",
+        "loreRu": "Сияющие бестелесные крылья вырастают у вас за спиной. [В новой редакции эти способности стали быстрее в активации (Бонусное действие) и сбалансированнее].",
+        "traitsEn": [
+          {"name": "2024 Version", "desc": "Bonus Action to transform. Flight speed equal to your Speed. Extra Radiant damage once per turn equal to Proficiency Bonus."},
+          {"name": "2014 Version: Radiant Soul", "desc": "Wisdom +1. Action to transform. Your eyes shimmer and two luminous wings sprout. Duration 1 min. Flight speed 30 feet. Extra Radiant damage once per turn equal to your Level. Ends with a Bonus Action."}
+        ], 
+        "traitsRu": [
+          {"name": "Версия 2024", "desc": "Бонусное действие для превращения. Скорость полета равна вашей скорости. Доп. Излучающий урон раз в ход равный Бонусу Мастерства."},
+          {"name": "Версия 2014: Сияющая душа", "desc": "Мудрость +1. Действием вы высвобождаете энергию: глаза мерцают, вырастают два светящихся крыла. Длится 1 мин. Скорость полета 30 футов. Доп. Излучающий урон раз в ход равный вашему Уровню. Заканчивается Бонусным действием."}
+        ] 
+      },
+      { 
+        "nameEn": "Scourge Aasimar (Inner Radiance)", 
+        "nameRu": "Аасимар-каратель (Внутреннее сияние)", 
+        "loreEn": "Unleash a burst of dazzling light. [In the new edition, these abilities became faster to activate (Bonus Action) and more balanced].",
+        "loreRu": "Вы высвобождаете вспышку ослепительного света. [В новой редакции эти способности стали быстрее в активации (Бонусное действие) и сбалансированнее].",
+        "traitsEn": [
+          {"name": "2024 Version", "desc": "Bonus Action to transform. 10-foot light aura (Radiant damage to enemies). Extra Radiant damage once per turn equal to Proficiency Bonus."},
+          {"name": "2014 Version: Radiant Consumption", "desc": "Constitution +1. Action to transform. Divine light pours from your eyes and mouth. Duration 1 min. 10-foot light aura (Radiant damage to ALL around). Extra Radiant damage once per turn equal to your Level. Ends with a Bonus Action."}
+        ], 
+        "traitsRu": [
+          {"name": "Версия 2024", "desc": "Бонусное действие для превращения. Световая аура 10 футов (урон только врагам). Доп. Излучающий урон раз в ход равный Бонусу Мастерства."},
+          {"name": "Версия 2014: Лучистое потребление", "desc": "Телосложение +1. Действием божественный свет изливается из ваших глаз и рта. Длится 1 мин. Световая аура 10 футов (урон ВСЕМ вокруг). Доп. Излучающий урон раз в ход равный вашему Уровню. Заканчивается Бонусным действием."}
+        ] 
+      },
+      { 
+        "nameEn": "Fallen Aasimar (Necrotic Shroud)", 
+        "nameRu": "Падший аасимар (Некротический покров)", 
+        "loreEn": "A dark power erupts from within, creating a terrifying aura of shadow. [In the new edition, these abilities became faster to activate (Bonus Action) and more balanced].",
+        "loreRu": "Темная сила вырывается изнутри, создавая пугающую ауру теней. [В новой редакции эти способности стали быстрее в активации (Бонусное действие) и сбалансированнее].",
+        "traitsEn": [
+          {"name": "2024 Version", "desc": "Bonus Action to transform. 10-foot fear aura. Extra Necrotic damage once per turn equal to Proficiency Bonus."},
+          {"name": "2014 Version: Necrotic Shroud", "desc": "Strength +1. Action to transform. Your eyes turn into pools of darkness and two skeletal wings sprout. Duration 1 min. 10-foot fear aura. Extra Necrotic damage once per turn equal to your Level. Ends with a Bonus Action."}
+        ], 
+        "traitsRu": [
+          {"name": "Версия 2024", "desc": "Бонусное действие для превращения. Аура страха 10 футов. Доп. Некротический урон раз в ход равный Бонусу Мастерства."},
+          {"name": "Версия 2014: Некротический покров", "desc": "Сила +1. Действием ваши глаза превращаются в бездны тьмы, вырастают два скелетообразных крыла. Длится 1 мин. Аура страха 10 футов. Доп. Некротический урон раз в ход равный вашему Уровню. Заканчивается Бонусным действием."}
+        ] 
+      }
+    ]
   },
   {
     "nameEn": "Dragonborn",
     "nameRu": "Драконорождённый",
+    "loreEn": "Dragonborn are a proud and dedicated people whose appearance resembles upright dragons. They lack wings or a tail in the classic sense, but their bodies are covered in thick scales, the hues of which range from gold to bright scarlet. The primary value of the dragonborn is their clan, devotion to which stands above their own life. They strive for perfection in any endeavor, whether it be the martial arts or a craft, and respect those who show the same commitment. They rarely accept help from outside, preferring to rely on their own strength and the wisdom of their kind.",
+    "loreRu": "Драконорождённые — гордый и самоотверженный народ, чей облик напоминает прямоходящих драконов. У них нет крыльев или хвоста (в классическом понимании), но их тело покрыто густой чешуей, оттенки которой варьируются от золотого до ярко-алого. Главная ценность драконорождённых — их клан, преданность которому стоит выше собственной жизни. Они стремятся к совершенству в любом деле, будь то воинское искусство или ремесло, и уважают тех, кто проявляет такую же целеустремленность. Помощь со стороны они принимают редко, предпочитая полагаться на собственные силы и мудрость своего рода.",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Draconic Ancestry",
-        "desc": "Choose your draconic ancestry from the provided table, which determines your Damage Type and Breath Weapon shape."
-      },
-      {
-        "name": "Breath Weapon",
-        "desc": "As an action, or when taking the Attack action (replacing one attack), exhale energy. Creatures in the area make a Dexterity or Constitution saving throw (depending on ancestry) DC 8 + Con mod + PB, taking 1d10 damage of your ancestry's type (increases at lvls 5, 11, 17). Uses equal your Proficiency Bonus per Long Rest."
-      },
-      {
-        "name": "Damage Resistance",
-        "desc": "You have Resistance to the Damage Type associated with your Draconic Ancestry."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
-      },
-      {
-        "name": "Draconic Flight",
-        "desc": "At 5th level, you can sprout spectral wings momentarily to gain a Fly Speed equal to your Speed for 10 minutes (Usage once per Long Rest)."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Age", "desc": "Dragonborn grow faster than humans. They can walk within an hour of hatching, look like 10-year-old humans by age 3, and reach adulthood at 15. They live for about 80 years." },
+      { "name": "Size", "desc": "Medium (5–7 feet)" },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Draconic Ancestry", "desc": "Determines Breath Weapon shape and Resistance type:\n• Black/Copper (Acid, 30 ft line, DEX)\n• Blue/Bronze (Lightning, 30 ft line, DEX)\n• Brass/Gold/Red (Fire, 15 ft cone, DEX)\n• Green (Poison, 15 ft cone, CON)\n• Silver/White (Cold, 15 ft cone, CON)" },
+      { "name": "Breath Weapon", "desc": "[2024 Version: More flexible and scales with d10s]. Replace one attack: 15-ft Cone or 30-ft Line. Usage: PB times per Long Rest. Damage scaling:\n• 1-4 level: 1d10\n• 5-10 level: 2d10\n• 11-16 level: 3d10\n• 17+ level: 4d10" },
+      { "name": "Damage Resistance", "desc": "Resistance to damage type from Ancestry." },
+      { "name": "Darkvision", "desc": "60 feet" },
+      { "name": "Draconic Flight", "desc": "[New 2024 ability]. At 5th level, sprout spectral wings for 10 min. Fly speed = Speed. Once per Long Rest." },
+      { "name": "Languages", "desc": "Common and Draconic. Draconic sounds harsh to others and includes many hard consonants and sibilants." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость перемещения — 30 футов."
-      },
-      {
-        "name": "Драконье наследие",
-        "desc": "Выберите драконьего предка по таблице: это определит Тип Урона и форму Оружия дыхания."
-      },
-      {
-        "name": "Оружие дыхания",
-        "desc": "Во время совершения действия Атака вы можете заменить одну из атак выдыханием энергии. Существа совершают спасбросок: при провале они получают 1d10 урона вашего типа наследия (урон растёт на 5, 11 и 17 ур). Вы можете использовать эту черту количество раз, равное вашему Бонусу Мастерства за Продолжительный отдых."
-      },
-      {
-        "name": "Сопротивление урону",
-        "desc": "Вы имеете Сопротивление типу урона, связанному с вашим Драконьим наследием."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Вы можете видеть при тусклом свете на 60 футов так же, как при ярком, и в темноте так же, как при тусклом."
-      },
-      {
-        "name": "Драконий полёт",
-        "desc": "На 5-м уровне вы получаете способность призывать призрачные крылья, раз в Продолжительный отдых получая Скорость Полёта 30 футов на 10 минут."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Возраст", "desc": "Драконорождённые растут быстрее людей. Они могут ходить через час после рождения, в 3 года выглядят как 10-летние дети, а к 15 годам становятся взрослыми. Живут они около 80 лет." },
+      { "name": "Размер", "desc": "Средний (5–7 фт)" },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Драконье наследие", "desc": "Определяет форму выдоха и тип Сопротивления:\n• Чёрный/Медный (Кислота, 30 фт линия, ЛОВ)\n• Синий/Бронзовый (Молния, 30 фт линия, ЛОВ)\n• Латунный/Золотой/Красный (Огонь, 15 фт конус, ЛОВ)\n• Зелёный (Яд, 15 фт конус, ТЕЛ)\n• Серебряный/Белый (Холод, 15 фт конус, ТЕЛ)" },
+      { "name": "Оружие дыхания", "desc": "[Версия 2024: Гибкость и кости k10]. Заменяет одну атаку. Использований: БМ за отдых. Прогрессия урона:\n• 1-4 ур: 1к10\n• 5-10 ур: 2к10\n• 11-16 ур: 3к10\n• 17+ ур: 4к10" },
+      { "name": "Сопротивление урону", "desc": "Сопротивление к типу урона от наследия." },
+      { "name": "Тёмное зрение", "desc": "60 футов" },
+      { "name": "Драконий полёт", "desc": "[Новая способность 2024]. На 5-м уровне призрачные крылья на 10 мин. Скорость полёта = Скорости. Раз за отдых." },
+      { "name": "Языки", "desc": "Вы говорите, читаете и пишете на Общем и Драконьем языках. Драконий звучит резко, со множеством твёрдых согласных и шипящих." }
     ],
+    "namesEn": "Clan names (put first): Versisathurgiesh, Daardendrian, Kimbatuul, Myastan, Nemmonis.\nMale names: Arjhan, Balasar, Donnar, Ghetpesh, Pandjed.\nFemale names: Akra, Biri, Daari, Farideh, Havilar.\nChild names: Brave, Brainy, Sticky.",
+    "namesRu": "Названия кланов (идут первыми): Версисатургиеш, Дардендриан, Кимбатуул, Мьястан, Неммонис.\nМужские имена: Арджан, Баласар, Доннар, Гетпеш, Панджед.\nЖенские имена: Акра, Бири, Даари, Фариде, Хавилар.\nДетские имена: Смельчак, Умник, Прилипала.",
     "subraces": []
   },
   {
     "nameEn": "Dwarf",
     "nameRu": "Дварф",
+    "loreEn": "Dwarves are masters of smithing and stonework, whose lives are inextricably linked to the mountains and the depths of the earth. They are a hardy and proud people who value clan loyalty, craftsmanship, and the traditions of their ancestors above all else. Dwarves have long memories and can remember both a kind deed and a slight for centuries. Their subterranean kingdoms are architectural wonders carved into the very heart of the mountains.",
+    "loreRu": "Дварфы — мастера кузнечного дела и камнерезы, чья жизнь неразрывно связана с горами и глубинами земли. Это выносливый и гордый народ, превыше всего ценящий верность клану, мастерство и традиции своих предков. Дварфы обладают долгой памятью и могут веками помнить как доброе дело, так и нанесенную обиду. Их подземные королевства — это чудеса архитектуры, высеченные в самом сердце гор.",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet. Your speed is not reduced by wearing Heavy armor."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "You can see in Dim Light within 120 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
-      },
-      {
-        "name": "Dwarven Resilience",
-        "desc": "You have Advantage on saving throws you make to avoid or end the Poisoned condition on yourself. You also have Resistance to Poison damage."
-      },
-      {
-        "name": "Dwarven Toughness",
-        "desc": "Your Hit Point maximum increases by 1, and it increases by 1 every time you gain a level."
-      },
-      {
-        "name": "Stonecunning",
-        "desc": "You have Tremorsense out to 60 feet on stone surfaces. As a Bonus Action, you can touch a stone surface and know the history of its creation."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Medium (4–5 feet)" },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Darkvision", "desc": "120 feet" },
+      { "name": "Dwarven Resilience", "desc": "Resistance to Poison and Advantage on saves vs Poisoned." },
+      { "name": "Dwarven Toughness", "desc": "HP max increases by 1 each level." },
+      { "name": "Stonecunning", "desc": "Bonus Action: Tremorsense (60 ft) on stone for 10 min. Usage: PB times per Long Rest." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость перемещения — 30 футов. Ваша скорость не падает при ношении Тяжёлой брони."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Радиус вашего зрения в темноте увеличен до 120 футов."
-      },
-      {
-        "name": "Дварфийская стойкость",
-        "desc": "Вы совершаете с Преимуществом спасброски от состояния Отравлен. Также у вас есть Сопротивление урону Ядом."
-      },
-      {
-        "name": "Дварфийская выносливость",
-        "desc": "Ваш максимум Хитов увеличивается на 1, и растёт ещё на 1 на каждом получаемом уровне."
-      },
-      {
-        "name": "Знание камня",
-        "desc": "Вы обладаете Сейсмочувством в радиусе 60 футов через каменные поверхности. Даёт бонусы при оценке камней и подземелий."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Средний (4–5 фт)" },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Тёмное зрение", "desc": "120 футов" },
+      { "name": "Дварфийская стойкость", "desc": "Сопротивление Яду и Преимущество от Отравления." },
+      { "name": "Дварфийская крепость", "desc": "+1 хит за уровень." },
+      { "name": "Чутьё камня", "desc": "Бонусное действие: Чувство вибрации (60 фт) на 10 мин. Использований: БМ за отдых." }
     ],
+    "namesEn": "Male: Adrik, Alberich, Baern, Barendd, Brottor, Bruenor, Dain, Darrak, Delg, Flint, Gardain, Harbek, Oskar, Rangrim, Rurik, Thorin, Ulfgar.\nFemale: Artin, Bardryn, Diesa, Eldeth, Falkrunn, Helja, Hlin, Kathra, Kristryd, Mardred, Riswynn, Vistra.\nClan: Battlehammer, Ironfist, Fireforge, Stonefist, Icebeard, Strakeln, Holderhek, Loderr.",
+    "namesRu": "Мужские: Адрик, Альберих, Баэрн, Броттор, Даин, Даррак, Делг, Флинт, Гардайн, Харбек, Оскар, Торн, Ульфгар.\nЖенские: Артин, Бардрин, Диза, Эльдет, Хелья, Катра, Кристид, Мардред, Вистра.\nКланы: Боевой Молот (Battlehammer), Железный Кулак (Ironfist), Огненный Горн (Fireforge), Каменный Кулак (Stonefist), Ледяная Борода (Icebeard), Холдерхек (Holderhek).",
     "subraces": []
   },
   {
     "nameEn": "Elf",
     "nameRu": "Эльф",
+    "loreEn": "Elves are a graceful and long-lived people whose origins are rooted in the Feywild. They live in harmony with nature and magic, possessing sharpened senses and a deep connection to the world. Instead of normal sleep, elves enter a meditative trance, recovering their strength in just a few hours. Their art, music, and craftsmanship are renowned for their refinement and durability.",
+    "loreRu": "Эльфы — это грациозный и долгоживущий народ, чье происхождение уходит корнями в измерение Фей. Они живут в гармонии с природой и магией, обладая обостренными чувствами и глубокой связью с миром. Вместо обычного сна эльфы погружаются в медитативный транс, восстанавливая силы всего за несколько часов. Их искусство, музыка и кузнечное дело славятся своей изысканностью и долговечностью.",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
-      },
-      {
-        "name": "Keen Senses",
-        "desc": "You gain Proficiency in the Perception, Insight, or Survival skill."
-      },
-      {
-        "name": "Fey Ancestry",
-        "desc": "You have Advantage on saving throws you make to avoid or end the Charmed condition on yourself."
-      },
-      {
-        "name": "Trance",
-        "desc": "You don't need to sleep, and magic can't put you to sleep. You can finish a Long Rest in 4 hours if you spend those hours in a trancelike meditation."
-      },
-      {
-        "name": "Elven Lineage",
-        "desc": "Choose a Lineage (Drow, High Elf, or Wood Elf). You gain magic and traits based on your chosen Lineage."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Medium (5–6 feet)" },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Darkvision", "desc": "60 feet" },
+      { "name": "Fey Ancestry", "desc": "Advantage on saves vs Charmed." },
+      { "name": "Keen Senses", "desc": "Proficiency in Insight, Perception, or Survival." },
+      { "name": "Trance", "desc": "4-hour Long Rest medidating." },
+      { "name": "Elven Lineage", "desc": "Choose: Drow (120ft Darkvision, spells), High Elf (Wizard cantrip change, spells), or Wood Elf (35ft speed, spells)." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость перемещения — 30 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Вы можете видеть при тусклом свете на 60 футов так же, как при ярком, и в темноте так же, как при тусклом."
-      },
-      {
-        "name": "Острые чувства",
-        "desc": "Вы получаете Владение навыком на выбор: Внимательность, Проницательность или Выживание."
-      },
-      {
-        "name": "Наследие фей",
-        "desc": "Вы совершаете с Преимуществом спасброски для избегания состояния Очарован."
-      },
-      {
-        "name": "Транс",
-        "desc": "Вам не нужен сон и магия не способна вас усыпить. Чтобы завершить Продолжительный Отдых вам достаточно провести 4 часа занимаясь медитацией."
-      },
-      {
-        "name": "Эльфийская родословная",
-        "desc": "Выберите вашу родословную (Дроу, Высший Эльф или Лесной Эльф). Это даст вам заклинания и дополнительную скорость."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Средний (5–6 фт)" },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Тёмное зрение", "desc": "60 футов" },
+      { "name": "Наследие фей", "desc": "Преимущество от Очарования." },
+      { "name": "Острые чувства", "desc": "Владение на выбор: Проницательность, Внимательность или Выживание." },
+      { "name": "Транс", "desc": "Отдых за 4 часа медитации." },
+      { "name": "Эльфийский род", "desc": "Выбор: Дроу (120фт зрение, магия), Высший (замена заговоров, магия) или Лесной (35фт скорость, магия)." }
     ],
+    "namesEn": "Child: Ara, Bryn, Del, Eryn, Faen, Innil, Lael, Mella, Naill, Naeris, Phann, Rae, Rinn, Sai, Sillin, Tia, Vall.\nMale: Adran, Aramil, Arannis, Aust, Beiro, Berrian, Carric, Enialis, Erdan, Erevan, Galinndan, Hadarai, Heian, Himo, Immeral, Ivellios, Laucian, Mindartis, Paelias, Peren, Quarion, Riardon, Rolen, Soveliss, Thamior, Tharivol, Theren, Varis.\nFemale: Adrie, Althaea, Anastrianna, Andraste, Antinua, Bethrynna, Birel, Caelynn, Drusilia, Enna, Felosial, Ielenia, Jelenneth, Keyleth, Leshanna, Lia, Meriele, Mialee, Naivara, Quelenna, Quillathe, Sariel, Shanairra, Shava, Silaqui, Theirastra, Thia, Vadania, Valanthe, Xanaphia.\nFamily: Amakiir (Gemflower), Amastacia (Starflower), Galanodel (Moonwhisper), Holimion (Diamonddew), Ilphelkiir (Gemblossom), Liadon (Silverfrond), Meliamne (Oakenheel), Nailo (Nightbreeze), Siannodel (Moonbrook), Xiloscient (Goldpetal).",
+    "namesRu": "Детские: Ара, Бринн, Дел, Эрин, Фаэн, Иннил, Лаэль, Мелла, Найл, Наэрис, Фанн, Рэй, Ринн, Сай, Силлин, Тиа.\nМужские: Адран, Арамиль, Араннис, Ост, Бейро, Берриан, Каррик, Эниалис, Эрддан, Эреван, Галинndan, Хадарай, Хэйан, Химо, Иммераль, Ивеллиос, Лауциан, Миндартис, Паэлиас, Перен, Кварион, Риардон, Ролен, Совелисс, Тамиор, Таривол, Терен, Варис.\nЖенские: Адриэ, Алтея, Анастарианна, Андрасте, Антинуа, Бетринна, Бирель, Кейлинн, Друзилия, Энна, Фелосиаль, Илениа, Йеленнет, Кейлет, Лешанна, Лиа, Мериэль, Миали, Найвара, Квеленна, Квиллате, Сариэль, Шанайрра, Шава, Силаки, Тейрастра, Тиа, Вадания, Валанте, Ксанафия.\nФамильные: Амакиир (Цветок Самоцвета), Амастация (Звездный Цветок), Галанодель (Лунный Шепот), Холимион (Алмазная Роса), Илфелкиир (Бутон Самоцвета), Лиадон (Серебряный Лист), Мелиамне (Дубовая Пята), Найло (Ночной Бриз), Сианнодель (Лунный Ручей), Ксилосцент (Золотой Лепесток).",
     "subraces": [
-      {
-        "nameEn": "Drow",
-        "nameRu": "Дроу",
-        "traitsEn": [
-          {
-            "name": "Lineage Spells",
-            "desc": "You know Dancing Lights. At 3rd level, you learn Faerie Fire. At 5th level, you learn Darkness. You can cast each natively once per Long rest."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "Заклинания наследия",
-            "desc": "Вы знаете заговор Пляшущие огоньки. На 3-м вы можете творить Огонь Фей, а на 5-м Тьму один раз до Продолжительного отдыха."
-          }
-        ]
+      { 
+        "nameEn": "Drow", 
+        "nameRu": "Дроу", 
+        "loreEn": "Dwellers of deep caverns, possessing unique magic and the ability to see in absolute darkness. Their society is shrouded in mystery and ancient legends.",
+        "loreRu": "Обитатели глубоких подземелий, обладающие уникальной магией и способностью видеть в абсолютной темноте. Их общество окутано тайнами и древними легендами.",
+        "traitsEn": [{"name": "Spells", "desc": "Dancing Lights, Faerie Fire (lv3), Darkness (lv5)."}], 
+        "traitsRu": [{"name": "Магия", "desc": "Пляшущие огоньки, Огонь фей (3ур), Тьма (5ур)."}] 
       },
-      {
-        "nameEn": "High Elf",
-        "nameRu": "Высший Эльф",
-        "traitsEn": [
-          {
-            "name": "Lineage Spells",
-            "desc": "You know Prestidigitation. At 3rd level, Detect Magic. At 5th level, Misty Step."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "Заклинания наследия",
-            "desc": "Вы знаете заговор Фокусы. На 3-м Обнаружение магии, а на 5-м Туманный шаг."
-          }
-        ]
+      { 
+        "nameEn": "High Elf", 
+        "nameRu": "Высший эльф", 
+        "loreEn": "Heirs to ancient magical traditions who value intellect and art. Often live in majestic cities where magic permeates every stone.",
+        "loreRu": "Наследники древних магических традиций, ценящие интеллект и искусство. Часто живут в величественных городах, где магия пронизывает каждый камень.",
+        "traitsEn": [{"name": "Spells", "desc": "Wizard Cantrip (swap on long rest), Detect Magic (lv3), Misty Step (lv5)."}], 
+        "traitsRu": [{"name": "Магия", "desc": "Заговор волшебника (можно менять), Обнаружение магии (3ур), Туманный шаг (5ур)."}] 
       },
-      {
-        "nameEn": "Wood Elf",
-        "nameRu": "Лесной Эльф",
-        "traitsEn": [
-          {
-            "name": "Fleet of Foot",
-            "desc": "Your walking speed increases to 35 feet."
-          },
-          {
-            "name": "Lineage Spells",
-            "desc": "You know Druidcraft. At 3rd level, Longstrider. At 5th level, Pass without Trace."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "Быстроногий",
-            "desc": "Ваша скорость становится 35 футов."
-          },
-          {
-            "name": "Заклинания",
-            "desc": "Заговор: Искусство друидов. На 3-м: Скороход. На 5-м: Без следа."
-          }
-        ]
+      { 
+        "nameEn": "Wood Elf", 
+        "nameRu": "Лесной эльф", 
+        "loreEn": "Masters of stealth and survival in the wild. Possess incredible speed and the ability to blend in with the forest thicket.",
+        "loreRu": "Мастера скрытности и выживания в дикой природе. Обладают невероятной скоростью и умением сливаться с лесной чащей.",
+        "traitsEn": [{"name": "Spells", "desc": "Speed 35ft. Druidcraft, Longstrider (lv3), Pass without Trace (lv5)."}], 
+        "traitsRu": [{"name": "Магия", "desc": "Скорость 35фт. Искусство друидов, Скороход (3ур), Без следа (5ур)."}] 
       }
     ]
   },
   {
     "nameEn": "Gnome",
     "nameRu": "Гном",
+    "loreEn": "Gnomes are a small but incredibly energetic people whose enthusiasm and curiosity know no bounds. They live in cozy, light-filled underground dwellings, skillfully hidden from prying eyes. Gnomes value the joy of discovery, whether it's inventing a new mechanism or finding a rare gemstone. Despite their love for jokes and fun, they show striking seriousness and focus in matters related to engineering, alchemy, or art.",
+    "loreRu": "Гномы — это маленький, но невероятно энергичный народ, чей энтузиазм и любопытство не знают границ. Они живут в уютных, залитых светом подземных жилищах, искусно скрытых от посторонних глаз. Гномы ценят радость открытий, будь то изобретение нового механизма или нахождение редкого драгоценного камня. Несмотря на свою любовь к шуткам и веселью, они проявляют поразительную серьезность и сосредоточенность в делах, связанных с инженерией, алхимией или искусством.",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Small."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
-      },
-      {
-        "name": "Gnomish Cunning",
-        "desc": "You have Advantage on Intelligence, Wisdom, and Charisma saving throws."
-      },
-      {
-        "name": "Gnomish Lineage",
-        "desc": "Choose Forest Gnome or Rock Gnome to receive spells and abilities."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Small (3–4 feet)" },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Darkvision", "desc": "60 feet" },
+      { "name": "Gnomish Cunning", "desc": "Advantage on INT, WIS, and CHA saves." },
+      { "name": "Gnomish Lineage", "desc": "Forest Gnome (Minor Illusion, Speak with Animals), Rock Gnome (Mending, Prestidigitation, Tinker devices), or Deep Gnome (Superior Darkvision, Stone Camouflage)." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Маленький."
-      },
-      {
-        "name": "Скорость",
-        "desc": "30 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Радиус 60 футов."
-      },
-      {
-        "name": "Гномья хитрость",
-        "desc": "У вас есть Преимущество на все спасброски Интеллекта, Мудрости и Харизмы."
-      },
-      {
-        "name": "Родословная гномов",
-        "desc": "Выберите родословную Лесного или Скального гнома."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Маленький (3–4 фута)" },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Тёмное зрение", "desc": "60 футов" },
+      { "name": "Гномья хитрость", "desc": "Преимущество на спасброски ИНТ, МДР и ХАР." },
+      { "name": "Гномий род", "desc": "Лесной (Иллюзия, Разговор с животными), Скальный (Починка, Фокусы, Создание механизмов) или Глубинный (Зрение 120фт, Маскировка в камне)." }
     ],
+    "namesEn": "Birth names: Boddynock, Dimble, Fonkin, Gellan, Gerbo, Namfoodle, Pok, Seebo, Spinnbog, Wrenn.\nNicknames: Beer-Glugger, Cog, Jump-Jump, Mouse, Brainy.\nClan names: Beren, Daergel, Folkor, Garrick, Nackle, Murnig.",
+    "namesRu": "Имена при рождении: Боддинок, Димбл, Геллан, Пок, Спиннбогг, Вренн.\nПрозвища: Пивохлёб, Шестерёнка, Прыг-Скок, Умник.\nНазвания кланов: Берен, Даергель, Фолькор, Гаррик, Мурниг.",
     "subraces": [
-      {
-        "nameEn": "Forest Gnome",
-        "nameRu": "Лесной Гном",
-        "traitsEn": [
-          {
-            "name": "Speak with Animals",
-            "desc": "You know Minor Illusion and Speak with Animals. You can cast Speak with animals Wis Mod times per long rest."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "Общение с животными",
-            "desc": "Вы знаете Малую Иллюзию и Разговор с животными."
-          }
-        ]
+      { 
+        "nameEn": "Forest Gnome", 
+        "nameRu": "Лесной гном", 
+        "loreEn": "Masters of stealth and natural illusion magic, living in secret forest settlements. They possess a rare gift for communicating with small inhabitants of the forest.",
+        "loreRu": "Мастера скрытности и природной магии иллюзий, живущие в тайных лесных поселениях. Они обладают редким даром общения с мелкими обитателями леса.",
+        "traitsEn": [{"name": "Spells", "desc": "Minor Illusion cantrip, Speak with Animals (ritual)."}], 
+        "traitsRu": [{"name": "Магия", "desc": "Заговор Малая иллюзия, Разговор с животными (ритуал)."}] 
       },
-      {
-        "nameEn": "Rock Gnome",
-        "nameRu": "Скальный гном",
-        "traitsEn": [
-          {
-            "name": "Tinker",
-            "desc": "You know Mending and Prestidigitation. You can craft 3 mini devices a day."
-          }
-        ],
-        "traitsRu": [
-          {
-            "name": "Изобретатель",
-            "desc": "Знаете заговоры Починка и Фокусы. Можете раз в день создавать до 3 крошечных механизмов."
-          }
-        ]
+      { 
+        "nameEn": "Rock Gnome", 
+        "nameRu": "Скальный гном", 
+        "loreEn": "Possess a natural inclination for invention and the study of mechanisms. They are the most famous engineers and jewelers in the world of gnomes.",
+        "loreRu": "Обладают природной склонностью к изобретательству и изучению механизмов. Это самые известные инженеры и ювелиры в мире гномов.",
+        "traitsEn": [{"name": "Spells", "desc": "Mending and Prestidigitation cantrips. Tinker: create devices (Clockwork Toy, Fire Starter, Music Box)."}], 
+        "traitsRu": [{"name": "Магия", "desc": "Заговоры Починка и Фокусы. Мастер на все руки: создание устройств (Заводная игрушка, Зажигалка, Музыкальная шкатулка)."}] 
+      },
+      { 
+        "nameEn": "Deep Gnome", 
+        "nameRu": "Глубинный гном", 
+        "loreEn": "A hardy and cautious branch of the gnome people, adapted to life in the dangerous depths of the Underdark. Masters of stealth and the mining of rare rubies.",
+        "loreRu": "Суровая и осторожная ветвь народа гномов, приспособленная к жизни в опасных глубинах Подземья. Мастера скрытности и добычи редких рубинов.",
+        "traitsEn": [{"name": "Superior Darkvision", "desc": "120 feet."}, {"name": "Gnomish Magic", "desc": "Nondetection, Disguise Self (3rd), Blur (5th)."}, {"name": "Stone Camouflage", "desc": "Advantage on stealth in rocky terrain."}], 
+        "traitsRu": [{"name": "Улучшенное тёмное зрение", "desc": "120 футов."}, {"name": "Гномья магия", "desc": "Необнаружение, Маскировка (3ур), Размытие (5ур)."}, {"name": "Каменный камуфляж", "desc": "Преимущество при скрытности в каменистой местности."}] 
       }
     ]
   },
@@ -426,56 +237,20 @@
     "nameEn": "Goliath",
     "nameRu": "Голиаф",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 35 feet."
-      },
-      {
-        "name": "Giant Ancestry",
-        "desc": "Choose one Giant type. This provides you with an action (e.g., reduce damage, increase speed, elemental attacks) usable PB times per day."
-      },
-      {
-        "name": "Large Form",
-        "desc": "At 5th level, as a Bonus Action, you can become Large for 10 minutes, gaining Advantage on STR checks and additional speed."
-      },
-      {
-        "name": "Powerful Build",
-        "desc": "You have Advantage on saving throws to avoid being Grappled."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Medium (7–8 feet)" },
+      { "name": "Speed", "desc": "35 feet" },
+      { "name": "Giant Ancestry", "desc": "Choose: Cloud Leap, Fire Burn, Frost Chill, Hill Topple, Stone Endurance, or Storm Thunder. Usage: PB per Long Rest." },
+      { "name": "Large Form", "desc": "At 5th level, Bonus Action: Become Large for 10 min. Advantage on STR checks, Speed +10 ft. Once per Long Rest." },
+      { "name": "Powerful Build", "desc": "Advantage on saves vs Grappled. Count as Large for carrying capacity." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость перемещения — 35 футов!"
-      },
-      {
-        "name": "Великанье наследие",
-        "desc": "Выберите вид Великана (Холмовой, Каменный, Огненный и тд), чтобы получить уникальную способность, которую можно использовать раз в день."
-      },
-      {
-        "name": "Большая форма",
-        "desc": "На 5-м уровне вы можете Бонусным действием увеличиться до Большого размера на 10 минут, получая Преимущество на проверки Силы."
-      },
-      {
-        "name": "Мощное телосложение",
-        "desc": "У вас есть Преимущество на проверки во избежание Захвата."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Средний (7–8 фт)" },
+      { "name": "Скорость", "desc": "35 футов" },
+      { "name": "Наследие великанов", "desc": "Выбор: Прыжок (Облако), Огонь, Холод, Обвал (Холм), Стойкость (Камень) или Гром (Буря). Раз за отдых." },
+      { "name": "Большая форма", "desc": "На 5-м уровне Бонусным действием стать Большим на 10 мин. Преимущество на Силу, Скорость +10 фт. Раз за отдых." },
+      { "name": "Мощное сложение", "desc": "Преимущество от захвата. Считаетесь Большим для грузоподъемности." }
     ],
     "subraces": []
   },
@@ -483,121 +258,67 @@
     "nameEn": "Halfling",
     "nameRu": "Полурослик",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Small."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Brave",
-        "desc": "You have Advantage on saving throws you make to avoid or end the Frightened condition on yourself."
-      },
-      {
-        "name": "Halfling Nimbleness",
-        "desc": "You can move through the space of any creature that is of a size larger than yours."
-      },
-      {
-        "name": "Lucky",
-        "desc": "When you roll a 1 on the d20 for a D20 Test, you can reroll the die and must use the new roll."
-      },
-      {
-        "name": "Naturally Stealthy",
-        "desc": "You can hide even when you are obscured only by a creature that is at least one size larger than you."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Small (2–3 feet)" },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Brave", "desc": "Advantage on saves vs Frightened." },
+      { "name": "Halfling Nimbleness", "desc": "Move through spaces of larger creatures." },
+      { "name": "Lucky", "desc": "Reroll 1s on D20 tests." },
+      { "name": "Naturally Stealthy", "desc": "Hide even when obscured by larger creatures." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Маленький."
-      },
-      {
-        "name": "Скорость",
-        "desc": "Ваша базовая скорость перемещения — 30 футов."
-      },
-      {
-        "name": "Храбрый",
-        "desc": "Вы обладаете Преимуществом на спасброски от состояния Испуган."
-      },
-      {
-        "name": "Проворство полурослика",
-        "desc": "Вы можете двигаться сквозь пространство любого существа, которое больше вас по размеру."
-      },
-      {
-        "name": "Везучий",
-        "desc": "Когда при Проверке D20 (атака, спасбросок, навык) выпадает 1, вы можете перебросить кость и обязаны принять новый результат."
-      },
-      {
-        "name": "Естественная скрытность",
-        "desc": "Вы можете пытаться прятаться, даже если скрыты только существом превышающим вас по размеру."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Маленький (2–3 фт)" },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Храбрость", "desc": "Преимущество от Испуга." },
+      { "name": "Проворство полурослика", "desc": "Проход сквозь пространство более крупных существ." },
+      { "name": "Везение", "desc": "Переброс '1' при проверках." },
+      { "name": "Природная скрытность", "desc": "Можно прятаться за существами крупнее вас." }
     ],
     "subraces": []
   },
   {
     "nameEn": "Human",
     "nameRu": "Человек",
+    "loreEn": "Humans are the most adaptable and diverse among the common races. Driven by their relatively short lifespans, they strive to achieve as much as possible in the time given to them. This makes them great pioneers, conquerors, and builders of empires. There is no 'typical' human; they range from noble knights to cunning rogues, from reclusive mages to mighty barbarians.",
+    "loreRu": "Люди — самая амбициозная и разнообразная из всех рас. Движимые сравнительно короткой продолжительностью жизни, они стремятся достичь как можно большего за отведенный им срок. Это делает их величайшими первооткрывателями, завоевателями и строителями империй. Среди людей нет «типичного» представителя: они варьируются от благородных рыцарей до коварных воров, от отшельников-магов до могучих варваров.",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Medium or Small. You choose the size when you select this species."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Resourceful",
-        "desc": "You gain Heroic Inspiration whenever you finish a Long Rest."
-      },
-      {
-        "name": "Skillful",
-        "desc": "You gain Proficiency in one Skill of your choice."
-      },
-      {
-        "name": "Versatile",
-        "desc": "You gain one Origin Feat of your choice."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Medium or Small." },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Resourceful", "desc": "Gain Heroic Inspiration after Long Rest." },
+      { "name": "Skillful", "desc": "Proficiency in one Skill of choice." },
+      { "name": "Versatile", "desc": "Gain one Origin Feat." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Средний или Маленький (на ваш выбор)."
-      },
-      {
-        "name": "Скорость",
-        "desc": "30 футов."
-      },
-      {
-        "name": "Изобретательный",
-        "desc": "После каждого Продолжительного Отдыха вы получаете Героическое Вдохновение!"
-      },
-      {
-        "name": "Умелый",
-        "desc": "Вы получаете Владение одним Навыком на ваш выбор."
-      },
-      {
-        "name": "Универсальный",
-        "desc": "Вы можете сразу выбрать одну Черту Происхождения (Origin Feat)!"
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Средний или Маленький." },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Находчивость", "desc": "Героическое вдохновение после каждого отдыха." },
+      { "name": "Умелость", "desc": "Владение одним навыком на выбор." },
+      { "name": "Разносторонность", "desc": "Одна начальная черта на выбор." }
+    ],
+    "namesEn": "Male: Bor, Darvin, Aseir, Anton, Chen, Fodel, Jandar.\nFemale: Alethra, Arveene, Atala, Balama, Jia, Katriana.\nFamily: Bersk, Chernin, Amblecrown, Buckman, Wan (comes first).",
+    "namesRu": "Мужские: Бор, Дарвин, Асеир, Антон, Чен, Фодель, Джандар.\nЖенские: Алетра, Арвин, Атала, Балама, Цзя, Катриана.\nФамилии: Берск, Чернин, Амберкраун, Бакман, Ван (фамилия ставится перед именем).",
+    "ethnicitiesRu": [
+      { "name": "Пустынные странники", "description": "Смуглая кожа, темные волосы. Жители жарких южных пустынь, мастера торговли и выживания.", "names": "Асеир, Бардейд (М); Атала, Цеймей (Ж)" },
+      { "name": "Прибрежные торговцы", "description": "Светлая кожа, каштановые волосы, зеленые или карие глаза. Предприимчивые исследователи.", "names": "Дарвин, Дорн (М); Арвин, Эсвель (Ж)" },
+      { "name": "Северные горцы", "description": "Крепкое телосложение, суровый взгляд. Жители северных широт, привыкшие к тяжелому труду.", "names": "Бор, Фодель (М); Алетра, Кара (Ж)" },
+      { "name": "Морские воины севера", "description": "Высокие, часто светловолосые или рыжие. Опытные мореходы и бесстрашные воины.", "names": "Андер, Бран (М); Амафри, Бета (Ж)" },
+      { "name": "Наследники империй", "description": "Высокие и стройные, часто с аристократическими чертами. Члены древних цивилизаций.", "names": "Аот, Барерис (М); Аризима, Чати (Ж)" },
+      { "name": "Лесные стражи", "description": "Невысокие, мускулистые, с густыми темными волосами. Жители диких земель.", "names": "Боривик, Джандар (М); Файла, Катриана (Ж)" },
+      { "name": "Восточные мастера", "description": "Жители далекого востока с золотистой кожей и черными глазами.", "names": "Ан, Чен (М); Бай, Цзя (Ж)" },
+      { "name": "Южные дипломаты", "description": "Высокие, с кожей цвета красного дерева. Мастера переговоров и морской навигации.", "names": "Антона, Диеро (М); Балама, Дона (Ж)" }
+    ],
+    "ethnicitiesEn": [
+      { "name": "Desert Wanderers", "description": "Dusky skin, dark hair. Inhabitants of arid lands, known for trade and ancient traditions.", "names": "Aseir, Bardeid (M); Atala, Ceimei (F)" },
+      { "name": "Coastal Traders", "description": "Fair skin, brown hair, green or hazel eyes. Enterprising explorers from temperate regions.", "names": "Darvin, Dorn (M); Arveene, Esvele (F)" },
+      { "name": "Northern Highlanders", "description": "Sturdy build, stern look. Inhabitants of cold foothills, accustomed to heavy labor.", "names": "Bor, Fodel (M); Alethra, Kara (F)" },
+      { "name": "Northern Sea Raiders", "description": "Tall, often light-haired or red-headed. Experienced seafaring warriors from the frozen north.", "names": "Ander, Bran (M); Amafrey, Betha (F)" },
+      { "name": "Empire Heirs", "description": "Tall and slender, with aristocratic features. Members of ancient magical civilizations.", "names": "Aoth, Bareris (M); Arizima, Chathi (F)" },
+      { "name": "Wildland Protectors", "description": "Sturdy build, thick dark hair. Tough people living in harmony with wild nature.", "names": "Borivik, Jandar (M); Faila, Katriana (F)" },
+      { "name": "Eastern Sages", "description": "Inhabitants of the distant east with golden skin and distinct arts.", "names": "An, Chen (M); Bai, Jia (F)" },
+      { "name": "Southern Diplomats", "description": "Tall, with rich mahogany skin. Skilled masters of diplomacy and navigation.", "names": "Antona, Diero (M); Balama, Dona (F)" }
     ],
     "subraces": []
   },
@@ -605,56 +326,20 @@
     "nameEn": "Orc",
     "nameRu": "Орк",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Medium."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "You can see in Dim Light within 120 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
-      },
-      {
-        "name": "Adrenaline Rush",
-        "desc": "You can take the Dash action as a Bonus Action. When you do so, you gain Temporary Hit Points equal to your level."
-      },
-      {
-        "name": "Relentless Endurance",
-        "desc": "When you are reduced to 0 Hit Points but not killed outright, you can drop to 1 Hit Point instead. You can't use this trait again until you finish a Long Rest."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Medium (6–7 feet)" },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Darkvision", "desc": "120 feet" },
+      { "name": "Adrenaline Rush", "desc": "Bonus Action: Dash. Gain Temporary HP equal to PB. Usage: PB times per Short/Long Rest." },
+      { "name": "Relentless Endurance", "desc": "Drop to 1 HP instead of 0 once per Long Rest." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Средний."
-      },
-      {
-        "name": "Скорость",
-        "desc": "30 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Радиус 120 футов."
-      },
-      {
-        "name": "Выброс адреналина",
-        "desc": "Вы можете использовать Рывок как Бонусное действие. Сделав так, вы также получаете Временные Хиты, равные вашему уровню!"
-      },
-      {
-        "name": "Неукротимая выносливость",
-        "desc": "Если ваши хиты опустились до 0, но вы не были убиты наповал, они вместо этого опускаются до 1. Использование — раз в Продолжительный отдых."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Средний (6–7 фт)" },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Тёмное зрение", "desc": "120 футов" },
+      { "name": "Выброс адреналина", "desc": "Бонусным действием: Рывок + Временные хиты равные БМ. Использований: БМ за отдых." },
+      { "name": "Неукротимая стойкость", "desc": "Вместо 0 хитов остаетесь с 1. Раз за отдых." }
     ],
     "subraces": []
   },
@@ -662,57 +347,25 @@
     "nameEn": "Tiefling",
     "nameRu": "Тифлинг",
     "traitsEn": [
-      {
-        "name": "Creature Type",
-        "desc": "You are a Humanoid."
-      },
-      {
-        "name": "Size",
-        "desc": "You are Medium or Small."
-      },
-      {
-        "name": "Speed",
-        "desc": "Your base walking speed is 30 feet."
-      },
-      {
-        "name": "Darkvision",
-        "desc": "You can see in Dim Light within 60 feet of you as if it were Bright Light, and in Darkness as if it were Dim Light."
-      },
-      {
-        "name": "Fiendish Legacy",
-        "desc": "Choose your legacy: Abyssal, Chthonic, or Infernal. This choice determines your Damage Resistance and spells learned at 1st, 3rd, and 5th levels."
-      },
-      {
-        "name": "Otherworldly Wings",
-        "desc": "At 5th level, for 10 minutes as a Bonus Action, you sprout wings. Gain Fly speed equal to your Speed."
-      }
+      { "name": "Creature Type", "desc": "Humanoid" },
+      { "name": "Size", "desc": "Medium or Small." },
+      { "name": "Speed", "desc": "30 feet" },
+      { "name": "Darkvision", "desc": "60 feet" },
+      { "name": "Otherworldly Presence", "desc": "You know Thaumaturgy cantrip." },
+      { "name": "Fiendish Legacy", "desc": "Abyssal (Poison resist, spells), Chthonic (Necrotic resist, spells), or Infernal (Fire resist, spells)." }
     ],
     "traitsRu": [
-      {
-        "name": "Тип существа",
-        "desc": "Вы — Гуманоид."
-      },
-      {
-        "name": "Размер",
-        "desc": "Средний или Маленький."
-      },
-      {
-        "name": "Скорость",
-        "desc": "30 футов."
-      },
-      {
-        "name": "Тёмное зрение",
-        "desc": "Радиус 60 футов."
-      },
-      {
-        "name": "Дьявольское наследие",
-        "desc": "Выберите: Бездны, Хтоническое или Инфернальное. Определяет ваше Сопротивление Урону и список дополнительных заклинаний."
-      },
-      {
-        "name": "Потусторонние крылья",
-        "desc": "На 5-м уровне вы Бонусным действием на 10 минут можете распустить крылья и получить скорость полёта 30 футов."
-      }
+      { "name": "Тип существа", "desc": "Гуманоид" },
+      { "name": "Размер", "desc": "Средний или Маленький." },
+      { "name": "Скорость", "desc": "30 футов" },
+      { "name": "Тёмное зрение", "desc": "60 футов" },
+      { "name": "Потустороннее присутствие", "desc": "Знаете заговор Чудотворство." },
+      { "name": "Дьявольское наследие", "desc": "Выбор: Бездонное (Яд, магия), Хтоническое (Некроз, магия) или Инфернальное (Огонь, магия)." }
     ],
-    "subraces": []
+    "subraces": [
+      { "nameEn": "Abyssal", "nameRu": "Бездонное", "traitsEn": [{"name": "Poison Spells", "desc": "Resistance to Poison. Poison Spray, Ray of Sickness (lv3), Hold Person (lv5)."}], "traitsRu": [{"name": "Магия Бездны", "desc": "Сопротивление Яду. Ядовитые брызги, Луч болезни (3ур), Удержание личности (5ур)."}] },
+      { "nameEn": "Chthonic", "nameRu": "Хтоническое", "traitsEn": [{"name": "Necrotic Spells", "desc": "Resistance to Necrotic. Chill Touch, False Life (lv3), Ray of Enfeeblement (lv5)."}], "traitsRu": [{"name": "Хтоническая магия", "desc": "Сопротивление Некрозу. Леденящее прикосновение, Псевдожизнь (3ур), Луч ослабления (5ур)."}] },
+      { "nameEn": "Infernal", "nameRu": "Инфернальное", "traitsEn": [{"name": "Fire Spells", "desc": "Resistance to Fire. Fire Bolt, Hellish Rebuke (lv3), Darkness (lv5)."}], "traitsRu": [{"name": "Инфернальная магия", "desc": "Сопротивление Огню. Огненный снаряд, Адское возмездие (3ур), Тьма (5ур)."}] }
+    ]
   }
 ]

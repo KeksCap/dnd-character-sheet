@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,16 +19,22 @@ import com.example.dndhelper.ui.models.AbilityScore
 import com.example.dndhelper.tr
 import com.example.dndhelper.utils.trStat
 
+import com.example.dndhelper.ui.models.DiceRollData
+import com.example.dndhelper.ui.models.RollType
+
 @Composable
 fun StatsGrid(
     stats: List<AbilityScore>,
     isEn: Boolean,
     profBonus: Int,
     hasDisadvantageOnChecks: Boolean,
-    onStatsChange: (List<AbilityScore>) -> Unit
+    onStatsChange: (List<AbilityScore>) -> Unit,
+    onRollRequest: (DiceRollData) -> Unit
 ) {
+    val attributesTitle = tr("Характеристики", "Attributes")
+
     Column {
-        Text(tr("Характеристики", "Attributes"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
+        Text(attributesTitle, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
 
         stats.chunked(2).forEach { rowData ->
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -40,7 +47,8 @@ fun StatsGrid(
                             hasDisadvantage = hasDisadvantageOnChecks,
                             onValueChange = { newValue ->
                                 onStatsChange(stats.map { if (it.name == statData.name) it.copy(baseScore = newValue) else it })
-                            }
+                            },
+                            onRollRequest = onRollRequest
                         )
                     }
                 }
@@ -50,13 +58,38 @@ fun StatsGrid(
 }
 
 @Composable
-fun StatCard(stat: AbilityScore, isEn: Boolean, profBonus: Int, hasDisadvantage: Boolean, onValueChange: (Int) -> Unit) {
+fun StatCard(
+    stat: AbilityScore, 
+    isEn: Boolean, 
+    profBonus: Int, 
+    hasDisadvantage: Boolean, 
+    onValueChange: (Int) -> Unit,
+    onRollRequest: (DiceRollData) -> Unit
+) {
     val modifier = (stat.baseScore - 10) / 2
+    val translatedTitle = trStat(stat.name, isEn) // Перевод заголовка (не Composable больше)
 
     ElevatedCard(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
         Column(modifier = Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(stat.icon, null, tint = Color(0xFF6750A4), modifier = Modifier.size(24.dp))
-            Text(trStat(stat.name, isEn), fontWeight = FontWeight.Bold)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { 
+                        onRollRequest(DiceRollData(
+                            title = translatedTitle,
+                            rollType = RollType.AbilityCheck,
+                            baseModifier = modifier,
+                            icon = stat.icon
+                        ))
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(stat.icon, null, tint = Color(0xFF6750A4), modifier = Modifier.size(24.dp))
+                    Text(translatedTitle, fontWeight = FontWeight.Bold)
+                }
+            }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { onValueChange(stat.baseScore - 1) }) { Text("-", fontSize = 24.sp) }
@@ -64,7 +97,18 @@ fun StatCard(stat: AbilityScore, isEn: Boolean, profBonus: Int, hasDisadvantage:
                 IconButton(onClick = { onValueChange(stat.baseScore + 1) }) { Text("+", fontSize = 24.sp) }
             }
 
-            Surface(color = Color(0xFFEADDFF), shape = RoundedCornerShape(4.dp)) {
+            Surface(
+                color = Color(0xFFEADDFF), 
+                shape = RoundedCornerShape(4.dp),
+                modifier = Modifier.clickable { 
+                    onRollRequest(DiceRollData(
+                        title = translatedTitle,
+                        rollType = RollType.AbilityCheck,
+                        baseModifier = modifier,
+                        icon = stat.icon
+                    ))
+                }
+            ) {
                 Text(if (modifier >= 0) "+$modifier" else "$modifier", modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp), fontWeight = FontWeight.Bold)
             }
 
@@ -73,30 +117,42 @@ fun StatCard(stat: AbilityScore, isEn: Boolean, profBonus: Int, hasDisadvantage:
             stat.skills.forEach { skill ->
                 val state = stat.skillProficiencies[skill] ?: 0
                 val totalSkillBonus = modifier + (state * profBonus)
+                val skillName = trStat(skill, isEn)
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
                         .clickable {
-                            stat.skillProficiencies[skill] = (state + 1) % 3
+                            onRollRequest(DiceRollData(
+                                title = skillName,
+                                rollType = RollType.SkillCheck,
+                                baseModifier = modifier,
+                                proficiencyBonus = state * profBonus,
+                                isProficient = state > 0,
+                                expertise = state == 2
+                            ))
                         }
                         .padding(vertical = 6.dp, horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = when(state) {
-                            1 -> Icons.Default.CheckCircle
-                            2 -> Icons.Default.Stars
-                            else -> Icons.Default.RadioButtonUnchecked
+                            1 -> Icons.Default.Check
+                            2 -> Icons.Default.Star
+                            else -> Icons.Default.RadioButtonChecked // Используем крашеную в серый для пустоты
                         },
                         contentDescription = null,
-                        modifier = Modifier.size(22.dp),
-                        tint = if (state > 0) Color(0xFF6750A4) else Color.Gray
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
+                                stat.skillProficiencies[skill] = (state + 1) % 3
+                            },
+                        tint = if (state > 0) Color(0xFF6750A4) else Color.LightGray
                     )
 
                     Text(
-                        text = trStat(skill, isEn),
+                        text = skillName,
                         modifier = Modifier.weight(1f).padding(start = 8.dp),
                         fontSize = 16.sp,
                         fontWeight = if (state > 0) FontWeight.Bold else FontWeight.Normal
@@ -104,7 +160,7 @@ fun StatCard(stat: AbilityScore, isEn: Boolean, profBonus: Int, hasDisadvantage:
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         if (hasDisadvantage) {
                             Icon(
-                                imageVector = Icons.Filled.Warning,
+                                imageVector = Icons.Default.Warning,
                                 contentDescription = "Disadvantage",
                                 tint = MaterialTheme.colorScheme.error,
                                 modifier = Modifier.size(14.dp)
