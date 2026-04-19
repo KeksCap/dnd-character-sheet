@@ -2,6 +2,27 @@ package com.example.dndhelper.data
 
 import java.util.UUID
 
+// --- ИГРОВОЙ ЖУРНАЛ ---
+
+enum class LogType {
+    DAMAGE,      // Получение урона
+    HEAL,        // Лечение
+    POTION,      // Использование зелья
+    SPELL_SLOT,  // Использование ячейки заклинания
+    REST,        // Короткий / длительный отдых
+    CONDITION,   // Изменение состояния
+    DICE_ROLL,   // Бросок кубика
+    NOTE         // Ручная заметка игрока
+}
+
+data class GameLogEntry(
+    val id: String = UUID.randomUUID().toString(),
+    val timestamp: Long = System.currentTimeMillis(),
+    val type: LogType,
+    val messageRu: String,
+    val messageEn: String
+)
+
 // Главный "чемодан" со всеми данными персонажа
 data class CharacterSaveData(
     val id: String = UUID.randomUUID().toString(), // Уникальный номер персонажа
@@ -73,6 +94,7 @@ data class CharacterSaveData(
     val activeConditions: List<String> = emptyList(), // Список названий активных состояний
     val exhaustionLevel: Int = 0, // Уровень истощения 0-6
     val use2024Rules: Boolean = false, // Использовать правила 2024 года (SRD 5.2)
+    val isOracleEnabled: Boolean = false, // Включен ли Боевой Оракул
     val alignment: String = "",
     val languages: List<String> = emptyList()
 )

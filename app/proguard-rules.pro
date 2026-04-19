@@ -1,21 +1,33 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# --- Retrofit 2.9.0 ---
+-keepattributes Signature, InnerClasses, AnnotationDefault
+-keepattributes *Annotation*
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keep interface retrofit2.** { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# --- Gson 2.13.2 ---
+-keepattributes EnclosingMethod
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+-keep class com.google.gson.** { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# --- Room 2.8.4 ---
+-keep class * extends androidx.room.RoomDatabase
+-dontwarn androidx.room.paging.**
+-keep class androidx.room.** { *; }
+-keep class com.example.dndhelper.data.** { *; } # Сохраняем DAO и сущности
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# --- Jetpack Compose ---
+-keep class androidx.compose.runtime.ParcelableSnapshotState { *; }
+-keep @androidx.compose.runtime.Composable class * { *; }
+-dontwarn androidx.compose.**
+
+# --- Data Models (Защита от поломки Room и JSON) ---
+# Так как твои модели лежат в пакете com.example.dndhelper.data, защищаем их целиком
+-keep class com.example.dndhelper.data.** { *; }
+-keepclassmembers class com.example.dndhelper.data.** { *; }
+
+# Защита для сгенерированного кода (ZXing и прочее)
+-keep class com.journeyapps.barcodescanner.** { *; }
+-keep class com.google.zxing.** { *; }

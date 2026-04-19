@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.core.view.WindowCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.dndhelper.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,14 +33,20 @@ fun tr(ru: String, en: String): String {
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Активируем Splash Screen ДО super.onCreate()
+        val splashScreen = installSplashScreen()
+        
         super.onCreate(savedInstanceState)
 
         val repository = SpellRepository(this)
         val raceRepository = RaceRepository(this)
         val classRepository = ClassRepository(this)
         val magicItemRepository = MagicItemRepository(this)
+        val backgroundRepository = BackgroundRepository(this)
         val storage = CharacterStorage(this)
+        val gameLogStorage = GameLogStorage(this)
         val prefs = getSharedPreferences("dnd_settings", MODE_PRIVATE)
+        StandardEquipment.initialize(this)
 
         setContent {
             // Состояния для заклинаний и рас
@@ -49,7 +57,7 @@ class MainActivity : ComponentActivity() {
             var classList2014 by remember { mutableStateOf(emptyList<DndClass>()) }
             var classList2024 by remember { mutableStateOf(emptyList<DndClass>()) }
             var magicItemList by remember { mutableStateOf(emptyList<MagicItem>()) }
-
+            var backgroundList by remember { mutableStateOf(emptyList<Background>()) }
 
             // Состояние персонажа и настроек
             var selectedCharacter by remember { mutableStateOf<CharacterSaveData?>(null) }
@@ -72,8 +80,6 @@ class MainActivity : ComponentActivity() {
                 else -> "monsters_ru_2014.db"
             }
 
-            // Инициализация базы данных и ViewModel.
-            // remember(dbName) заставит Compose пересоздать их при смене файла.
             val database = remember(dbName) { AppDatabase.getDatabase(this, dbName) }
             val bestiaryViewModel: BestiaryViewModel = viewModel(
                 key = dbName,
@@ -90,6 +96,7 @@ class MainActivity : ComponentActivity() {
                     val loadedClasses14 = classRepository.loadClasses("2014")
                     val loadedClasses24 = classRepository.loadClasses("2024")
                     val loadedMagicItems = magicItemRepository.loadMagicItems()
+                    val loadedBackgrounds = backgroundRepository.loadBackgrounds()
                     spellList = loadedSpells
                     classSpells = loadedClassSpells
                     raceList2014 = loadedRaces14
@@ -97,6 +104,7 @@ class MainActivity : ComponentActivity() {
                     classList2014 = loadedClasses14
                     classList2024 = loadedClasses24
                     magicItemList = loadedMagicItems
+                    backgroundList = loadedBackgrounds
                 }
             }
             DnDHelperTheme(appTheme = selectedTheme) {
@@ -114,7 +122,6 @@ class MainActivity : ComponentActivity() {
                             TavernScreen(
                                 storage = storage,
                                 onCharacterSelected = { char -> selectedCharacter = char }
-                                // Сюда тоже можно добавить шестеренку позже, если понадобится
                             )
                         } else {
                             MainGameContent(
@@ -122,6 +129,7 @@ class MainActivity : ComponentActivity() {
                                 classSpells = classSpells,
                                 races = raceList,
                                 classes = classList,
+                                backgrounds = backgroundList,
                                 language = selectedLanguage!!,
                                 character = selectedCharacter!!,
                                 storage = storage,
@@ -146,7 +154,8 @@ class MainActivity : ComponentActivity() {
                                     selectedTheme = newTheme
                                 },
                                 selectedTheme = selectedTheme,
-                                magicItems = magicItemList
+                                magicItems = magicItemList,
+                                gameLogStorage = gameLogStorage
                             )
                         }
                     }

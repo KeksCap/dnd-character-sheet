@@ -48,6 +48,15 @@ fun StatsGrid(
                             onValueChange = { newValue ->
                                 onStatsChange(stats.map { if (it.name == statData.name) it.copy(baseScore = newValue) else it })
                             },
+                            onSkillProficiencyChange = { skillName, newProf ->
+                                onStatsChange(stats.map { 
+                                    if (it.name == statData.name) {
+                                        val newSkills = it.skillProficiencies.toMutableMap()
+                                        newSkills[skillName] = newProf
+                                        it.copy(skillProficiencies = newSkills)
+                                    } else it 
+                                })
+                            },
                             onRollRequest = onRollRequest
                         )
                     }
@@ -64,6 +73,7 @@ fun StatCard(
     profBonus: Int, 
     hasDisadvantage: Boolean, 
     onValueChange: (Int) -> Unit,
+    onSkillProficiencyChange: (String, Int) -> Unit,
     onRollRequest: (DiceRollData) -> Unit
 ) {
     val modifier = (stat.baseScore - 10) / 2
@@ -146,7 +156,7 @@ fun StatCard(
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
-                                stat.skillProficiencies[skill] = (state + 1) % 3
+                                onSkillProficiencyChange(skill, (state + 1) % 3)
                             },
                         tint = if (state > 0) Color(0xFF6750A4) else Color.LightGray
                     )

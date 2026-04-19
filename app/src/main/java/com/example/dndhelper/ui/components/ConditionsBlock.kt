@@ -28,7 +28,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dndhelper.data.CharacterSaveData
+import com.example.dndhelper.data.GameLogEntry
 import com.example.dndhelper.tr
+import com.example.dndhelper.utils.GameLogManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
@@ -38,7 +40,8 @@ import java.io.InputStreamReader
 fun ConditionsBlock(
     character: CharacterSaveData,
     onCharacterChange: (CharacterSaveData) -> Unit,
-    isEn: Boolean
+    isEn: Boolean,
+    onAddLog: (GameLogEntry) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -172,6 +175,7 @@ fun ConditionsBlock(
                                 val newList = character.activeConditions.toMutableList()
                                 newList.remove(condition)
                                 onCharacterChange(character.copy(activeConditions = newList))
+                                onAddLog(GameLogManager.logConditionRemoved(condition, condition))
                             },
                             onInfo = { showInfo(condition) }
                         )
@@ -202,7 +206,13 @@ fun ConditionsBlock(
                                     color = if (isSelected) MaterialTheme.colorScheme.primary else Color.LightGray.copy(alpha = 0.3f),
                                     shape = CircleShape
                                 )
-                                .clickable { onCharacterChange(character.copy(exhaustionLevel = level)) },
+                                .clickable {
+                                    val oldLevel = character.exhaustionLevel
+                                    if (level != oldLevel) {
+                                        onCharacterChange(character.copy(exhaustionLevel = level))
+                                        onAddLog(GameLogManager.logExhaustionChanged(oldLevel, level))
+                                    }
+                                },
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -278,8 +288,15 @@ fun ConditionsBlock(
                                 .fillMaxWidth()
                                 .clickable {
                                     val newList = character.activeConditions.toMutableList()
-                                    if (isActive) newList.remove(condition) else newList.add(condition)
-                                    onCharacterChange(character.copy(activeConditions = newList))
+                                    if (isActive) {
+                                        newList.remove(condition)
+                                        onCharacterChange(character.copy(activeConditions = newList))
+                                        onAddLog(GameLogManager.logConditionRemoved(condition, condition))
+                                    } else {
+                                        newList.add(condition)
+                                        onCharacterChange(character.copy(activeConditions = newList))
+                                        onAddLog(GameLogManager.logConditionAdded(condition, condition))
+                                    }
                                 }
                                 .padding(vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically

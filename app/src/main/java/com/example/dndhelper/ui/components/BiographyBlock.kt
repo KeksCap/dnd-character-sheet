@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.ui.platform.LocalContext
+import com.example.dndhelper.data.BackgroundRepository
 import com.example.dndhelper.data.CharacterSaveData
 import com.example.dndhelper.tr
 
@@ -24,8 +26,13 @@ import com.example.dndhelper.tr
 @Composable
 fun BiographyBlock(
     character: CharacterSaveData,
-    onCharacterChange: (CharacterSaveData) -> Unit
+    onCharacterChange: (CharacterSaveData) -> Unit,
+    isEn: Boolean
 ) {
+    val context = LocalContext.current
+    val backgroundRepo = remember { BackgroundRepository(context) }
+    val backgroundList = remember { backgroundRepo.loadBackgrounds() }
+
     var isEditing by remember { mutableStateOf(false) }
     
     // Временные состояния для редактирования всех полей
@@ -46,6 +53,13 @@ fun BiographyBlock(
     
     var tempAlignment by remember(character) { mutableStateOf(character.alignment) }
     var tempLanguages by remember(character) { mutableStateOf(character.languages) }
+
+    val matchedBackground = remember(tempBackground, isEn) {
+        backgroundList.find {
+            if (isEn) it.nameEn.equals(tempBackground, ignoreCase = true)
+            else it.nameRu.equals(tempBackground, ignoreCase = true)
+        }
+    }
 
     val alignmentListData = listOf(
         tr("Законное Доброе (ЗД)", "Lawful Good (LG)") to tr(
@@ -170,10 +184,74 @@ fun BiographyBlock(
         BioSectionCard(title = tr("Личные качества", "Personality"), icon = Icons.Default.Psychology) {
              if (isEditing) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    BioEditField(tr("Черты характера", "Personality Traits"), tempTraits, { tempTraits = it }, Modifier.fillMaxWidth(), true)
-                    BioEditField(tr("Идеалы", "Ideals"), tempIdeals, { tempIdeals = it }, Modifier.fillMaxWidth(), true)
-                    BioEditField(tr("Привязанности", "Bonds"), tempBonds, { tempBonds = it }, Modifier.fillMaxWidth(), true)
-                    BioEditField(tr("Слабости", "Flaws"), tempFlaws, { tempFlaws = it }, Modifier.fillMaxWidth(), true)
+                    BioEditField(
+                        label = tr("Черты характера", "Personality Traits"),
+                        value = tempTraits,
+                        onValueChange = { tempTraits = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        isMultiLine = true,
+                        trailingIcon = matchedBackground?.let { bg ->
+                            val list = if (isEn) bg.traitsEn else bg.traits
+                            if (!list.isNullOrEmpty()) {
+                                {
+                                    IconButton(onClick = { tempTraits = list.random() }) {
+                                        Icon(Icons.Default.Casino, contentDescription = "Randomize", tint = MaterialTheme.colorScheme.primary)
+                                    }
+                                }
+                            } else null
+                        }
+                    )
+                    BioEditField(
+                        label = tr("Идеалы", "Ideals"),
+                        value = tempIdeals,
+                        onValueChange = { tempIdeals = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        isMultiLine = true,
+                        trailingIcon = matchedBackground?.let { bg ->
+                            val list = if (isEn) bg.idealsEn else bg.ideals
+                            if (!list.isNullOrEmpty()) {
+                                {
+                                    IconButton(onClick = { tempIdeals = list.random() }) {
+                                        Icon(Icons.Default.Casino, contentDescription = "Randomize", tint = MaterialTheme.colorScheme.primary)
+                                    }
+                                }
+                            } else null
+                        }
+                    )
+                    BioEditField(
+                        label = tr("Привязанности", "Bonds"),
+                        value = tempBonds,
+                        onValueChange = { tempBonds = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        isMultiLine = true,
+                        trailingIcon = matchedBackground?.let { bg ->
+                            val list = if (isEn) bg.bondsEn else bg.bonds
+                            if (!list.isNullOrEmpty()) {
+                                {
+                                    IconButton(onClick = { tempBonds = list.random() }) {
+                                        Icon(Icons.Default.Casino, contentDescription = "Randomize", tint = MaterialTheme.colorScheme.primary)
+                                    }
+                                }
+                            } else null
+                        }
+                    )
+                    BioEditField(
+                        label = tr("Слабости", "Flaws"),
+                        value = tempFlaws,
+                        onValueChange = { tempFlaws = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        isMultiLine = true,
+                        trailingIcon = matchedBackground?.let { bg ->
+                            val list = if (isEn) bg.flawsEn else bg.flaws
+                            if (!list.isNullOrEmpty()) {
+                                {
+                                    IconButton(onClick = { tempFlaws = list.random() }) {
+                                        Icon(Icons.Default.Casino, contentDescription = "Randomize", tint = MaterialTheme.colorScheme.primary)
+                                    }
+                                }
+                            } else null
+                        }
+                    )
                 }
             } else {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -191,7 +269,51 @@ fun BiographyBlock(
         BioSectionCard(title = tr("Предыстория и Союзники", "Background & Allies"), icon = Icons.Default.HistoryEdu) {
             if (isEditing) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    BioEditField(tr("Предыстория", "Background"), tempBackground, { tempBackground = it }, Modifier.fillMaxWidth())
+                    var expandedBackground by remember { mutableStateOf(false) }
+                    ExposedDropdownMenuBox(
+                        expanded = expandedBackground,
+                        onExpandedChange = { expandedBackground = it },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = tempBackground,
+                            onValueChange = { tempBackground = it; expandedBackground = true },
+                            label = { Text(tr("Предыстория", "Background"), fontSize = 12.sp) },
+                            modifier = Modifier.menuAnchor().fillMaxWidth(),
+                            singleLine = true,
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedBackground) },
+                            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent
+                            )
+                        )
+                        
+                        val filteredList = backgroundList.filter { 
+                            val name = if (isEn) it.nameEn else it.nameRu
+                            name.contains(tempBackground, ignoreCase = true)
+                        }
+                        
+                        if (filteredList.isNotEmpty() && expandedBackground) {
+                            ExposedDropdownMenu(
+                                expanded = expandedBackground,
+                                onDismissRequest = { expandedBackground = false }
+                            ) {
+                                filteredList.forEach { bg ->
+                                    val bgName = if (isEn) bg.nameEn else bg.nameRu
+                                    DropdownMenuItem(
+                                        text = { Text(bgName) },
+                                        onClick = {
+                                            tempBackground = bgName
+                                            expandedBackground = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
                     BioEditField(tr("Союзники и организации", "Allies"), tempAllies, { tempAllies = it }, Modifier.fillMaxWidth(), true)
                 }
             } else {
@@ -386,7 +508,14 @@ fun BioDisplayField(label: String, value: String, modifier: Modifier = Modifier)
 }
 
 @Composable
-fun BioEditField(label: String, value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier, isMultiLine: Boolean = false) {
+fun BioEditField(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    isMultiLine: Boolean = false,
+    trailingIcon: @Composable (() -> Unit)? = null
+) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -395,6 +524,7 @@ fun BioEditField(label: String, value: String, onValueChange: (String) -> Unit, 
         singleLine = !isMultiLine,
         minLines = if (isMultiLine) 2 else 1,
         maxLines = if (isMultiLine) 5 else 1,
-        textStyle = MaterialTheme.typography.bodyMedium
+        textStyle = MaterialTheme.typography.bodyMedium,
+        trailingIcon = trailingIcon
     )
 }

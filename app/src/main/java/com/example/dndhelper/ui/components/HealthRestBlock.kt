@@ -22,7 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dndhelper.data.CharacterSaveData
+import com.example.dndhelper.data.GameLogEntry
 import com.example.dndhelper.tr
+import com.example.dndhelper.utils.GameLogManager
 import com.example.dndhelper.utils.getStatMod
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +32,8 @@ import com.example.dndhelper.utils.getStatMod
 fun HealthRestBlock(
     character: CharacterSaveData,
     onCharacterChange: (CharacterSaveData) -> Unit,
-    conMod: Int
+    conMod: Int,
+    onAddLog: (GameLogEntry) -> Unit
 ) {
     var maxHpInput by remember(character.id) { mutableStateOf(character.maxHp.toString()) }
     val maxHp = maxHpInput.toIntOrNull() ?: 1
@@ -158,7 +161,12 @@ fun HealthRestBlock(
                 ) {
                     val damageRed = Color(0xFFB71C1C)
                     Button(
-                        onClick = { onCharacterChange(character.copy(currentHp = (currentHp - 5).coerceAtLeast(0))) },
+                        onClick = {
+                            val newHp = (currentHp - 5).coerceAtLeast(0)
+                            val dmg = currentHp - newHp
+                            onCharacterChange(character.copy(currentHp = newHp))
+                            if (dmg > 0) onAddLog(GameLogManager.logDamage(dmg, newHp))
+                        },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = damageRed.copy(alpha = 0.75f)),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
@@ -166,7 +174,12 @@ fun HealthRestBlock(
                         Text("-5", fontWeight = FontWeight.Bold, fontSize = 13.sp)
                     }
                     Button(
-                        onClick = { onCharacterChange(character.copy(currentHp = (currentHp - 1).coerceAtLeast(0))) },
+                        onClick = {
+                            val newHp = (currentHp - 1).coerceAtLeast(0)
+                            val dmg = currentHp - newHp
+                            onCharacterChange(character.copy(currentHp = newHp))
+                            if (dmg > 0) onAddLog(GameLogManager.logDamage(dmg, newHp))
+                        },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = damageRed),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
@@ -178,7 +191,12 @@ fun HealthRestBlock(
 
                     val healGreen = Color(0xFF2E7D32)
                     Button(
-                        onClick = { onCharacterChange(character.copy(currentHp = (currentHp + 1).coerceAtMost(effectiveMaxHp))) },
+                        onClick = {
+                            val newHp = (currentHp + 1).coerceAtMost(effectiveMaxHp)
+                            val heal = newHp - currentHp
+                            onCharacterChange(character.copy(currentHp = newHp))
+                            if (heal > 0) onAddLog(GameLogManager.logHeal(heal, newHp))
+                        },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = healGreen.copy(alpha = 0.75f)),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
@@ -186,7 +204,12 @@ fun HealthRestBlock(
                         Text("+1", fontWeight = FontWeight.Bold, fontSize = 13.sp)
                     }
                     Button(
-                        onClick = { onCharacterChange(character.copy(currentHp = (currentHp + 5).coerceAtMost(effectiveMaxHp))) },
+                        onClick = {
+                            val newHp = (currentHp + 5).coerceAtMost(effectiveMaxHp)
+                            val heal = newHp - currentHp
+                            onCharacterChange(character.copy(currentHp = newHp))
+                            if (heal > 0) onAddLog(GameLogManager.logHeal(heal, newHp))
+                        },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = healGreen),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
@@ -195,6 +218,82 @@ fun HealthRestBlock(
                     }
                 }
 
+                // --- Произвольное количество HP ---
+                var customHpInput by remember { mutableStateOf("") }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    val damageRed = Color(0xFFB71C1C)
+                    val healGreen = Color(0xFF2E7D32)
+                    val amount = customHpInput.toIntOrNull() ?: 0
+
+                    Button(
+                        onClick = {
+                            if (amount > 0) {
+                                val newHp = (currentHp - amount).coerceAtLeast(0)
+                                val dmg = currentHp - newHp
+                                onCharacterChange(character.copy(currentHp = newHp))
+                                if (dmg > 0) onAddLog(GameLogManager.logDamage(dmg, newHp))
+                                customHpInput = ""
+                            }
+                        },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = damageRed),
+                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                        enabled = amount > 0
+                    ) {
+                        Icon(Icons.Default.Remove, null, modifier = Modifier.size(16.dp))
+                    }
+
+                    OutlinedTextField(
+                        value = customHpInput,
+                        onValueChange = { newVal ->
+                            if (newVal.all { it.isDigit() } && newVal.length <= 4) {
+                                customHpInput = newVal
+                            }
+                        },
+                        modifier = Modifier.weight(2f).height(48.dp),
+                        textStyle = androidx.compose.ui.text.TextStyle(
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        ),
+                        placeholder = { 
+                            Text(
+                                tr("Кол-во", "Amount"),
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                        },
+                        singleLine = true,
+                        shape = RoundedCornerShape(12.dp),
+                        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                            keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
+                        )
+                    )
+
+                    Button(
+                        onClick = {
+                            if (amount > 0) {
+                                val newHp = (currentHp + amount).coerceAtMost(effectiveMaxHp)
+                                val heal = newHp - currentHp
+                                onCharacterChange(character.copy(currentHp = newHp))
+                                if (heal > 0) onAddLog(GameLogManager.logHeal(heal, newHp))
+                                customHpInput = ""
+                            }
+                        },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = healGreen),
+                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                        enabled = amount > 0
+                    ) {
+                        Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
+                    }
+                }
                 val potions = listOf(
                     Triple(character.potionHealing, tr("Зелье", "Potion"), "2d4+2"),
                     Triple(character.potionGreater, tr("Большое", "Greater"), "4d4+4"),
@@ -227,6 +326,21 @@ fun HealthRestBlock(
                                             else -> 0
                                         }
                                         val newHp = (character.currentHp + healAmount).coerceAtMost(effectiveMaxHp)
+                                        val actualHeal = newHp - character.currentHp
+                                        val potionNameRu = when(formula) {
+                                            "2d4+2" -> "Зелье лечения"
+                                            "4d4+4" -> "Большое зелье лечения"
+                                            "8d4+8" -> "Отличное зелье лечения"
+                                            "10d4+20" -> "Превосходное зелье лечения"
+                                            else -> "Зелье"
+                                        }
+                                        val potionNameEn = when(formula) {
+                                            "2d4+2" -> "Potion of Healing"
+                                            "4d4+4" -> "Greater Healing Potion"
+                                            "8d4+8" -> "Superior Healing Potion"
+                                            "10d4+20" -> "Supreme Healing Potion"
+                                            else -> "Potion"
+                                        }
                                         val fieldToUpdate = when(formula) {
                                             "2d4+2" -> character.copy(potionHealing = count - 1, currentHp = newHp)
                                             "4d4+4" -> character.copy(potionGreater = count - 1, currentHp = newHp)
@@ -235,6 +349,7 @@ fun HealthRestBlock(
                                             else -> character
                                         }
                                         onCharacterChange(fieldToUpdate)
+                                        onAddLog(GameLogManager.logPotion(potionNameRu, potionNameEn, actualHeal, newHp))
                                     },
                                     label = { Text("$name ($count)") },
                                     leadingIcon = { Icon(Icons.Default.LocalPharmacy, null, modifier = Modifier.size(16.dp)) }
@@ -285,10 +400,13 @@ fun HealthRestBlock(
                                         onClick = {
                                             val roll = (1..character.hitDiceType).random()
                                             val heal = (roll + conMod).coerceAtLeast(1)
-                                            onCharacterChange(character.copy(
+                                            val newHp = (character.currentHp + heal).coerceAtMost(effectiveMaxHp)
+                                            val updated = character.copy(
                                                 currentHitDice = character.currentHitDice - 1,
-                                                currentHp = (character.currentHp + heal).coerceAtMost(effectiveMaxHp)
-                                            ))
+                                                currentHp = newHp
+                                            )
+                                            onCharacterChange(updated)
+                                            onAddLog(GameLogManager.logShortRest(character.hitDiceType, roll, conMod, heal))
                                         },
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
@@ -321,6 +439,7 @@ fun HealthRestBlock(
                                     exhaustionLevel = newExhaustion
                                 )
                                 onCharacterChange(updated)
+                                onAddLog(GameLogManager.logLongRest(effectiveMaxHp, diceToRestore))
                                 showLongRestDialog = false
                             }) {
                                 Text(tr("Да", "Yes"))

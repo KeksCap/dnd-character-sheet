@@ -19,12 +19,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dndhelper.data.CharacterSaveData
+import com.example.dndhelper.data.GameLogEntry
 import com.example.dndhelper.tr
+import com.example.dndhelper.utils.GameLogManager
 
 @Composable
 fun SpellSlotsBlock(
     character: CharacterSaveData,
-    onCharacterChange: (CharacterSaveData) -> Unit
+    onCharacterChange: (CharacterSaveData) -> Unit,
+    onAddLog: (GameLogEntry) -> Unit
 ) {
     var showAddSlotsDialog by remember { mutableStateOf(false) }
 
@@ -101,6 +104,12 @@ fun SpellSlotsBlock(
                                                     this[lvl] = if (isAvailable) i - 1 else i
                                                 }
                                                 onCharacterChange(character.copy(currentSpellSlots = newCurrent))
+                                                val newVal = newCurrent[lvl]
+                                                if (isAvailable) {
+                                                    onAddLog(GameLogManager.logSpellSlotUsed(lvl, newVal, max))
+                                                } else {
+                                                    onAddLog(GameLogManager.logSpellSlotRestored(lvl, newVal, max))
+                                                }
                                             },
                                         tint = MaterialTheme.colorScheme.primary
                                     )

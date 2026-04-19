@@ -195,31 +195,70 @@ fun AttacksBlock(
     }
 
     if (showListAttackDialog) {
+        var searchQuery by remember { mutableStateOf("") }
+        var filterType by remember { mutableStateOf(0) } // 0 = Все, 1 = Мели, 2 = Рендж
+        val searchHint = tr("Поиск...", "Search...")
+        val allText = tr("Все", "All")
+        val meleeText = tr("Ближнее", "Melee")
+        val rangedText = tr("Дальнее", "Ranged")
+
         AlertDialog(
             onDismissRequest = { showListAttackDialog = false },
             title = { Text(selectWeaponTitle) },
             text = {
-                Column(modifier = Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState())) {
-                    StandardEquipment.getWeapons().forEach { weapon ->
-                        val name = if (isEn) weapon.nameEn else weapon.nameRu
-                        val dmg = (if (isEn) weapon.damageEn else weapon.damage) ?: ""
-                        Row(
-                            modifier = Modifier.fillMaxWidth().clickable {
-                                if (!character.equippedStandardWeapons.contains(weapon.nameEn)) {
-                                    onCharacterChange(character.copy(equippedStandardWeapons = character.equippedStandardWeapons + weapon.nameEn))
-                                }
-                                showListAttackDialog = false
-                            }.padding(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(name, style = MaterialTheme.typography.bodyLarge)
-                                Text(dmg, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        placeholder = { Text(searchHint) },
+                        singleLine = true,
+                        leadingIcon = { Icon(Icons.Default.Search, null) }
+                    )
+                    
+                    Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        FilterChip(selected = filterType == 0, onClick = { filterType = 0 }, label = { Text(allText) })
+                        FilterChip(selected = filterType == 1, onClick = { filterType = 1 }, label = { Text(meleeText) })
+                        FilterChip(selected = filterType == 2, onClick = { filterType = 2 }, label = { Text(rangedText) })
+                    }
+
+                    Column(modifier = Modifier.heightIn(max = 300.dp).verticalScroll(rememberScrollState())) {
+                        val allWeapons = StandardEquipment.getWeapons()
+                        val rangedKeywords = listOf("Shortbow", "Longbow", "Crossbow", "Sling", "Blowgun", "Dart", "Musket", "Pistol", "Net") // Net is thrown/ranged but maybe just add basic ranged
+                        
+                        val filteredWeapons = allWeapons.filter { weapon ->
+                            val name = if (isEn) weapon.nameEn else weapon.nameRu
+                            val matchesSearch = name.contains(searchQuery, ignoreCase = true)
+                            val isRanged = rangedKeywords.any { weapon.nameEn.contains(it, ignoreCase = true) }
+                            val matchesFilter = when (filterType) {
+                                1 -> !isRanged
+                                2 -> isRanged
+                                else -> true
                             }
-                            if (character.equippedStandardWeapons.contains(weapon.nameEn)) {
-                                Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary)
-                            } else {
-                                Icon(Icons.Default.Add, null, tint = Color.Gray)
+                            matchesSearch && matchesFilter
+                        }
+
+                        filteredWeapons.forEach { weapon ->
+                            val name = if (isEn) weapon.nameEn else weapon.nameRu
+                            val dmg = (if (isEn) weapon.damageEn else weapon.damage) ?: ""
+                            Row(
+                                modifier = Modifier.fillMaxWidth().clickable {
+                                    if (!character.equippedStandardWeapons.contains(weapon.nameEn)) {
+                                        onCharacterChange(character.copy(equippedStandardWeapons = character.equippedStandardWeapons + weapon.nameEn))
+                                    }
+                                    showListAttackDialog = false
+                                }.padding(vertical = 8.dp, horizontal = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(name, style = MaterialTheme.typography.bodyLarge)
+                                    Text(dmg, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                                }
+                                if (character.equippedStandardWeapons.contains(weapon.nameEn)) {
+                                    Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary)
+                                } else {
+                                    Icon(Icons.Default.Add, null, tint = Color.Gray)
+                                }
                             }
                         }
                     }

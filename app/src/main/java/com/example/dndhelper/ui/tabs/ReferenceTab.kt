@@ -41,11 +41,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.border
 import com.example.dndhelper.R
 
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.SpanStyle
+
 @Composable
 fun ReferenceTab(
     monsters: List<Monster>,
     races: List<Race>,
     classes: List<DndClass>,
+    backgrounds: List<Background>,
     currentRuleset: String,
     onRulesetChange: (String) -> Unit,
     language: String,
@@ -58,7 +63,8 @@ fun ReferenceTab(
         tr("Бестиарий", "Bestiary"), 
         tr("Расы", "Races"), 
         tr("Классы", "Classes"),
-        tr("Маг. предметы", "Magic Items")
+        tr("Предыстории", "Backgrounds"),
+        tr("Предметы", "Items")
     )
 
     var searchQuery by remember { mutableStateOf("") }
@@ -141,7 +147,11 @@ fun ReferenceTab(
                     currentRuleset = currentRuleset,
                     onRulesetChange = onRulesetChange
                 )
-                3 -> MagicItemsDirectoryTab(
+                3 -> BackgroundsList(
+                    backgrounds = backgrounds,
+                    language = language
+                )
+                4 -> MagicItemsDirectoryTab(
                     isEn = (language == "en" || language == "english"),
                     magicItems = magicItems,
                     character = character,
@@ -655,3 +665,198 @@ fun MagicItemsDirectoryTab(
         )
     }
 }
+
+@Composable
+fun BackgroundsList(backgrounds: List<Background>, language: String) {
+    var searchQuery by remember { mutableStateOf("") }
+    var selectedBackground by remember { mutableStateOf<Background?>(null) }
+    val isEn = language == "en" || language == "english"
+
+    val filteredList = backgrounds.filter {
+        val name = if (isEn) it.nameEn else it.nameRu
+        name.contains(searchQuery, ignoreCase = true)
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        OutlinedTextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            label = { Text(tr("Поиск...", "Search...")) },
+            leadingIcon = { Icon(Icons.Default.Search, null) },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            singleLine = true
+        )
+
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)) {
+            items(filteredList, key = { it.url }) { bg ->
+                Card(
+                    modifier = Modifier.fillMaxWidth().clickable { selectedBackground = bg },
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    val name = if (isEn) bg.nameEn else bg.nameRu
+                    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Text(tr("Источник: ", "Source: ") + bg.source, fontSize = 12.sp, color = Color.Gray)
+                        }
+                        Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Color.Gray)
+                    }
+                }
+            }
+        }
+    }
+
+    selectedBackground?.let { bg ->
+        BackgroundDetailDialog(background = bg, language = language, onDismiss = { selectedBackground = null })
+    }
+}
+
+@Composable
+fun BackgroundDetailDialog(background: Background, language: String, onDismiss: () -> Unit) {
+    val isEn = language == "en" || language == "english"
+    val name = if (isEn) background.nameEn else background.nameRu
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val surfaceColor = MaterialTheme.colorScheme.surfaceVariant
+
+    val profText = if (isEn && background.proficienciesEn.isNotBlank()) background.proficienciesEn else background.proficiencies
+    val descText = if (isEn && background.descriptionEn.isNotBlank()) background.descriptionEn else background.description
+
+    // Parse markdown-like formatting into AnnotatedString
+    val parseRichText: @Composable (String) -> androidx.compose.ui.text.AnnotatedString = { text ->
+        val pc = MaterialTheme.colorScheme.primary
+        buildAnnotatedString {
+            val lines = text.split("\n")
+            for ((index, line) in lines.withIndex()) {
+                val boldParts = line.split("**")
+                for (i in boldParts.indices) {
+                    if (i % 2 == 1) {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = pc)) {
+                            append(boldParts[i])
+                        }
+                    } else {
+                        append(boldParts[i])
+                    }
+                }
+                if (index < lines.size - 1) append("\n")
+            }
+        }
+    }
+
+    // Split description into sections by ### headers
+    data class Section(val title: String, val body: String)
+    val sections = mutableListOf<Section>()
+    val descLines = descText.trim().split("\n")
+    var currentTitle = ""
+    val currentBody = StringBuilder()
+
+    for (line in descLines) {
+        if (line.trimStart().startsWith("### ")) {
+            // Save previous section
+            if (currentTitle.isNotBlank() || currentBody.isNotBlank()) {
+                sections.add(Section(currentTitle, currentBody.toString().trim()))
+            }
+            currentTitle = line.trimStart().removePrefix("### ")
+            currentBody.clear()
+        } else {
+            if (currentBody.isNotEmpty()) currentBody.append("\n")
+            currentBody.append(line)
+        }
+    }
+    // Don't forget the last section
+    if (currentTitle.isNotBlank() || currentBody.isNotBlank()) {
+        sections.add(Section(currentTitle, currentBody.toString().trim()))
+    }
+
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+        Column {
+            // Header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primaryContainer)
+                    .padding(horizontal = 4.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onDismiss) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                }
+                Text(
+                    name,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Intro text blocks (sections with empty titles)
+                val (introSections, featureSections) = sections.partition { it.title.isBlank() }
+
+                for (section in introSections) {
+                    if (section.body.isNotBlank()) {
+                        Text(
+                            parseRichText(section.body),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+
+                // Proficiencies card
+                if (profText.isNotBlank()) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = surfaceColor.copy(alpha = 0.5f)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                tr("ВЛАДЕНИЯ И СНАРЯЖЕНИЕ", "PROFICIENCIES & EQUIPMENT"),
+                                fontWeight = FontWeight.ExtraBold,
+                                color = primaryColor,
+                                fontSize = 13.sp
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                parseRichText(profText),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                }
+
+                // Feature sections as individual cards
+                for (section in featureSections) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                section.title.uppercase(),
+                                fontWeight = FontWeight.ExtraBold,
+                                color = primaryColor,
+                                fontSize = 13.sp
+                            )
+                            if (section.body.isNotBlank()) {
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    parseRichText(section.body),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                        }
+                    }
+                }
+
+                // Source removed by user request
+            }
+        }
+    }
+}
+

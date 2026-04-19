@@ -1,21 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp) // <--- Вот так красиво теперь выглядит KSP
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.dndhelper"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.dndhelper"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -24,48 +20,51 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true // Включено сжатие и обфускация
+            isShrinkResources = true // Удаление неиспользуемых ресурсов
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
-    // Ядро и жизненный цикл
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    // Compose BOM (управляет версиями всего Compose автоматически)
     implementation(platform(libs.androidx.compose.bom))
-    // UI, Material 3 и иконки
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material.icons.extended)
-    // База данных Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
-    // Парсинг JSON
-    implementation(libs.gson)
-    // Работа с сетью (Retrofit)
+    
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
-    // Загрузка картинок (Coil)
+    // Удалил дубликат gson, так как он есть в libs.retrofit-converter-gson
+    
     implementation(libs.coil.compose)
-    // Тесты (оставляем стандартные)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    
+    implementation(libs.androidx.core.splashscreen)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,7 +72,4 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    // Это для парсинга JSON
-    implementation("com.google.code.gson:gson:2.10.1")
 }

@@ -12,26 +12,49 @@ import com.example.dndhelper.data.*
 import com.example.dndhelper.ui.components.*
 import com.example.dndhelper.ui.models.AbilityScore
 import com.example.dndhelper.ui.models.DiceRollData
+import com.example.dndhelper.ui.models.RollOutcome
+import com.example.dndhelper.utils.GameLogManager
 import com.example.dndhelper.utils.getProficiencyBonus
 import com.example.dndhelper.utils.getStatMod
-
 @Composable
 fun CharacterSheetTab(
     isEn: Boolean,
     character: CharacterSaveData,
     onCharacterChange: (CharacterSaveData) -> Unit,
-    magicItems: List<MagicItem>
+    magicItems: List<MagicItem>,
+    onAddLog: (GameLogEntry) -> Unit
 ) {
     val language = if (isEn) "en" else "ru"
     
-    var stats by remember { mutableStateOf(listOf(
-        AbilityScore("Сила", 16, Icons.Default.FitnessCenter, listOf("Атлетика")),
-        AbilityScore("Ловкость", 7, Icons.Default.DirectionsRun, listOf("Акробатика", "Ловкость рук", "Скрытность")),
-        AbilityScore("Тело", 15, Icons.Default.Favorite),
-        AbilityScore("Инт", 10, Icons.Default.MenuBook, listOf("Анализ", "История", "Магия", "Природа")),
-        AbilityScore("Мудр", 12, Icons.Default.Visibility, listOf("Восприятие", "Выживание")),
-        AbilityScore("Хар", 8, Icons.Default.SelfImprovement, listOf("Убеждение", "Обман"))
-    ))}
+    val stats = remember(character.stats, isEn) {
+        val defaultStats = listOf(
+            AbilityScore("Сила", 10, Icons.Default.FitnessCenter, if(isEn) listOf("Athletics") else listOf("Атлетика")),
+            AbilityScore("Ловкость", 10, Icons.Default.DirectionsRun, if(isEn) listOf("Acrobatics", "Sleight of Hand", "Stealth") else listOf("Акробатика", "Ловкость рук", "Скрытность")),
+            AbilityScore("Тело", 10, Icons.Default.Favorite),
+            AbilityScore("Инт", 10, Icons.Default.MenuBook, if(isEn) listOf("Arcana", "History", "Investigation", "Nature", "Religion") else listOf("Анализ", "История", "Магия", "Природа", "Религия")),
+            AbilityScore("Мудр", 10, Icons.Default.Visibility, if(isEn) listOf("Animal Handling", "Insight", "Medicine", "Perception", "Survival") else listOf("Восприятие", "Выживание", "Проницательность", "Уход за животными", "Медицина")),
+            AbilityScore("Хар", 10, Icons.Default.SelfImprovement, if(isEn) listOf("Deception", "Intimidation", "Performance", "Persuasion") else listOf("Убеждение", "Обман", "Выступление", "Запугивание"))
+        )
+        
+        defaultStats.map { defaultStat ->
+            val charStat = character.stats.find { 
+                when (defaultStat.name) {
+                    "Сила" -> it.name in listOf("Strength", "Сила")
+                    "Ловкость" -> it.name in listOf("Dexterity", "Ловкость")
+                    "Тело" -> it.name in listOf("Constitution", "Телосложение", "Тело")
+                    "Инт" -> it.name in listOf("Intelligence", "Интеллект", "Инт")
+                    "Мудр" -> it.name in listOf("Wisdom", "Мудрость", "Мудр")
+                    "Хар" -> it.name in listOf("Charisma", "Харизма", "Хар")
+                    else -> false
+                }
+            }
+            if (charStat != null) {
+                defaultStat.copy(baseScore = charStat.baseScore, skillProficiencies = charStat.skillProficiencies)
+            } else {
+                defaultStat
+            }
+        }
+    }
 
     val strValue = stats.find { it.name == "Сила" || it.name == "Strength" }?.baseScore ?: 10
     val strMod = getStatMod(strValue)
@@ -43,13 +66,14 @@ fun CharacterSheetTab(
 
     val initiativeText = if (dexMod >= 0) "+$dexMod" else "$dexMod"
 
-    val standardArmorList = listOf(ArmorEntry("Без брони", "Unarmored", 10, 0)) +
-        StandardEquipment.getArmor().map { 
-            ArmorEntry(it.nameRu, it.nameEn, it.baseAc ?: 10, it.type ?: 0) 
+    val armorList = remember(character.customArmors, isEn, StandardEquipment.items) {
+        val standard = listOf(ArmorEntry("Без брони", "Unarmored", 10, 0)) +
+            StandardEquipment.getArmor().map { 
+                ArmorEntry(it.nameRu, it.nameEn, it.baseAc ?: 10, it.type ?: 0) 
+            }
+        standard + character.customArmors.map {
+            ArmorEntry(it.name, it.name, it.baseAc, it.type)
         }
-
-    val armorList = standardArmorList + character.customArmors.map {
-        ArmorEntry(it.name, it.name, it.baseAc, it.type)
     }
 
     val selectedArmor = if (character.selectedArmorIndex < armorList.size) armorList[character.selectedArmorIndex] else armorList[0]
@@ -73,13 +97,15 @@ fun CharacterSheetTab(
         HealthRestBlock(
             character = character,
             onCharacterChange = onCharacterChange,
-            conMod = conMod
+            conMod = conMod,
+            onAddLog = onAddLog
         )
 
         ConditionsBlock(
             character = character,
             onCharacterChange = onCharacterChange,
-            isEn = isEn
+            isEn = isEn,
+            onAddLog = onAddLog
         )
 
         CombatStatsBlock(
@@ -102,7 +128,40 @@ fun CharacterSheetTab(
             isEn = isEn,
             profBonus = profBonus,
             hasDisadvantageOnChecks = hasDisadvantageOnChecks,
-            onStatsChange = { stats = it },
+            onStatsChange = { newAbilityScores ->
+                val updatedStats = character.stats.toMutableList()
+                newAbilityScores.forEach { ab ->
+                    val index = updatedStats.indexOfFirst {
+                        when (ab.name) {
+                            "Сила" -> it.name in listOf("Strength", "Сила")
+                            "Ловкость" -> it.name in listOf("Dexterity", "Ловкость")
+                            "Тело" -> it.name in listOf("Constitution", "Телосложение", "Тело")
+                            "Инт" -> it.name in listOf("Intelligence", "Интеллект", "Инт")
+                            "Мудр" -> it.name in listOf("Wisdom", "Мудрость", "Мудр")
+                            "Хар" -> it.name in listOf("Charisma", "Харизма", "Хар")
+                            else -> false
+                        }
+                    }
+                    if (index != -1) {
+                        updatedStats[index] = updatedStats[index].copy(
+                            baseScore = ab.baseScore,
+                            skillProficiencies = ab.skillProficiencies
+                        )
+                    } else {
+                        val saveName = when(ab.name) {
+                            "Сила" -> if(isEn) "Strength" else "Сила"
+                            "Ловкость" -> if(isEn) "Dexterity" else "Ловкость"
+                            "Тело" -> if(isEn) "Constitution" else "Телосложение"
+                            "Инт" -> if(isEn) "Intelligence" else "Интеллект"
+                            "Мудр" -> if(isEn) "Wisdom" else "Мудрость"
+                            "Хар" -> if(isEn) "Charisma" else "Харизма"
+                            else -> ab.name
+                        }
+                        updatedStats.add(StatSaveData(saveName, ab.baseScore, ab.skillProficiencies))
+                    }
+                }
+                onCharacterChange(character.copy(stats = updatedStats))
+            },
             onRollRequest = { activeRollData = it }
         )
 
@@ -134,7 +193,8 @@ fun CharacterSheetTab(
 
         SpellSlotsBlock(
             character = character,
-            onCharacterChange = onCharacterChange
+            onCharacterChange = onCharacterChange,
+            onAddLog = onAddLog
         )
 
         KnownSpellsBlock(
@@ -146,15 +206,47 @@ fun CharacterSheetTab(
         Spacer(Modifier.height(24.dp))
         BiographyBlock(
             character = character,
-            onCharacterChange = onCharacterChange
+            onCharacterChange = onCharacterChange,
+            isEn = isEn
         )
     }
 
     if (activeRollData != null) {
         DiceRollBottomSheet(
             rollData = activeRollData!!,
-            onDismiss = { activeRollData = null }
+            onDismiss = { activeRollData = null },
+            onRollComplete = { rollData, outcome ->
+                val breakdown = buildLogBreakdown(outcome, rollData)
+                val critRu = when {
+                    outcome.isCriticalSuccess -> " КРИТ!"
+                    outcome.isCriticalFailure -> " ПРОВАЛ!"
+                    else -> ""
+                }
+                val critEn = when {
+                    outcome.isCriticalSuccess -> " CRIT!"
+                    outcome.isCriticalFailure -> " FAIL!"
+                    else -> ""
+                }
+                onAddLog(
+                    GameLogManager.logDiceRoll(
+                        rollData.title,
+                        rollData.title,
+                        "$breakdown = ${outcome.total}$critRu",
+                        "$breakdown = ${outcome.total}$critEn"
+                    )
+                )
+            }
         )
     }
 }
 
+private fun buildLogBreakdown(outcome: RollOutcome, data: DiceRollData): String {
+    val rollPart = if (outcome.secondRoll != null) {
+        val modeStr = if (outcome.mode == com.example.dndhelper.ui.models.AdvantageMode.Advantage) "Adv" else "Dis"
+        "(${outcome.firstRoll} vs ${outcome.secondRoll}) [$modeStr]"
+    } else {
+        "(${outcome.firstRoll})"
+    }
+    val modPart = if (outcome.modifier > 0) " + ${outcome.modifier}" else if (outcome.modifier < 0) " - ${-outcome.modifier}" else ""
+    return "$rollPart$modPart"
+}

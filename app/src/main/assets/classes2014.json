@@ -2358,5 +2358,470 @@
         "features": []
       }
     ]
+  },
+  {
+    "nameEn": "Artificer",
+    "nameRu": "Изобретатель",
+    "hitDie": "1d8",
+    "traitsEn": {
+      "Armor": "Light armor, medium armor, shields",
+      "Weapons": "Simple weapons",
+      "Tools": "Thieves' tools, tinker's tools, one type of artisan's tools of your choice",
+      "Saving Throws": "Constitution, Intelligence",
+      "Skills": "Choose two from Arcana, History, Investigation, Medicine, Nature, Perception, Sleight of Hand"
+    },
+    "traitsRu": {
+      "Доспехи": "Лёгкие доспехи, средние доспехи, щиты",
+      "Оружие": "Простое оружие",
+      "Инструменты": "Воровские инструменты, инструменты жестянщика, один вид ремесленных инструментов на ваш выбор",
+      "Спасброски": "Телосложение, Интеллект",
+      "Навыки": "Выберите два из следующих: Магия, История, Расследование, Медицина, Природа, Внимательность, Ловкость рук"
+    },
+    "featuresEn": [
+      {
+        "level": 1,
+        "name": "Magical Tinkering",
+        "desc": "At 1st level, you learn how to invest a spark of magic into mundane objects."
+      },
+      {
+        "level": 1,
+        "name": "Spellcasting",
+        "desc": "You have studied the workings of magic and how to cast spells, channeling the magic through objects."
+      },
+      {
+        "level": 2,
+        "name": "Infuse Item",
+        "desc": "At 2nd level, you gain the ability to imbue mundane items with certain magical infusions."
+      },
+      {
+        "level": 3,
+        "name": "Artificer Specialist",
+        "desc": "At 3rd level, you choose the type of specialist you are."
+      },
+      {
+        "level": 3,
+        "name": "The Right Tool for the Job",
+        "desc": "At 3rd level, you learn how to produce exactly the tool you need."
+      },
+      {
+        "level": 4,
+        "name": "Ability Score Improvement",
+        "desc": "When you reach 4th level, and again at 8th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1."
+      },
+      {
+        "level": 6,
+        "name": "Tool Expertise",
+        "desc": "Starting at 6th level, your proficiency bonus is doubled for any ability check you make that uses your proficiency with a tool."
+      },
+      {
+        "level": 7,
+        "name": "Flash of Genius",
+        "desc": "Starting at 7th level, you gain the ability to come up with solutions under pressure. When you or another creature you can see within 30 feet of you makes an ability check or a saving throw, you can use your reaction to add your Intelligence modifier to the roll."
+      },
+      {
+        "level": 10,
+        "name": "Magic Item Adept",
+        "desc": "When you reach 10th level, you achieve a profound understanding of how to use and make magical items."
+      },
+      {
+        "level": 11,
+        "name": "Spell-Storing Item",
+        "desc": "At 11th level, you learn how to store a spell in an object."
+      },
+      {
+        "level": 14,
+        "name": "Magic Item Savant",
+        "desc": "At 14th level, your skill with magic items deepens."
+      },
+      {
+        "level": 18,
+        "name": "Magic Item Master",
+        "desc": "Starting at 18th level, you can attune to up to six magic items at once."
+      },
+      {
+        "level": 20,
+        "name": "Soul of Artifice",
+        "desc": "At 20th level, you develop a mystical connection to your magic items, which you can draw on for protection."
+      }
+    ],
+    "featuresRu": [
+      {
+        "level": 1,
+        "name": "Магический мастеровой",
+        "desc": "Вы научились вкладывать искру магии в обычные предметы. Чтобы использовать это умение, вы должны держать в руках воровские инструменты или инструменты ремесленника. Затем действием вы касаетесь Крошечного немагического объекта и наделяете его одним из магических свойств на ваш выбор (свет, звук, запах, постоянное сообщение или визуальный эффект)."
+      },
+      {
+        "level": 1,
+        "name": "Использование заклинаний",
+        "desc": "Вы изучили то, как работает магия, и то, как накладывать заклинания, направляя её через предметы. Вы используете инструменты ремесленника в качестве фокусировки."
+      },
+      {
+        "level": 2,
+        "name": "Инфузирование предмета",
+        "desc": "Вы получаете способность вливать в обычные предметы определённую магию и превращать их в магические. Для этого вы изучаете инфузии предмета."
+      },
+      {
+        "level": 3,
+        "name": "Специальность изобретателя",
+        "desc": "Вы выбираете свою специальность. Ваш выбор предоставляет вам умения на 3-м, 5-м, 9-м и 15-м уровнях."
+      },
+      {
+        "level": 3,
+        "name": "Подходящий инструмент",
+        "desc": "Вы научились создавать именно те инструменты, которые вам нужны. С помощью воровских или ремесленных инструментов вы можете волшебным образом создать один набор инструментов ремесленника в свободном пространстве за 1 час работы."
+      },
+      {
+        "level": 4,
+        "name": "Увеличение характеристик",
+        "desc": "При достижении 4-го, 8-го, 12-го, 16-го и 19-го уровней вы можете повысить значение одной из ваших характеристик на 2 или двух на 1."
+      },
+      {
+        "level": 6,
+        "name": "Компетентность во владении инструментами",
+        "desc": "Ваш бонус мастерства удваивается при всех проверках характеристик, совершаемых с использованием инструмента, которым вы владеете."
+      },
+      {
+        "level": 7,
+        "name": "Проблеск гениальности",
+        "desc": "Вы обрели способность находить решения проблем, будучи в стрессовых ситуациях. Когда вы или видимое вами существо совершает проверку характеристики или спасбросок, вы можете реакцией добавить к броску свой модификатор Интеллекта."
+      },
+      {
+        "level": 10,
+        "name": "Эксперт в обращении с магическими предметами",
+        "desc": "Вы можете настроиться на 4 магических предмета одновременно. При создании обычного или необычного магического предмета вы тратите четверть времени и вдвое меньше золота."
+      },
+      {
+        "level": 11,
+        "name": "Хранящий заклинания предмет",
+        "desc": "Вы можете сохранить заклинание в оружии или заклинательной фокусировке. Любое существо, держащее этот предмет, может выпустить заклинание."
+      },
+      {
+        "level": 14,
+        "name": "Учёный по магическим предметам",
+        "desc": "Вы можете настроиться на 5 магических предметов. Вы игнорируете все требования класса, расы, уровня для настройки на предмет."
+      },
+      {
+        "level": 18,
+        "name": "Мастер в обращении с магическими предметами",
+        "desc": "Вы можете настроиться на 6 магических предметов одновременно."
+      },
+      {
+        "level": 20,
+        "name": "Душа изобретения",
+        "desc": "Вы получаете бонус +1 ко всем спасброскам за каждый настроенный магический предмет. Если вы падаете до 0 хитов, вы можете реакцией уничтожить одну инфузию, чтобы остаться с 1 хитом."
+      }
+    ],
+    "subclassesEn": [
+      {
+        "name": "Alchemist",
+        "desc": "An Alchemist is an expert at combining exotic reagents to produce mystical effects.",
+        "features": [
+          {
+            "level": 3,
+            "name": "Tool Proficiency",
+            "desc": "You gain proficiency with alchemist's supplies."
+          },
+          {
+            "level": 3,
+            "name": "Alchemist Spells",
+            "desc": "You always have certain spells prepared after you reach particular levels in this class."
+          },
+          {
+            "level": 3,
+            "name": "Experimental Elixir",
+            "desc": "Whenever you finish a long rest, you can magically produce an experimental elixir in an empty flask you touch."
+          },
+          {
+            "level": 5,
+            "name": "Alchemical Savant",
+            "desc": "You develop masterful command of magical chemicals, enhancing the healing and damage you create through them."
+          },
+          {
+            "level": 9,
+            "name": "Restorative Reagents",
+            "desc": "You can incorporate restorative reagents into some of your works."
+          },
+          {
+            "level": 15,
+            "name": "Chemical Mastery",
+            "desc": "You have been exposed to so many chemicals that they pose little risk to you, and you can use them to quickly end certain ailments."
+          }
+        ]
+      },
+      {
+        "name": "Artillerist",
+        "desc": "An Artillerist specializes in using magic to hurl energy, projectiles, and explosions on the battlefield.",
+        "features": [
+          {
+            "level": 3,
+            "name": "Tool Proficiency",
+            "desc": "You gain proficiency with woodcarver's tools."
+          },
+          {
+            "level": 3,
+            "name": "Artillerist Spells",
+            "desc": "You always have certain spells prepared after you reach particular levels in this class."
+          },
+          {
+            "level": 3,
+            "name": "Eldritch Cannon",
+            "desc": "You've learned how to create a magical cannon."
+          },
+          {
+            "level": 5,
+            "name": "Arcane Firearm",
+            "desc": "You know how to turn a wand, staff, or rod into an arcane firearm, a conduit for your destructive spells."
+          },
+          {
+            "level": 9,
+            "name": "Explosive Cannon",
+            "desc": "Every eldritch cannon you create is more destructive."
+          },
+          {
+            "level": 15,
+            "name": "Fortified Position",
+            "desc": "You're a master at forming a well-defended emplacement using Eldritch Cannon."
+          }
+        ]
+      },
+      {
+        "name": "Battle Smith",
+        "desc": "Armies require protection, and someone has to put things back together if defenses fail. A combination of protector and medic, a Battle Smith is an expert at defending others and repairing both materiel and personnel.",
+        "features": [
+          {
+            "level": 3,
+            "name": "Tool Proficiency",
+            "desc": "You gain proficiency with smith's tools."
+          },
+          {
+            "level": 3,
+            "name": "Battle Smith Spells",
+            "desc": "You always have certain spells prepared after you reach particular levels in this class."
+          },
+          {
+            "level": 3,
+            "name": "Battle Ready",
+            "desc": "Your combat training and your experiments with magic have paid off in two ways: You gain proficiency with martial weapons. When you attack with a magic weapon, you can use your Intelligence modifier, instead of Strength or Dexterity modifier, for the attack and damage rolls."
+          },
+          {
+            "level": 3,
+            "name": "Steel Defender",
+            "desc": "Your tinkering has borne you a faithful companion, a steel defender."
+          },
+          {
+            "level": 5,
+            "name": "Extra Attack",
+            "desc": "You can attack twice, rather than once, whenever you take the Attack action on your turn."
+          },
+          {
+            "level": 9,
+            "name": "Arcane Jolt",
+            "desc": "You've learned new ways to channel arcane energy to harm or heal."
+          },
+          {
+            "level": 15,
+            "name": "Improved Defender",
+            "desc": "Your Arcane Jolt and steel defender become more powerful."
+          }
+        ]
+      },
+      {
+        "name": "Armorer",
+        "desc": "An artificer who specializes as an Armorer modifies armor to function almost like a second skin. The armor is enhanced to hone the artificer's magic, unleash potent attacks, and generate a formidable defense.",
+        "features": [
+          {
+            "level": 3,
+            "name": "Tools of the Trade",
+            "desc": "You gain proficiency with heavy armor. You also gain proficiency with smith's tools."
+          },
+          {
+            "level": 3,
+            "name": "Armorer Spells",
+            "desc": "You always have certain spells prepared after you reach particular levels in this class."
+          },
+          {
+            "level": 3,
+            "name": "Arcane Armor",
+            "desc": "Your metallurgical pursuits have led to you making armor a conduit for your magic. As an action, you can turn a suit of armor you are wearing into Arcane Armor."
+          },
+          {
+            "level": 3,
+            "name": "Armor Model",
+            "desc": "You can customize your Arcane Armor. When you do so, choose one of the following armor models: Guardian or Infiltrator."
+          },
+          {
+            "level": 5,
+            "name": "Extra Attack",
+            "desc": "You can attack twice, rather than once, whenever you take the Attack action on your turn."
+          },
+          {
+            "level": 9,
+            "name": "Armor Modifications",
+            "desc": "You learn how to use your artificer infusions to specially modify your Arcane Armor."
+          },
+          {
+            "level": 15,
+            "name": "Perfected Armor",
+            "desc": "Your Arcane Armor gains additional benefits based on its model, as shown below."
+          }
+        ]
+      }
+    ],
+    "subclassesRu": [
+      {
+        "name": "Алхимик",
+        "desc": "Алхимик — эксперт по созданию магических эффектов путём комбинирования экзотических реагентов.",
+        "features": [
+          {
+            "level": 3,
+            "name": "Владение инструментами",
+            "desc": "Вы получаете владение инструментами алхимика."
+          },
+          {
+            "level": 3,
+            "name": "Заклинания алхимиков",
+            "desc": "У вас всегда есть подготовленные заклинания алхимика (например: лечащее слово, луч болезни)."
+          },
+          {
+            "level": 3,
+            "name": "Экспериментальный эликсир",
+            "desc": "Заканчивая продолжительный отдых, вы волшебным образом создаете экспериментальный эликсир (со случайным эффектом: лечение, скорость, защита, смена облика, полет и т.д.)."
+          },
+          {
+            "level": 5,
+            "name": "Учёный алхимик",
+            "desc": "Каждый раз, когда вы накладываете заклинание исцеления, или урона огнём, некротическим, кислотным или ядом с инструментами алхимика, вы добавляете модификатор Интеллекта."
+          },
+          {
+            "level": 9,
+            "name": "Восстанавливающие реагенты",
+            "desc": "Пьющий ваш эликсир получает 2к6+Инт временных хитов. Вы можете накладывать 'малое восстановление' без ячейки раз в день за модификатор Интеллекта."
+          },
+          {
+            "level": 15,
+            "name": "Химическое мастерство",
+            "desc": "Вы получаете сопротивление кислоте и яду, иммунитет к состоянию отравленный. Можете раз в день свободно накладывать 'высшее восстановление' и 'полное исцеление'."
+          }
+        ]
+      },
+      {
+        "name": "Артиллерист",
+        "desc": "Артиллерист специализируется на использовании в бою магии для метания огня, снарядов и вспышек энергии.",
+        "features": [
+          {
+            "level": 3,
+            "name": "Владение инструментами",
+            "desc": "Вы получаете владение инструментами резчика по дереву."
+          },
+          {
+            "level": 3,
+            "name": "Заклинания артиллериста",
+            "desc": "У вас всегда готовы заклинания (щит, огненная стена, град)."
+          },
+          {
+            "level": 3,
+            "name": "Мистическая пушка",
+            "desc": "Действием создаете магическую пушку (Огнемет, Защитная, Силовая Баллиста), которая активируется бонусным действием."
+          },
+          {
+            "level": 5,
+            "name": "Мистическое огнестрельное оружие",
+            "desc": "Вы делаете из палочки/посоха оружие. При накладывании заклинаний через него добавляется 1к8 урона."
+          },
+          {
+            "level": 9,
+            "name": "Взрывоопасная пушка",
+            "desc": "Урон пушки растет на 1к8. Вы можете взорвать её дистанционно (3к8 урона всем в 20 футах)."
+          },
+          {
+            "level": 15,
+            "name": "Укреплённая позиция",
+            "desc": "Ваши пушки дают укрытие наполовину в 10 футах. Теперь можно иметь две пушки сразу."
+          }
+        ]
+      },
+      {
+        "name": "Боевой кузнец",
+        "desc": "Сочетающий в себе защитника и медика, боевой кузнец является экспертом по защите других и восстановлению матчасти. В работе ему помогает железный защитник.",
+        "features": [
+          {
+            "level": 3,
+            "name": "Владение инструментами",
+            "desc": "Вы получаете владение инструментами кузнеца."
+          },
+          {
+            "level": 3,
+            "name": "Заклинания боевого кузнеца",
+            "desc": "Готовы заклинания щита, лечения, кар."
+          },
+          {
+            "level": 3,
+            "name": "Боевая готовность",
+            "desc": "Вы получаете владение воинским оружием. При атаке магическим оружием используется Интеллект вместо Силы/Ловкости."
+          },
+          {
+            "level": 3,
+            "name": "Стальной защитник",
+            "desc": "Вы получаете компаньона (Стального защитника), которым управляете в бою."
+          },
+          {
+            "level": 5,
+            "name": "Дополнительная атака",
+            "desc": "При действии Атака вы совершаете две атаки вместо одной."
+          },
+          {
+            "level": 9,
+            "name": "Магическая встряска",
+            "desc": "Раз за ход при атаке магическим оружием можете нанести доп. 2к6 силового поля или вылечить на 2к6 союзника в 30 футах."
+          },
+          {
+            "level": 15,
+            "name": "Улучшенный защитник",
+            "desc": "Урон и лечение от Встряски растет до 4к6. КД защитника +2. При отражении защитником атаки враг получает урон силовым полем."
+          }
+        ]
+      },
+      {
+        "name": "Бронник",
+        "desc": "Бронник модифицирует броню, делая её практически второй кожей, объединяя её с магией изобретателя.",
+        "features": [
+          {
+            "level": 3,
+            "name": "Владение инструментами",
+            "desc": "Вы получаете владение тяжёлыми доспехами и инструментами кузнеца."
+          },
+          {
+            "level": 3,
+            "name": "Заклинания бронника",
+            "desc": "Всегда готовы заклинания молнии, силовых стен, обмана."
+          },
+          {
+            "level": 3,
+            "name": "Мистический доспех",
+            "desc": "Превращаете носимый доспех в мистический (игнорирует Силу, работает как фокус, не снимается против воли)."
+          },
+          {
+            "level": 3,
+            "name": "Модель доспеха",
+            "desc": "Две модели: Страж (Громовые перчатки для ударов, Защитное поле для ХП) или Лазутчик (Метатель молний, увеличение скорости, шаг без шума)."
+          },
+          {
+            "level": 5,
+            "name": "Дополнительная атака",
+            "desc": "При действии Атака вы совершаете две атаки вместо одной."
+          },
+          {
+            "level": 9,
+            "name": "Модификации доспеха",
+            "desc": "Каждый элемент вашего мистического доспеха теперь отдельный предмет для инфузий (шлем, латы, сапоги, оружие). Доп. 2 инфузии доступны."
+          },
+          {
+            "level": 15,
+            "name": "Идеальная броня",
+            "desc": "Страж может реакцией притянуть врагов на 25 футов и ударить, а Лазутчик подсвечивает врага для преимущества атак и доп. урона 1к6."
+          }
+        ]
+      }
+    ]
   }
 ]
